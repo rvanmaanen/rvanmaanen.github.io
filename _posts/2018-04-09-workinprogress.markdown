@@ -4,6 +4,9 @@ title:  "Work In Progress"
 date:   2018-04-09 13:08:34 +0200
 categories: WIP
 ---
+
+Dummy blog
+
 {% highlight C# %}
 using System;
 using System.Collections.Generic;
