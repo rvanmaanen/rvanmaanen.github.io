@@ -2,16 +2,14 @@
 title: Reinier's blog
 email: rvanmaanen@xpirit.com
 description: >-
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  A blog about cool things I came across and stuff I had to Google myself, hope it helps someone else!
 baseurl: ""
 url: "http://rvanmaanen.github.io"
-twitter_username: reiniervanmaanen
+twitter_username: maanenreinier
 github_username:  rvanmaanen
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-hacker
+theme: minima
 plugins:
   - jekyll-feed
