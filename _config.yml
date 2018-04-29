@@ -8,7 +8,7 @@ url: "http://rvanmaanen.github.io"
 twitter_username: maanenreinier
 github_username:  rvanmaanen
 linkedin_username: reiniervanmaanen
-show_excerpts: true
+show_excerpts: false
 
 # Build settings
 markdown: kramdown
