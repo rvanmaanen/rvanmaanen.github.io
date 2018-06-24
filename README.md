@@ -1,1 +1,1 @@
-Files for my blog at https://rvanmaanen.github.io/
+Files for my blog at https://r-vm.com
