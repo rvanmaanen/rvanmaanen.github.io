@@ -59,7 +59,7 @@ categories: jekyll windows<br/>
 <br />
 # Some other useful stuff:
 * Themes - applying and overriding (todo - sorry)
-* [Troubleshooting build failures] (https://help.github.com/articles/troubleshooting-github-pages-builds/)
+* [Troubleshooting build failures](https://help.github.com/articles/troubleshooting-github-pages-builds/)
 
 <br />
 # A couple other websites I used:
