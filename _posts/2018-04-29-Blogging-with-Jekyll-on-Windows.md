@@ -2,6 +2,7 @@
 layout: post
 title:  "Blogging with Jekyll on Windows"
 categories: jekyll windows
+description: A quick start for anyone who wants to start blogging with Jekyll on Windows by using Ubuntu through the Windows Subsytem for Linux and GitHub pages.
 ---
 ![Logos](https://raw.githubusercontent.com/rvanmaanen/rvanmaanen.github.io/master/_images/logos.png)
 
@@ -56,9 +57,9 @@ categories: jekyll windows<br/>
 13.	Start writing, use `jekyll serve` often to see the results and push your changes to GitHub when you’re ready. These are just the basics, there is [a lot you can do with markdown files](https://guides.github.com/features/mastering-markdown/) and [Jekyll](https://jekyllrb.com/docs/).
 
 <br />
-# Some other stuff (still todo, sorry!):
-* Themes - applying and overriding
-* Making and viewing errors
+# Some other useful stuff:
+* Themes - applying and overriding (todo - sorry)
+* [Troubleshooting build failures] (https://help.github.com/articles/troubleshooting-github-pages-builds/)
 
 <br />
 # A couple other websites I used:
