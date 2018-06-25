@@ -10,12 +10,6 @@ github_username:  rvanmaanen
 linkedin_username: reiniervanmaanen
 show_excerpts: false
 
-# Google Analytics
-jekyll_analytics:
-  GoogleAnalytics:          # Add, if you want to track with Google Analytics
-    id: UA-121311213-1      # Required - replace with your tracking id
-    anonymizeIp: false      # Optional - Default: false - set to true for anonymized tracking
-
 # Build settings
 markdown: kramdown
 theme: minima
@@ -24,3 +18,8 @@ plugins:
   - jekyll-analytics
   - jekyll-seo-tag
   
+# Google Analytics
+jekyll_analytics:
+  GoogleAnalytics:
+    id: UA-121311213-1
+    anonymizeIp: false
