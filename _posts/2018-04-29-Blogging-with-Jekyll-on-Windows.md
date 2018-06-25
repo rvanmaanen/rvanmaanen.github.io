@@ -4,7 +4,7 @@ title:  "Blogging with Jekyll on Windows"
 categories: jekyll windows
 description: A quick start for anyone who wants to start blogging with Jekyll on Windows by using Ubuntu through the Windows Subsytem for Linux and GitHub pages.
 ---
-![Logos](https://raw.githubusercontent.com/rvanmaanen/rvanmaanen.github.io/master/_images/logos.png)
+![Logos]({{ "/assets/logos.png" | absolute_url }})
 
 So! Time to write my first blog. Something simple first, guess I need a few posts to get into this. Judging by the amount of blogs, I’m probably not the first one starting out and probably won’t be the last so I thought I’d share what I did to set up this blog.
 
@@ -22,7 +22,7 @@ Mostly I followed instructions and a few guides on the internet, which I’ll re
 # Step by step instructions:
 1. We’ll start by [creating a GitHub account](https://github.com/join). Remember the username, you’ll need it in the next step.
 
-1. [Create a Git repository](https://github.com/new) named “yourusername.github.io”. Afterwards, if you head to `https://github.com/username/username.github.io/settings` and scroll down to “GitHub pages” it should look like this: ![GitHub pages](https://raw.githubusercontent.com/rvanmaanen/rvanmaanen.github.io/master/_images/githubpages.png). <br/>You can actually stop here and just use GitHub Pages by pushing HTML files to your GIT repository. As I wanted something more fancy, I continued.
+1. [Create a Git repository](https://github.com/new) named “yourusername.github.io”. Afterwards, if you head to `https://github.com/username/username.github.io/settings` and scroll down to “GitHub pages” it should look like this: ![GitHub pages]({{ "/assets/githubpages.png" | absolute_url }}). <br/>You can actually stop here and just use GitHub Pages by pushing HTML files to your GIT repository. As I wanted something more fancy, I continued.
 
 1. Next we’ll setup Jekyll locally. Here I just dove in headfirst, and started fixing the requirements listed by Jekyll. As I was about to Google how to install GCC and Make I realized I was probably doing something wrong and things should be easier. And guess what, on my Windows 10 with the Anniversary Update, things can be a lot easier by using a new feature called WSL, or Windows Subsystem for Linux. Enabling this is pretty straightforward:
 	1.	Open your start menu.
@@ -31,7 +31,7 @@ Mostly I followed instructions and a few guides on the internet, which I’ll re
 	1.	Finish the installation and reboot when asked.<br /><br />   
 
 1.	One more thing before actually starting with Jekyll is installing [Ubuntu from the Windows Store](https://www.microsoft.com/store/productId/9NBLGGH4MSV6). Afterwards, you have Bash on Windows! Pretty awesome :)
-![Ubuntu](https://raw.githubusercontent.com/rvanmaanen/rvanmaanen.github.io/master/_images/ubuntuonwindows.png)
+![Ubuntu]({{ "/assets/ubuntuonwindows.png" | absolute_url }})
 
 1.	As I just followed the guide from Jekyll at this point (which just states that you must have Bash on Ubuntu on Windows enabled and doesn’t explain how – hence steps 3 and 4), [here it is](https://jekyllrb.com/docs/windows/). As you’ll see, Windows isn’t officially supported, but it works fine on my machine ;)
 
@@ -55,11 +55,6 @@ categories: jekyll windows<br/>
 \-\--<br/>
 
 13.	Start writing, use `jekyll serve` often to see the results and push your changes to GitHub when you’re ready. These are just the basics, there is [a lot you can do with markdown files](https://guides.github.com/features/mastering-markdown/) and [Jekyll](https://jekyllrb.com/docs/).
-
-<br />
-# Some other useful stuff:
-* Themes - applying and overriding (todo - sorry)
-* [Troubleshooting build failures](https://help.github.com/articles/troubleshooting-github-pages-builds/)
 
 <br />
 # A couple other websites I used:

@@ -1,5 +1,5 @@
 # Site settings
-title: Workbits from Reinier
+title: Work stuff from Reinier
 email: rvanmaanen@xpirit.com
 description: >-
   A blog about cool things I came across and stuff I had to Google myself, hope it helps someone else!
@@ -16,9 +16,3 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
-  
-# Google Analytics
-jekyll_analytics:
-  GoogleAnalytics:
-    id: UA-121311213-1
-    anonymizeIp: false

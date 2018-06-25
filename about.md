@@ -13,4 +13,4 @@ In his spare time he likes sports (squash, crossfit, mountainbike), gaming (both
 
 [![Xpirit][xpirit]](http://www.xpirit.com/reinier)
 
-[xpirit]: https://raw.githubusercontent.com/rvanmaanen/rvanmaanen.github.io/master/_images/xpirit.png
+[xpirit]: {{ "/assets/xpirit.png" | absolute_url }}
