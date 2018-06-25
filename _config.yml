@@ -17,3 +17,8 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
   
+# Google Analytics
+jekyll_analytics:
+  GoogleAnalytics:
+    id: UA-121311213-1
+    anonymizeIp: false
