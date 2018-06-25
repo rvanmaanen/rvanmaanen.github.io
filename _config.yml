@@ -2,13 +2,15 @@
 title: Work stuff from Reinier
 email: rvanmaanen@xpirit.com
 description: >-
-  A blog about cool things I came across and stuff I had to Google myself, hope it helps someone else!
+  A blog about anything related to my work, probably mostly stuff I did or had to Google myself, hope it helps someone else!
 baseurl: ""
 url: "https://r-vm.com"
 twitter_username: maanenreinier
 github_username:  rvanmaanen
 linkedin_username: reiniervanmaanen
 show_excerpts: false
+
+google_analytics: UA-121311213-1
 
 # Build settings
 markdown: kramdown
