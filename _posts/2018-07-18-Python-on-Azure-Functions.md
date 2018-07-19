@@ -71,7 +71,7 @@ Congratulations, you now have a working, empty, Python Azure Function App! :-)
 1. When you re-open the " \_\_init\_\_.py" file, you should get the error "Unable to import 'azure.functions'". This is correct, as that module isn't available yet. 
 
 # Fixing your missing modules - update:
-1. You probably want to adjust the requirements.txt and get rid of the whole "-e git+https://github...." line and replace it with "azure-functions". That just downloads the latest azure-functions module, without any GIT clone, manual compiling or necessity for Visual C++ 14.0. It's a whole lot faster too. No idea why this isn't the default configuration when creating a new Function App from the 
+1. You probably want to adjust the requirements.txt and get rid of the whole "-e git+https://github...." line and replace it with "azure-functions". That just downloads the latest azure-functions module, without any GIT clone, manual compiling or necessity for Visual C++ 14.0. It's a whole lot faster too. No idea why this isn't the default configuration when creating a new Function App with the Azure Function Core Tools.
 1. Run `pip install -r .\requirements.txt` from the Python terminal and you're good to go.
 
 # Fixing your missing modules - the original:
