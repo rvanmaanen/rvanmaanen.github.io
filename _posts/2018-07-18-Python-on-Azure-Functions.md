@@ -3,8 +3,8 @@ layout: post
 title:  "Python Azure Function with Visual Studio Code"
 categories: Azure Functions Python Windows 10
 description: My experience setting up an Azure Function with Python and Visual Studio Code
-published: true
 excerpt_separator: <!--excerpt_end-->
+image: /assets/python_on_azure_functions/pythonfunctions.png
 ---
 
 Googling led me to a couple of blog posts about Python on Azure Functions. Those led me to believe Python on Azure Functions is using Windows as OS, uses a very old Python version and is very slow.

@@ -4,6 +4,7 @@ title:  "Blogging with Jekyll on Windows"
 categories: jekyll windows
 description: A quick start for anyone who wants to start blogging with Jekyll on Windows by using Ubuntu through the Windows Subsytem for Linux and GitHub pages.
 excerpt_separator: <!--excerpt_end-->
+image: /assets/blogging_with_jekyll/logos.png
 ---
 ![Logos]({{ "/assets/blogging_with_jekyll/logos.png" | absolute_url }})
 
