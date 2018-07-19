@@ -95,7 +95,7 @@ Now probably everything up until here was sort of smooth, so brace yourself for 
 
 # Publishing to Azure
 1. Type in `pip freeze > requirements.txt` in your Python terminal. This generates a new requirements.txt with any new dependencies. This is used in the Docker build when publishing. 
-1. Use this magic URL to enable Python when creating a new App Function: [https://portal.azure.com/?websitesextension_pythonFunctions=true#create/Microsoft.FunctionApp](https://portal.azure.com/?websitesextension_pythonFunctions=true#create/Microsoft.FunctionApp). You have to pick Linux for Python.
+1. Use [this magic URL](https://portal.azure.com/?websitesextension_pythonFunctions=true#create/Microsoft.FunctionApp) to enable Python when creating a new App Function. Have a look at the querystring! Btw, you have to pick Linux to be able to choose Python.
 - When I navigated to my new Function App the result was a HTTP 502 error for quite some time. After a while the regular "Your Function App 2.0 preview is up and running" website came up. Something was very slow.
 1. Now just follow the steps from the tutorial: 
 - Log into your Azure account: `func azure login`
@@ -111,7 +111,7 @@ Now probably everything up until here was sort of smooth, so brace yourself for 
 Well, the next thing on your list should probably be building a proper CI/CD pipeline for this. And bonus, you'll probably spend less time waiting too. You're on your own for that, but you can always reach out to me if you need any help!
 
 # The exception (nothing below this, don't bother scrolling ;))
-{% highlight C# %}
+{% highlight text %}
 Microsoft.Azure.WebJobs.Host.FunctionInvocationException:
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw (System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e)
    at Microsoft.Azure.WebJobs.Host.Executors.FunctionExecutor+<ExecuteWithLoggingAsync>d__15.MoveNext (Microsoft.Azure.WebJobs.Host, Version=3.0.0.0, Culture=neutral, PublicKeyToken=nullMicrosoft.Azure.WebJobs.Host, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null: C:\projects\azure-webjobs-sdk-rqm4t\src\Microsoft.Azure.WebJobs.Host\Executors\FunctionExecutor.csMicrosoft.Azure.WebJobs.Host, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null: 275)
