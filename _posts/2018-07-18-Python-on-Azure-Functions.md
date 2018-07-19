@@ -4,12 +4,14 @@ title:  "Python Azure Function with Visual Studio Code"
 categories: Azure Functions Python Windows 10
 description: My experience setting up an Azure Function with Python and Visual Studio Code
 published: true
+excerpt_separator: <!--excerpt_end-->
 ---
 
 Googling led me to a couple of blog posts about Python on Azure Functions. Those led me to believe Python on Azure Functions is using Windows as OS, uses a very old Python version and is very slow.
 Even Microsoft's own [Azure Functions Supported Languages](https://docs.microsoft.com/en-us/azure/azure-functions/supported-languages) is stating Python isn't supported on runtime 2.x.
 
 Finally, I went to the [Azure Functions Python Worker GitHub page](https://github.com/Azure/azure-functions-python-worker) and read something a little more inspiring: Python 3.6, Linux and the 2.x runtime :-) I decided to give it a try on my Windows 10 machine with Visual Studio Code. Here is what I did and what my experience and result was like.
+<!--excerpt_end-->
 
 ![Azure Functions with Python]({{ "/assets/python_on_azure_functions/pythonfunctions.png" | absolute_url }})
 

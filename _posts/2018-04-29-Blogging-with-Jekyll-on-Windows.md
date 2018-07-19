@@ -3,10 +3,11 @@ layout: post
 title:  "Blogging with Jekyll on Windows"
 categories: jekyll windows
 description: A quick start for anyone who wants to start blogging with Jekyll on Windows by using Ubuntu through the Windows Subsytem for Linux and GitHub pages.
+excerpt_separator: <!--excerpt_end-->
 ---
 ![Logos]({{ "/assets/blogging_with_jekyll/logos.png" | absolute_url }})
 
-So! Time to write my first blog. Something simple first, guess I need a few posts to get into this. Judging by the amount of blogs, I’m probably not the first one starting out and probably won’t be the last so I thought I’d share what I did to set up this blog.
+So! Time to write my first blog. Something simple first, guess I need a few posts to get into this. Judging by the amount of blogs, I’m probably not the first one starting out and probably won’t be the last so I thought I’d share what I did to set up this blog.<!--excerpt_end-->
 
 First up, I did what I always do when I’m unsure how to solve a problem: Google it! Loads of articles, many about WordPress. But I want something different and even more important, I wanted something I trusted and for things to be simple.
 

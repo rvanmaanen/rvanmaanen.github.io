@@ -1,5 +1,5 @@
 # Site settings
-title: Work stuff from Reinier
+title: r-vm.com
 email: rvanmaanen@xpirit.com
 description: >-
   A blog about anything related to my work, probably mostly stuff I did or had to Google myself, hope it helps someone else!
@@ -8,7 +8,7 @@ url: "https://r-vm.com"
 twitter_username: maanenreinier
 github_username:  rvanmaanen
 linkedin_username: reiniervanmaanen
-show_excerpts: false
+show_excerpts: true
 
 google_analytics: UA-121311213-1
 

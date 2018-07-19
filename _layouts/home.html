@@ -22,7 +22,7 @@ layout: default
           </a>
         </h3>
         {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
+          {{ post.excerpt | remove: '<img src="http://localhost:4000/assets/blogging_with_jekyll/logos.png" alt="Logos" />' }}
         {%- endif -%}
       </li>
       {%- endfor -%}
