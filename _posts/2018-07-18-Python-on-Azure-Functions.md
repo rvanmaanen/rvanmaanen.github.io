@@ -1,7 +1,6 @@
 ---
 layout: post
 title:  "Python Azure Function with Visual Studio Code"
-redirect-from: /azure/functions/python/windows/10/2018/07/18/Python-on-Azure-Functions.html
 categories: Azure Functions Python Windows 10
 description: My experience setting up an Azure Function with Python and Visual Studio Code on a Windows 10 machine
 excerpt_separator: <!--excerpt_end-->

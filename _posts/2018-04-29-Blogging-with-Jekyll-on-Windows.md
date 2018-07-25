@@ -1,7 +1,6 @@
 ---
 layout: post
 title:  "Blogging with Jekyll on Windows"
-redirect-from: /jekyll/windows/2018/04/29/Blogging-with-Jekyll-on-Windows.html
 categories: jekyll windows
 description: A quick start for anyone who wants to start blogging with Jekyll on Windows by using Ubuntu through the Windows Subsytem for Linux and GitHub pages.
 excerpt_separator: <!--excerpt_end-->
