@@ -18,11 +18,11 @@ There are still some things that can be improved, but the overall experience was
 ![Azure Functions with Python]({{ "/assets/python_on_azure_functions/pythonfunctions.png" | absolute_url }})
 
 # Prerequisites
-Still the same: [Python 3.6](https://www.python.org/downloads/release/python-366/) and the [Azure Functions Core tools](https://github.com/Azure/azure-functions-core-tools). I'll be using [Visual Studio Code](https://code.visualstudio.com/download) with a bunch of extensions, which you can find on [the marketplace](https://marketplace.visualstudio.com/VSCode). The extensions used are:	
+Still the same: [Python 3.6](https://www.python.org/downloads/release/python-366/) and the [Azure Functions Core tools](https://github.com/Azure/azure-functions-core-tools). It's nice to see that the team now correctly states that Python 3.6 is required [in their tutorial](https://github.com/Azure/azure-functions-python-worker/wiki/Create-your-first-Python-function), and not 3.6 or above. Of course I did try running everything with Python 3.7, which gives a proper error message stating 3.6 is required. 
+
+The focus of this blog post will be on Azure Functions and it's Python support, almost everything written below can be done from a terminal. In a real world scenario you'll probably be using and IDE like [Visual Studio Code](https://code.visualstudio.com/download) with a bunch of extensions, which you can find on [the marketplace](https://marketplace.visualstudio.com/VSCode). The extensions most relevant for this blog post are:	
 - Python
 - Azure Functions (New: enable the setting 'enablePython' so you can use the extension to create a new Python Azure Functions project. Beware, this is still in preview!) 
-
-It's nice to see that the team now correctly states that Python 3.6 is required [in their tutorial](https://github.com/Azure/azure-functions-python-worker/wiki/Create-your-first-Python-function), and not 3.6 or above. Of course I did try running the steps below with Python 3.7, which gives a proper error message stating 3.6 is required. 
 
 You should also install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) or [Azure PowerShell](https://docs.microsoft.com/en-us/powershell/azure/install-azurerm-ps?view=azurermps-6.9.0) for deploying to Azure
 
@@ -53,15 +53,14 @@ You should also install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azu
 1. Back to the CLI. Apparently, the `func azure login` has been removed from the Azure Functions Core Tools and you should use the Azure CLI or Azure PowerShell. To log in with the Azure CLI issue the command `az login` and follow instructions.
 1. Use `az account list --output table` for an overview of your subscriptions and activate the right one with `az account set --subscription "Subscription Name"`
 1. Publish your function app: `func azure functionapp publish YourFunctionAppName`.
-1. Error 1: 'Your app is configured with Azure Files for editing from Azure Portal.'. Use the --force switch to override this warning.
-1. Error 2: 'ERROR: cannot install wrapt-1.10.11 dependency: binary dependencies without wheels are not supported.  Use the --build-native-deps option to try building the binary dependencies using a Docker container.'.
-- My first attempt at trying to resolve this error was by just removing the 'wrapt' dependency from the requirements.txt, that didn't work and would be a terrible workaround anyway because we need that dependency.
-- The second attempt was following the suggestion in the error message, use Docker to build dependencies. That seemed to work.
+- Error 1: 'Your app is configured with Azure Files for editing from Azure Portal.'. Use the `--force` switch to override this warning.
+- Error 2: 'ERROR: cannot install wrapt-1.10.11 dependency: binary dependencies without wheels are not supported.  Use the `--build-native-deps` option to try building the binary dependencies using a Docker container.'. My first attempt at trying to resolve this error was by just removing the 'wrapt' dependency from the requirements.txt, that didn't work and would be a terrible workaround anyway because we need that dependency. The second attempt was following the suggestion in the error message, use Docker to build dependencies. That seemed to work.
 ![wrapt error]({{ "/assets/python_on_azure_functions_round2/wrapt_error.png" | absolute_url }})
-1. Publishing your function app round 2: `func azure functionapp publish YourFunctionAppName --force --build-native-deps`
+1. Publishing your function app with all the switches: `func azure functionapp publish YourFunctionAppName --force --build-native-deps`
 1. After a short while, you'll see some output which states: "Deployment completed successfully." Time to try out the function!
 1. It works, as you can see in the screenshot below! ![Working Python Function in Azure]({{ "/assets/python_on_azure_functions_round2/success.png" | absolute_url }})
 
 # Last but not least, opening the project in VS Code
 1. When you open the folder in VS Code, it'll detect after a while that the project is an Azure Functions project created outside of VS Code and asks if it should initialize the project properly.
 1. Something new happens here as well. An error as soon as you click yes. It complains about not being able to activate a virtual environment or install "ptvsd", because of path troubles. Ptvsd is short for [Python Tools for Visual Studio debug server](https://github.com/Microsoft/ptvsd) which lets you debug your Python scripts in VS Code. As I'm mainly interested in the Azure Functions part at the moment and not in any VS Code issues or debugging, we'll ignore the error for now. I did try and install ptvsd manually by executing `pip install ptvsd`, which went fine.![ptvsd error when initializing]({{ "/assets/python_on_azure_functions_round2/ptvsd_error.png" | absolute_url }})
+1. As this post was mainly an update / correction for my previous blog post about Python on Azure Functions, I'll leave it at this!
