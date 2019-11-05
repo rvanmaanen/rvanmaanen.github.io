@@ -3,14 +3,16 @@ layout: page
 title: About
 permalink: /about/
 ---
-As  lead  developer/architect  at  [Xpirit](http://www.xpirit.com/reinier),  Reinier  has  experience  developing  backend  services  based  on  the  latest  technologies  and  frameworks.  
 
-His  passion  for  developing  quality  software  has  resulted  in  a  broad  range  of  experience,  from  PHP  to  Java  to  C#,  and  allows  him  to  comprehend  and  adapt  to  new  technology  and  changing  situations  quickly.
+As consultant at [Xpirit](http://www.xpirit.com/reinier), I have experience architecting and developing backend services based on the latest technologies and frameworks. I have led the large-scale redesign of a legacy platform and also helped a number of teams develop better software, not shying away from doing the "dirty" work like organizing a backlog. From idea to production, I’m always keeping the teams focused on delivering the best possible solutions, helping out customers like ABN AMRO, VolkerWessels, StackState and VismaRAET.
 
-He  recently  led  the  large-scale  redesign  of  a  legacy  platform,  keeping  the  team  focused  on  delivering  the  best  possible  solutions.
+[![Xpirit][xpirit]](http://www.xpirit.com/reinier) 
 
-In his spare time he likes sports (squash, crossfit, mountain bike), gaming (both off and online), playing guitar and drinking a good whiskey or beer with his friends.
+What drives me above all else is delivering quality software, based on the latest frameworks and technologies, together with a team of motivated people. I don't like giving up or settling for anything but the best. I'm always trying to improve: my skills, myself and the people around me.
 
-[![Xpirit][xpirit]](http://www.xpirit.com/reinier)
+In my spare time you can often find me at a CrossFit box, squashing or out in the forest mountainbiking. Other things that make me happy are playing guitar, listening to music, my friends and playing (board)games.
+
+[![Xpirit][xpirit2]](http://www.xpirit.com/reinier)
 
 [xpirit]: {{ "/assets/xpirit.png" | absolute_url }}
+[xpirit2]: {{ "/assets/reinier.jpg" | absolute_url }}
