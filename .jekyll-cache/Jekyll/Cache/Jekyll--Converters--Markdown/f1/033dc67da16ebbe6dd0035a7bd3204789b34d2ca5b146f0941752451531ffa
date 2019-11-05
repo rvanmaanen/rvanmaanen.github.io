@@ -1,0 +1,2 @@
+I"<p>Recently I helped <a href="https://rajbos.github.io/">Rob Bos</a> by creating an ARM template, that allowed him to spin up a VM in Azure and which would host a Chocolatey Server. Rob wrote <a href="https://rajbos.github.io/blog/2018/07/20/chocolatey-server-azure">a nice blog post</a> about this. As he mentions in his post, there are still some issues with the ARM template. On major thing is fixed though: The DSC step no longer fails and it’s no longer necessary to manually execute PowerShell. Here’s how I fixed it.</p>
+:ET

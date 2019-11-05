@@ -1,0 +1,83 @@
+I"{<p>Joining Xpirit has opened up a lot of cool possibilities for me, like being able to visit conferences as Build or NDC. So let’s talk about my first visit to NDC Oslo, 13-15 june 2018.<!--excerpt_end--></p>
+
+<p><img src="http://localhost:4000/assets/ndc_oslo_2018/Oslo-NDC.jpg" alt="NDC Oslo 2018" width="503px" /></p>
+
+<h1 id="fun-stuff-first">Fun stuff first!</h1>
+<p>I went to Oslo a few days early to enjoy the city. There’s really lots of things to see and do:</p>
+<ul>
+  <li>Just walk around outside of the city center. There are parks, art, nice bars which reminded me of the ruin bars in Budapest and just so much to see.</li>
+  <li>Visit Vigeland park for a nice walk. Won’t take that long so its a nice filler. Get a burger at Illegal Burgers afterward!</li>
+  <li>Get a few beers at the Vaterland bar and enjoy the awesome music (that is, if you like metal ;))</li>
+  <li>Take a trip to Bygdøy, visit a museum and then lay down at the beach.</li>
+  <li>Meet up with the locals and have them show you the hidden gems of the city.</li>
+  <li>Visit NDC if you have the chance. And make sure you attend the Pubconf as well!</li>
+</ul>
+
+<p><img src="http://localhost:4000/assets/ndc_oslo_2018/Oslo-DatteraTilHagen.jpg" alt="Dattera til Hagen" height="250px" />
+<img src="http://localhost:4000/assets/ndc_oslo_2018/Oslo-PublicBath.jpg" alt="Oslo public bath" height="250px" /></p>
+
+<h1 id="thoughts-after-ndc">Thoughts after NDC</h1>
+<p>What a great conference. Everything is well organised, lot’s of food, breaks between every session, high quality talks, nice location - make sure you check into the Radisson Blu next door. Learned a lot as well: Can’t trust anything on the internet, not the URL you’re seeing and not the certificate that’s being used.. Also we have so much to learn about the way we’re teaching programming (apparently reading code out aloud lowers the amount of syntax errors kids make - check out Felienne’s talk about this) and ofcourse all the coding stuff :)</p>
+
+<p>Was impressed by AWS Lambda and the NuGet package they created to bridge the gap between their API Gateway and ASP.NET Core, which enables you to easily deploy your webapp to serverless environment. Ofcourse this has some drawbacks, as ASP.NET isn’t as optimized as a native serverless solution and you end up paying for this. However, this can be negated a bit by applying some of the practices I learned in another session.</p>
+
+<p>Most people, including me, just end up adding MVC support in a webapp with a statement as <code class="highlighter-rouge">services.AddMvc();</code>. There is an <code class="highlighter-rouge">.AddMvcCore()</code> method as well which gets called within the AddMvc method. The AddMvcCore method has nothing to do with the .NET Core framework itself but just registers the basic MVC stuff so you can choose if and what other things you want support for. You can even take this further and just take the routing part of ASP.NET. Watch Filip’s session about adapting the ASP.NET framework on how to do this and some information about the amount of performance gain. Steve Gordon also has <a href="https://www.stevejgordon.co.uk/aspnetcore-anatomy-deep-dive-index">a nice blog about this</a>.</p>
+
+<p><img src="http://localhost:4000/assets/ndc_oslo_2018/awslamda.png" alt="AWS Lamda" height="150px" />
+<img src="http://localhost:4000/assets/ndc_oslo_2018/azurefunctions.png" alt="Azure Functions" height="150px" /></p>
+
+<p>Had a talk about this AWS-ASP.NET bridge with Jeff Hollan and asked if a similar feature was coming to Azure Functions. At the moment this technically isn’t possible, but at the end of the year it would. However, he wasn’t sure if it’s a feature they’d adopt because of it’s drawbacks. They are keeping an eye on it though, because it does have it’s usecases, especially when bringing down the footprint of the ASP.NET framework by just using what you need.</p>
+
+<h1 id="check-out-these-videos">Check out these videos</h1>
+<p>Not going into every session listed below, but a few that stood out in my opinion. You should really watch the video’s. Added links for the ones I could find already, mostly from earlier conferences. I’ll link the rest when they’re available:</p>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=Txt90iL-XzM">I’m pwned. You’re pwned. We’re all pwnd.</a></li>
+  <li>Containers and Serverless with AWS</li>
+  <li>The enterprise DevOps challenge</li>
+  <li>Adapting ASP.NET Core MVC to your needs</li>
+  <li>Finding your service boundaries - a practical guide</li>
+  <li><a href="https://www.youtube.com/watch?v=UJxXgugvXmE">How to teach programming and other things?</a> -&gt; Felienne actually switched to a new subject at the last moment. I’ll link it when it’s available.</li>
+  <li><a href="https://www.youtube.com/watch?v=Nn0aYf2kn1w">Refactoring to functional style</a></li>
+  <li>Do’s and don’ts for serverless and Azure Functions</li>
+</ul>
+
+<h1 id="some-scary-stuff">Some scary stuff</h1>
+<p>Met some great people too - just talk to them, apparently they’re just people too! ;)</p>
+<ul>
+  <li><a href="https://adamcogan.com/">Adam Cogan</a> (Thanks for letting me help you prepare your talk and for the feedback I got from you)</li>
+  <li><a href="https://www.henkboelman.com/">Henk Boelman</a></li>
+  <li><a href="https://github.com/iancooper">Ian Cooper</a></li>
+  <li><a href="https://hollan.io/">Jeff Hollan</a></li>
+  <li><a href="https://marcofolio.net/">Marco Kuiper</a></li>
+  <li><a href="https://www.dotnetrocks.com/">Richard Campbell</a></li>
+  <li><a href="https://www.troyhunt.com/">Troy Hunt</a></li>
+</ul>
+
+<h1 id="finally">Finally</h1>
+<p>A list of all the sessions I attended, just to give you a sense of what you might have missed ;) For now you can still see the complete agenda at <a href="https://ndcoslo.com/agenda/">the NDC website</a>. Just be sure to be there next year!</p>
+
+<ul>
+  <li>Keynote: A penny for every object (Mads Torgersen).</li>
+  <li>I’m pwned. You’re pwned. We’re all pwnd. (Troy Hunt)</li>
+  <li>Implementing the Clean Architecture in .NET Core (Ian Cooper)</li>
+  <li>Containers and Serverless with AWS (Norm Johanson)</li>
+  <li>Give it a REST - Tips for designing and consuming public API’s (Liam Westley)</li>
+  <li>The state of C# - What have I missed? (Filip Ekberg)</li>
+  <li>An opinionated approach to ASP.NET Core (Scott Allen)</li>
+  <li>From SQL to Azure Cosmos DB (Jimmy Bogard)</li>
+  <li>The enterprise DevOps challenge (Roy Osherove)</li>
+  <li>Domain-Driven Design: Hidden lessons from the big blue book (Nick Tune)</li>
+  <li>Planned on going to a session here but really needed a break ;)</li>
+  <li>Adapting ASP.NET Core MVC to your needs (Filip W)</li>
+  <li>Finding your service boundaries - a practical guide (Adam Ralph)</li>
+  <li>How to teach programming and other things? (Felienne)</li>
+  <li>Refactoring to functional style (Venkat Subramaniam)</li>
+  <li>The Hello World Show live (multiple speakers)</li>
+  <li>The history of .NET (Richard Campbell)</li>
+  <li>Kubernetes for .NET developers (Shahid Iqbal)</li>
+  <li>Stop reinventing the wheel with Istio (Mete Atamel)</li>
+  <li>Do’s and dont’s for serverless and Azure Functions (Jeff Hollan)</li>
+</ul>
+
+:ET

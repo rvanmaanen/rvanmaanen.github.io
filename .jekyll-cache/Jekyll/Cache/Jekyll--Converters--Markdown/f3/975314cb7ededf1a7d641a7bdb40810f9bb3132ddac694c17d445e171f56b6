@@ -1,0 +1,79 @@
+I"<p><img src="http://localhost:4000/assets/blogging_with_jekyll/logos.png" alt="Logos" /></p>
+
+<p>So! Time to write my first blog. Something simple first, guess I need a few posts to get into this. Judging by the amount of blogs, I’m probably not the first one starting out and probably won’t be the last so I thought I’d share what I did to set up this blog.<!--excerpt_end--></p>
+
+<p>First up, I did what I always do when I’m unsure how to solve a problem: Google it! Loads of articles, many about WordPress. But I want something different and even more important, I wanted something I trusted and for things to be simple.</p>
+
+<p>What I ended up choosing, was a <a href="https://jekyllrb.com/">Jekyll</a> blog on <a href="https://github.com/">GitHub</a>: well known to us developers, pretty easy to set up as you’ll see below, no costs, near any GIT repositories I might refer to and last bit not least, a bit of nerding involved.
+For those who don’t know, Jekyll is a static site generator and the integration with GitHub is great.</p>
+
+<p>Mostly I followed instructions and a few guides on the internet, which I’ll refer to in the end, but here’s the summary. Btw, I assume you have knowledge of GIT and how to use it, if you don’t have a look at one of these pages:</p>
+<ul>
+  <li><a href="https://play.instruqt.com/topics/git">Instruqt</a></li>
+  <li><a href="http://gitreal.codeschool.com/">Codeschool</a></li>
+  <li><a href="https://try.github.io/levels/1/challenges/1">Github</a></li>
+</ul>
+
+<p><br /></p>
+<h1 id="step-by-step-instructions">Step by step instructions:</h1>
+<ol>
+  <li>
+    <p>We’ll start by <a href="https://github.com/join">creating a GitHub account</a>. Remember the username, you’ll need it in the next step.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/new">Create a Git repository</a> named “yourusername.github.io”. Afterwards, if you head to <code class="highlighter-rouge">https://github.com/username/username.github.io/settings</code> and scroll down to “GitHub pages” it should look like this: <img src="http://localhost:4000/assets/blogging_with_jekyll/githubpages.png" alt="GitHub pages" />. <br />You can actually stop here and just use GitHub Pages by pushing HTML files to your GIT repository. As I wanted something more fancy, I continued.</p>
+  </li>
+  <li>Next we’ll setup Jekyll locally. Here I just dove in headfirst, and started fixing the requirements listed by Jekyll. As I was about to Google how to install GCC and Make I realized I was probably doing something wrong and things should be easier. And guess what, on my Windows 10 with the Anniversary Update, things can be a lot easier by using a new feature called WSL, or Windows Subsystem for Linux. Enabling this is pretty straightforward:
+    <ol>
+      <li>Open your start menu.</li>
+      <li>Type in OptionalFeatures.exe and press enter.</li>
+      <li>Mark the checkbox next to “Windows Subsystem for Linux” and press ok.</li>
+      <li>Finish the installation and reboot when asked.<br /><br /></li>
+    </ol>
+  </li>
+  <li>
+    <p>One more thing before actually starting with Jekyll is installing <a href="https://www.microsoft.com/store/productId/9NBLGGH4MSV6">Ubuntu from the Windows Store</a>. Afterwards, you have Bash on Windows! Pretty awesome :)
+<img src="http://localhost:4000/assets/blogging_with_jekyll/ubuntuonwindows.png" alt="Ubuntu" /></p>
+  </li>
+  <li>
+    <p>As I just followed the guide from Jekyll at this point (which just states that you must have Bash on Ubuntu on Windows enabled and doesn’t explain how – hence steps 3 and 4), <a href="https://jekyllrb.com/docs/windows/">here it is</a>. As you’ll see, Windows isn’t officially supported, but it works fine on my machine ;)</p>
+  </li>
+  <li>
+    <p>Next we’ll clone the GIT repo we created earlier: <code class="highlighter-rouge">git clone https://github.com/rvanmaanen/rvanmaanen.github.io.git</code> in my case. I did this in the directory <code class="highlighter-rouge">/mnt/c/Projects</code>, so I can access the files from Windows as well without using Ubuntu. All your drives are mounted here by default, so this directory is the same as <code class="highlighter-rouge">C:\Projects</code>. GIT is available by default in Ubuntu, so no need to install anything.</p>
+  </li>
+  <li>
+    <p>From the directory containing your GIT repo (again, that would be <code class="highlighter-rouge">/mnt/c/Projects/rvanmaanen.github.io</code> in my case), execute the command <code class="highlighter-rouge">jekyll new .</code>, which creates a new blog in your current directory.</p>
+  </li>
+  <li>
+    <p>Staying in the same directory, run the command <code class="highlighter-rouge">jekyll serve</code> to spin up a temporary webserver so you can <a href="http://localhost:4000/">view your blog locally</a></p>
+  </li>
+  <li>
+    <p>If everything is working as expected, you can start tracking all the files with GIT, commit them and then push your changes to your remote, before making any more changes. After a few minutes you should see your blog live at <code class="highlighter-rouge">https://username.github.io</code>.</p>
+  </li>
+  <li>
+    <p>Have a look at the _config.yml for settings for your blog, like any usernames for your social media, a description, the title and more. I wouldn’t recommend changing the theme at this time, more on that later.</p>
+  </li>
+  <li>
+    <p>Startup the local webserver again to view your blog, so you can see what your doing in the next steps. Remove the dummy blogpost in the _posts directory and create a new file following the same naming convention (year-month-day-title.md): <code class="highlighter-rouge">2018-04-29-Blogging-with-Jekyll-on-Windows.md</code>. If you refresh your blog you should see the changes immediately. I use <a href="https://notepad-plus-plus.org/">Notepad++</a> for this.</p>
+  </li>
+  <li>
+    <p>To provide a title and give your post a nice layout, place the following in the top of your markdown file: <br />
+---<br />
+layout: post<br />
+title:  “Blogging with Jekyll on Windows”<br />
+categories: jekyll windows<br />
+---<br /></p>
+  </li>
+  <li>Start writing, use <code class="highlighter-rouge">jekyll serve</code> often to see the results and push your changes to GitHub when you’re ready. These are just the basics, there is <a href="https://guides.github.com/features/mastering-markdown/">a lot you can do with markdown files</a> and <a href="https://jekyllrb.com/docs/">Jekyll</a>.</li>
+</ol>
+
+<p><br /></p>
+<h1 id="a-couple-other-websites-i-used">A couple other websites I used:</h1>
+<ul>
+  <li><a href="https://pages.github.com/">GitHub pages</a></li>
+  <li><a href="https://help.github.com/articles/viewing-jekyll-build-error-messages/">Viewing Jekyll build error messages</a></li>
+  <li><a href="https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/">Using Jekyll as a static site generator with GitHub pages</a></li>
+  <li><a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown cheatsheet</a></li>
+  <li><a href="https://jekyllrb.com/docs/posts/">Jekyll posts documentation</a></li>
+</ul>
+:ET

@@ -1,0 +1,44 @@
+I"e<p>Recently I helped <a href="https://rajbos.github.io/">Rob Bos</a> by creating an ARM template, that allowed him to spin up a VM in Azure and which would host a Chocolatey Server. Rob wrote <a href="https://rajbos.github.io/blog/2018/07/20/chocolatey-server-azure">a nice blog post</a> about this. As he mentions in his post, there are still some issues with the ARM template. On major thing is fixed though: The DSC step no longer fails and it’s no longer necessary to manually execute PowerShell. Here’s how I fixed it.<!--excerpt_end--></p>
+
+<p style="text-align: center;"><img src="http://localhost:4000/assets/multiple_vm_extensions/msazure.png" alt="Microsoft Azure" /></p>
+
+<h1 id="how-to-make-powershelldscextension-and-customscriptextension-depend-on-each-other-in-arm">How to make PowershellDscExtension and CustomScriptExtension depend on each other in ARM</h1>
+<ol>
+  <li>Add the VM and both extensions to your ARM template and give them proper names.</li>
+  <li>Create the dependsOn element at the CustomScriptExtension and follow the next steps to determine what to fill in here.</li>
+  <li>Take the type and name of the VM your extensions will run on, in the example below that would be: “Microsoft.Compute/virtualMachines/ChocolateyServer”</li>
+  <li>Add /extensions and then /name-of-the-extension-you-depend-on, so that would be: “Microsoft.Compute/virtualMachines/ChocolateyServer/extensions/NeverGonna”</li>
+  <li>Enjoy your dependency! If you need any more help, have a look at the example below or reach out!</li>
+</ol>
+
+<p>So the key thing is: you’re not depending on something by just it’s name, you’re depending on the (end of the) resource identifier. An easy way to find this identifier is by going to the <a href="https://resources.azure.com">Azure resource explorer</a>, which gives you a nice view of all the resources in your subscriptions. Just add the DSC first, then check out the identifier and then add the script.</p>
+
+<p>Something to watch out for is that my extensions were actually named: “ChocServ/PowershellDscExtension” and “ChocServ/CustomScriptExtension”. However, only the latter part was used in my resource identifiers. So in my dependsOn I needed to leave out the “ChocServ/” part. Again, have a look at the <a href="https://resources.azure.com">Azure resource explorer</a> to find out the exact identifier.</p>
+
+<h1 id="it-should-look-something-like-this">It should look something like this</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": ChocolateyServer",
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "NeverGonna",
+      "dependsOn": [
+        "Microsoft.Compute/virtualMachines/ChocolateyServer"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "GiveYouUp",
+      "dependsOn": [
+        "Microsoft.Compute/virtualMachines/ChocolateyServer/extensions/NeverGonna"
+      ]
+    }
+</code></pre></div></div>
+
+<h1 id="nice-so-now-i-can-have-multiple-scripts-depending-on-each-other">Nice! So now I can have multiple scripts depending on each other?</h1>
+<p>Nope. One thing I learned while fixing my ARM template, is that you can’t have multiple PowershellDscExtension or multiple CustomScriptExtension in one ARM template. Not sure why. You can have a single one of both though. So if you came here looking how to execute multiple PowerShell scripts, you’re looking in the wrong place. There are ways to do that though and <a href="https://stackoverflow.com/questions/36372049/how-to-run-multiple-powershell-scripts-at-the-same-time">here’s a starting point</a>.</p>
+
+<h1 id="remaining-issues-in-the-chocolatey-server-arm-template">Remaining issues in the Chocolatey Server ARM template</h1>
+<p>There are some small remaining issues with the ARM template, <a href="https://github.com/rvanmaanen/arm.chocolateyserver/issues">which you can see here</a>. Feel free to submit a pull request or add new issues if you have any. I’ll try and fix them. You can also find the ChocolateyServer ARM template there.</p>
+:ET
