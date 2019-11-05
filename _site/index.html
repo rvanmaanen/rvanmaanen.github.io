@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>r-vm.com | A blog about anything related to my work, mostly stuff I did or had to Google myself, hope it helps someone else!</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="r-vm.com" />
+<meta name="author" content="Reinier van Maanen" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A blog about anything related to my work, mostly stuff I did or had to Google myself, hope it helps someone else!" />
+<meta property="og:description" content="A blog about anything related to my work, mostly stuff I did or had to Google myself, hope it helps someone else!" />
+<link rel="canonical" href="https://r-vm.com/" />
+<meta property="og:url" content="https://r-vm.com/" />
+<meta property="og:site_name" content="r-vm.com" />
+<script type="application/ld+json">
+{"name":"r-vm.com","description":"A blog about anything related to my work, mostly stuff I did or had to Google myself, hope it helps someone else!","author":{"@type":"Person","name":"Reinier van Maanen"},"@type":"WebSite","url":"https://r-vm.com/","headline":"r-vm.com","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://r-vm.com/feed.xml" title="r-vm.com" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">r-vm.com</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="home">
+<h2 class="post-list-heading">Posts</h2>
+    <ul class="post-list"><li><span class="post-meta">Mar 22, 2019</span>
+        <h3>
+          <a class="post-link" href="/netcore-with-vscode-should-have-unittests">
+            .NETCore.With(“vsCode”).Should().Have(“Unit Tests”)
+          </a>
+        </h3><p>My colleagues and I share a lot of knowledge, from helping out customers, to writing <a href="https://xpirit.com/inspiration/#blogs">blogs</a>), speaking at conferences and last but not least: we have our own magazine. If you haven’t received a printed copy somewhere, you can always <a href="https://xpirit.com/inspiration/#downloads">download the PDF here</a>.</p>
+
+<p>Some of the articles are also available directly <a href="https://xpirit.com/articles/">at this page</a> and as this is my own blog ;) I’ll highlight one of the articles I wrote together with our Azure Functions expert <a href="https://blog.marcduiker.nl/">Marc Duiker</a> in magazine number 7: <strong><a href="https://xpirit.com/netcore-withvscode-should-haveunit-tests/">.NETCore.With(“vsCode”).Should().Have(“Unit Tests”)</a></strong>.</p>
+
+</li><li><span class="post-meta">Sep 29, 2018</span>
+        <h3>
+          <a class="post-link" href="/python-on-azure-functions-round-2">
+            Python on Azure Functions - Round 2
+          </a>
+        </h3><p>A while ago a customer really wanted a solution based on Python. We already decided on Azure Functions, but Python support at that time was still in preview. I decided to evaluate exactly how preview it was. The result wasn’t really pretty: I didn’t get things to work in Azure, we gave up and told the customer we really needed to stick with C# for the time being. You can read all about it <a href="/python-on-azure-functions">in this blog post</a>.</p>
+
+<p>Python support is still in preview, but on the one hand I know that the team has been working hard to improve things and on the other hand, the Azure Functions v2 runtime <a href="https://azure.microsoft.com/en-us/blog/introducing-azure-functions-2-0/">has reached the “general availability” status</a> which should mean that it’s production ready. So time for round 2, let’s see how things turn out this time.</p>
+
+</li><li><span class="post-meta">Aug 2, 2018</span>
+        <h3>
+          <a class="post-link" href="/depend-on-multiple-arm-script-extensions">
+            How to make two VM extensions depend on each other in ARM
+          </a>
+        </h3><p>Recently I helped <a href="https://rajbos.github.io/">Rob Bos</a> by creating an ARM template, that allowed him to spin up a VM in Azure and which would host a Chocolatey Server. Rob wrote <a href="https://rajbos.github.io/blog/2018/07/20/chocolatey-server-azure">a nice blog post</a> about this. As he mentions in his post, there are still some issues with the ARM template. On major thing is fixed though: The DSC step no longer fails and it’s no longer necessary to manually execute PowerShell. Here’s how I fixed it.</p>
+
+</li><li><span class="post-meta">Jul 18, 2018</span>
+        <h3>
+          <a class="post-link" href="/python-on-azure-functions">
+            Python Azure Function with Visual Studio Code
+          </a>
+        </h3><p><em>Update: Others, like Jeff Hollan, have been able to get am Azure Function working with Python. He did have to change something in the requirements.txt as well, same as I mentioned here. Have a look at <a href="https://github.com/Azure/azure-functions-python-worker/issues/164">this GitHub issue</a>. I’ll give it another shot myself soon. Update: <a href="/python-on-azure-functions-round-2">Read about my second attempt here</a></em></p>
+
+<p>Googling led me to a couple of blog posts about Python on Azure Functions. Those led me to believe Python on Azure Functions is using Windows as OS, uses a very old Python version and is very slow.
+Even Microsoft’s own <a href="https://docs.microsoft.com/en-us/azure/azure-functions/supported-languages">Azure Functions Supported Languages</a> is stating Python isn’t supported on runtime 2.x.</p>
+
+<p>Finally, I went to the <a href="https://github.com/Azure/azure-functions-python-worker">Azure Functions Python Worker GitHub page</a> and read something a little more inspiring: Python 3.6, Linux and the 2.x runtime :-) I decided to give it a try on my Windows 10 machine with Visual Studio Code. Here is what I did and what my experience and result was like.</p>
+
+</li><li><span class="post-meta">Jun 24, 2018</span>
+        <h3>
+          <a class="post-link" href="/ndc-oslo-2018">
+            NDC Oslo 2018
+          </a>
+        </h3><p>Joining Xpirit has opened up a lot of cool possibilities for me, like being able to visit conferences as Build or NDC. So let’s talk about my first visit to NDC Oslo, 13-15 june 2018.</p>
+
+</li><li><span class="post-meta">Apr 29, 2018</span>
+        <h3>
+          <a class="post-link" href="/blogging-with-jekyll-on-windows">
+            Blogging with Jekyll on Windows
+          </a>
+        </h3><p></p>
+
+<p>So! Time to write my first blog. Something simple first, guess I need a few posts to get into this. Judging by the amount of blogs, I’m probably not the first one starting out and probably won’t be the last so I thought I’d share what I did to set up this blog.</p>
+
+</li></ul></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            Reinier van Maanen
+            </li><li><a class="u-email" href="mailto:rvanmaanen@xpirit.com">rvanmaanen@xpirit.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-3"><ul class="social-media-list"><li><a href="https://github.com/rvanmaanen"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">rvanmaanen</span></a></li><li><a href="https://www.linkedin.com/in/reiniervanmaanen"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">reiniervanmaanen</span></a></li><li><a href="https://www.twitter.com/maanenreinier"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">maanenreinier</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-2">
+        <p>A blog about anything related to my work, mostly stuff I did or had to Google myself, hope it helps someone else!</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

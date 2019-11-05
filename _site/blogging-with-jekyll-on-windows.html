@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Blogging with Jekyll on Windows | r-vm.com</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Blogging with Jekyll on Windows" />
+<meta name="author" content="Reinier van Maanen" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A quick start for anyone who wants to start blogging with Jekyll on Windows by using Ubuntu through the Windows Subsytem for Linux and GitHub pages." />
+<meta property="og:description" content="A quick start for anyone who wants to start blogging with Jekyll on Windows by using Ubuntu through the Windows Subsytem for Linux and GitHub pages." />
+<link rel="canonical" href="https://r-vm.com/blogging-with-jekyll-on-windows" />
+<meta property="og:url" content="https://r-vm.com/blogging-with-jekyll-on-windows" />
+<meta property="og:site_name" content="r-vm.com" />
+<meta property="og:image" content="https://r-vm.com/assets/blogging_with_jekyll/logos.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-04-29T00:00:00+02:00" />
+<script type="application/ld+json">
+{"description":"A quick start for anyone who wants to start blogging with Jekyll on Windows by using Ubuntu through the Windows Subsytem for Linux and GitHub pages.","author":{"@type":"Person","name":"Reinier van Maanen"},"@type":"BlogPosting","url":"https://r-vm.com/blogging-with-jekyll-on-windows","image":"https://r-vm.com/assets/blogging_with_jekyll/logos.png","headline":"Blogging with Jekyll on Windows","dateModified":"2018-04-29T00:00:00+02:00","datePublished":"2018-04-29T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://r-vm.com/blogging-with-jekyll-on-windows"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://r-vm.com/feed.xml" title="r-vm.com" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">r-vm.com</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Blogging with Jekyll on Windows</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-04-29T00:00:00+02:00" itemprop="datePublished">Apr 29, 2018
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><img src="https://r-vm.com/assets/blogging_with_jekyll/logos.png" alt="Logos" /></p>
+
+<p>So! Time to write my first blog. Something simple first, guess I need a few posts to get into this. Judging by the amount of blogs, I’m probably not the first one starting out and probably won’t be the last so I thought I’d share what I did to set up this blog.<!--excerpt_end--></p>
+
+<p>First up, I did what I always do when I’m unsure how to solve a problem: Google it! Loads of articles, many about WordPress. But I want something different and even more important, I wanted something I trusted and for things to be simple.</p>
+
+<p>What I ended up choosing, was a <a href="https://jekyllrb.com/">Jekyll</a> blog on <a href="https://github.com/">GitHub</a>: well known to us developers, pretty easy to set up as you’ll see below, no costs, near any GIT repositories I might refer to and last bit not least, a bit of nerding involved.
+For those who don’t know, Jekyll is a static site generator and the integration with GitHub is great.</p>
+
+<p>Mostly I followed instructions and a few guides on the internet, which I’ll refer to in the end, but here’s the summary. Btw, I assume you have knowledge of GIT and how to use it, if you don’t have a look at one of these pages:</p>
+<ul>
+  <li><a href="https://play.instruqt.com/topics/git">Instruqt</a></li>
+  <li><a href="http://gitreal.codeschool.com/">Codeschool</a></li>
+  <li><a href="https://try.github.io/levels/1/challenges/1">Github</a></li>
+</ul>
+
+<p><br /></p>
+<h1 id="step-by-step-instructions">Step by step instructions:</h1>
+<ol>
+  <li>
+    <p>We’ll start by <a href="https://github.com/join">creating a GitHub account</a>. Remember the username, you’ll need it in the next step.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/new">Create a Git repository</a> named “yourusername.github.io”. Afterwards, if you head to <code class="language-plaintext highlighter-rouge">https://github.com/username/username.github.io/settings</code> and scroll down to “GitHub pages” it should look like this: <img src="https://r-vm.com/assets/blogging_with_jekyll/githubpages.png" alt="GitHub pages" />. <br />You can actually stop here and just use GitHub Pages by pushing HTML files to your GIT repository. As I wanted something more fancy, I continued.</p>
+  </li>
+  <li>Next we’ll setup Jekyll locally. Here I just dove in headfirst, and started fixing the requirements listed by Jekyll. As I was about to Google how to install GCC and Make I realized I was probably doing something wrong and things should be easier. And guess what, on my Windows 10 with the Anniversary Update, things can be a lot easier by using a new feature called WSL, or Windows Subsystem for Linux. Enabling this is pretty straightforward:
+    <ol>
+      <li>Open your start menu.</li>
+      <li>Type in OptionalFeatures.exe and press enter.</li>
+      <li>Mark the checkbox next to “Windows Subsystem for Linux” and press ok.</li>
+      <li>Finish the installation and reboot when asked.<br /><br /></li>
+    </ol>
+  </li>
+  <li>
+    <p>One more thing before actually starting with Jekyll is installing <a href="https://www.microsoft.com/store/productId/9NBLGGH4MSV6">Ubuntu from the Windows Store</a>. Afterwards, you have Bash on Windows! Pretty awesome :)
+<img src="https://r-vm.com/assets/blogging_with_jekyll/ubuntuonwindows.png" alt="Ubuntu" /></p>
+  </li>
+  <li>
+    <p>As I just followed the guide from Jekyll at this point (which just states that you must have Bash on Ubuntu on Windows enabled and doesn’t explain how – hence steps 3 and 4), <a href="https://jekyllrb.com/docs/windows/">here it is</a>. As you’ll see, Windows isn’t officially supported, but it works fine on my machine ;)</p>
+  </li>
+  <li>
+    <p>Next we’ll clone the GIT repo we created earlier: <code class="language-plaintext highlighter-rouge">git clone https://github.com/rvanmaanen/rvanmaanen.github.io.git</code> in my case. I did this in the directory <code class="language-plaintext highlighter-rouge">/mnt/c/Projects</code>, so I can access the files from Windows as well without using Ubuntu. All your drives are mounted here by default, so this directory is the same as <code class="language-plaintext highlighter-rouge">C:\Projects</code>. GIT is available by default in Ubuntu, so no need to install anything.</p>
+  </li>
+  <li>
+    <p>From the directory containing your GIT repo (again, that would be <code class="language-plaintext highlighter-rouge">/mnt/c/Projects/rvanmaanen.github.io</code> in my case), execute the command <code class="language-plaintext highlighter-rouge">jekyll new .</code>, which creates a new blog in your current directory.</p>
+  </li>
+  <li>
+    <p>Staying in the same directory, run the command <code class="language-plaintext highlighter-rouge">jekyll serve</code> to spin up a temporary webserver so you can <a href="http://localhost:4000/">view your blog locally</a></p>
+  </li>
+  <li>
+    <p>If everything is working as expected, you can start tracking all the files with GIT, commit them and then push your changes to your remote, before making any more changes. After a few minutes you should see your blog live at <code class="language-plaintext highlighter-rouge">https://username.github.io</code>.</p>
+  </li>
+  <li>
+    <p>Have a look at the _config.yml for settings for your blog, like any usernames for your social media, a description, the title and more. I wouldn’t recommend changing the theme at this time, more on that later.</p>
+  </li>
+  <li>
+    <p>Startup the local webserver again to view your blog, so you can see what your doing in the next steps. Remove the dummy blogpost in the _posts directory and create a new file following the same naming convention (year-month-day-title.md): <code class="language-plaintext highlighter-rouge">2018-04-29-Blogging-with-Jekyll-on-Windows.md</code>. If you refresh your blog you should see the changes immediately. I use <a href="https://notepad-plus-plus.org/">Notepad++</a> for this.</p>
+  </li>
+  <li>
+    <p>To provide a title and give your post a nice layout, place the following in the top of your markdown file: <br />
+---<br />
+layout: post<br />
+title:  “Blogging with Jekyll on Windows”<br />
+categories: jekyll windows<br />
+---<br /></p>
+  </li>
+  <li>Start writing, use <code class="language-plaintext highlighter-rouge">jekyll serve</code> often to see the results and push your changes to GitHub when you’re ready. These are just the basics, there is <a href="https://guides.github.com/features/mastering-markdown/">a lot you can do with markdown files</a> and <a href="https://jekyllrb.com/docs/">Jekyll</a>.</li>
+</ol>
+
+<p><br /></p>
+<h1 id="a-couple-other-websites-i-used">A couple other websites I used:</h1>
+<ul>
+  <li><a href="https://pages.github.com/">GitHub pages</a></li>
+  <li><a href="https://help.github.com/articles/viewing-jekyll-build-error-messages/">Viewing Jekyll build error messages</a></li>
+  <li><a href="https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/">Using Jekyll as a static site generator with GitHub pages</a></li>
+  <li><a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown cheatsheet</a></li>
+  <li><a href="https://jekyllrb.com/docs/posts/">Jekyll posts documentation</a></li>
+</ul>
+
+  </div><a class="u-url" href="/blogging-with-jekyll-on-windows" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            Reinier van Maanen
+            </li><li><a class="u-email" href="mailto:rvanmaanen@xpirit.com">rvanmaanen@xpirit.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-3"><ul class="social-media-list"><li><a href="https://github.com/rvanmaanen"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">rvanmaanen</span></a></li><li><a href="https://www.linkedin.com/in/reiniervanmaanen"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">reiniervanmaanen</span></a></li><li><a href="https://www.twitter.com/maanenreinier"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">maanenreinier</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-2">
+        <p>A blog about anything related to my work, mostly stuff I did or had to Google myself, hope it helps someone else!</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
