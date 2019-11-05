@@ -1,4 +1,0 @@
-I"z<p>A while ago a customer really wanted a solution based on Python. We already decided on Azure Functions, but Python support at that time was still in preview. I decided to evaluate exactly how preview it was. The result wasn’t really pretty: I didn’t get things to work in Azure, we gave up and told the customer we really needed to stick with C# for the time being. You can read all about it <a href="/python-on-azure-functions">in this blog post</a>.</p>
-
-<p>Python support is still in preview, but on the one hand I know that the team has been working hard to improve things and on the other hand, the Azure Functions v2 runtime <a href="https://azure.microsoft.com/en-us/blog/introducing-azure-functions-2-0/">has reached the “general availability” status</a> which should mean that it’s production ready. So time for round 2, let’s see how things turn out this time.</p>
-:ET

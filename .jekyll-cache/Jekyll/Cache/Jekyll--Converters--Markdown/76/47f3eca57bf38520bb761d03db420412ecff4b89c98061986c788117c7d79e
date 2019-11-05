@@ -1,7 +1,0 @@
-I"�<p><em>Update: Others, like Jeff Hollan, have been able to get am Azure Function working with Python. He did have to change something in the requirements.txt as well, same as I mentioned here. Have a look at <a href="https://github.com/Azure/azure-functions-python-worker/issues/164">this GitHub issue</a>. I’ll give it another shot myself soon. Update: <a href="/python-on-azure-functions-round-2">Read about my second attempt here</a></em></p>
-
-<p>Googling led me to a couple of blog posts about Python on Azure Functions. Those led me to believe Python on Azure Functions is using Windows as OS, uses a very old Python version and is very slow.
-Even Microsoft’s own <a href="https://docs.microsoft.com/en-us/azure/azure-functions/supported-languages">Azure Functions Supported Languages</a> is stating Python isn’t supported on runtime 2.x.</p>
-
-<p>Finally, I went to the <a href="https://github.com/Azure/azure-functions-python-worker">Azure Functions Python Worker GitHub page</a> and read something a little more inspiring: Python 3.6, Linux and the 2.x runtime :-) I decided to give it a try on my Windows 10 machine with Visual Studio Code. Here is what I did and what my experience and result was like.</p>
-:ET
