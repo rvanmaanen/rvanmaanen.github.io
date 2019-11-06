@@ -15,7 +15,8 @@ or [this one](https://abelsquidhead.com/index.php/2019/04/13/getting-code-covera
 
 _Disclaimer:_ All of this was written at 30/9/2019, possibly things changed since then. Use this as a quickstart/reference but do look if you can find more actual / easier solutions. Also, all of this has been done with the classic pipelines in Azure Devops. Using pipelines as code shouldn't change much and if you start from scratch I recommend you go for the YAML solution, keep the definition next to your sourcecode and treat it as such.
 
-# 1. Basic setup
+## 1. Basic setup
+
 All tasks mentioned here and in the rest of this post are put in a taskgroup for easy re-use, because of customer preference. You can decide for yourself if you like this or not. The four basic tasks are using the dotnet tool to build, test and publish the code:
 
 * dotnet restore
@@ -39,7 +40,8 @@ Most of these commands also execute the previous steps by default, so a small op
 
 No-build and no-restore do what you expect and although it won't actually restore or build multiple times, these parameters do save a few seconds every build. Additionally, all tasks have had the parameter `--configuration $(Configuration)` added. Configuration is also a parameter to the taskgroup which allows you to specify Debug or Release mode.
 
-# 2. Getting test results from your code
+## 2. Getting test results from your code
+
 This is the simplest change to the basic setup:
 
 * dotnet test got 2 additional parameters: `--logger trx --results-directory $(TestOutputDirectory)`
@@ -53,7 +55,8 @@ At this point things should look like the image below. Small remark for those wo
 
 ![Test Results]({{ "/assets/code_coverage/testresults.png" | absolute_url }})
 
-# 3. Getting code coverage from your code
+## 3. Getting code coverage from your code
+
 A number of things have been done to get code coverage working:
 
 * NuGet package coverlet.collector was added to all test projects. If you create a new xUnit .NET Core testproject with VS you actually get this package pre-installed by the template.
@@ -105,7 +108,8 @@ The HTML report will be visible in the build after the Publish Code Coverage tas
 
 PS: If you run into errors when getting code coverage with coverlet, make sure you have the correct version of the .NET Core SDK installed on the build server. You can do that from the taskgroup by adding the task "Use .NET Core".
 
-# 4. Getting things visible in SonarQube
+## 4. Getting things visible in SonarQube
+
 Four new tasks have to be added to the build. They're all provided by SonarQube. Somewhere _before_ the build/test steps add:
 
 * Prepare Analysis Configuration and name it "Prepare analysis on SonarQube for master branch". Supply the mandatory parameters and add the following:
@@ -155,7 +159,8 @@ Screenshot of SonarQube showing one of the many ways to visualize coverage:
 
 ![SonarQube]({{ "/assets/code_coverage/sonarqube.png" | absolute_url }})
 
-# 5. Small optimization for PR build duration
+## 5. Small optimization for PR build duration
+
 A few of the tasks have to do with publishing the web project, copying files to the artifact staging directory and publishing build artifacts. These can be disabled for faster Pull Request builds by going into the task and opening up the section 'Control Options'. Here you can set the task to run under custom conditions and you can enter something like `and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))`. This will make sure this tasks gets only executed when these 2 things are true:
 
 * All previous build steps have succeeded
@@ -171,12 +176,14 @@ In the taskgroup the following tasks are skipped when doing a PR build:
 
 ![Skipping tasks]({{ "/assets/code_coverage/skippingtasks.png" | absolute_url }})
 
-# 6. Scanning for outdated/vulnerable NuGet packages
+## 6. Scanning for outdated/vulnerable NuGet packages
+
 Bonus: You can add the WhiteSource Bolt task to the pipeline, which will show you outdated and vulnerable NuGet dependencies as well as using certain type of licenses. Not really related to code coverage, but nice to have and easy to do:
 
 ![Whitesource Bolt]({{ "/assets/code_coverage/whitesource.png" | absolute_url }})
 
-# 7. Final pipeline
+## 7. Final pipeline
+
 The final pipeline for the project is actually a call to a single taskgroup, easy to reuse and boring to show. The taskgroup being called looks like this:
 
 ![Final taskgroup]({{ "/assets/code_coverage/taskgroup.png" | absolute_url }})
