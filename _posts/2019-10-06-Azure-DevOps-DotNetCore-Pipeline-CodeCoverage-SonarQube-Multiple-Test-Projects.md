@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Creating a complete Azure DevOps pipeline for .NET Core, dealing with multiple test projects, SonarQube, ReportGenerator & more"
+title:  "Creating an Azure DevOps pipeline for .NET Core with multiple test projects, SonarQube, ReportGenerator & more"
 categories: Azure DevOps .NET Core Code Coverage SonarQube
 description: A guide on enabling code coverage and more in Azure Devops and SonarQube with multiple .NET Core test projects 
 excerpt_separator: <!--excerpt_end-->
