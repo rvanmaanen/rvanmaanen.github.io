@@ -1,4 +1,4 @@
----
+---https://nielsnijveldt.github.io/display-opencover-results-in-azure-devops/)),
 layout: post
 title:  "Creating a complete Azure DevOps pipeline for .NET Core, dealing with multiple test projects, SonarQube, ReportGenerator & more"
 categories: Azure DevOps .NET Core Code Coverage SonarQube
@@ -6,12 +6,11 @@ description: A guide on enabling code coverage and more in Azure Devops and Sona
 excerpt_separator: <!--excerpt_end-->
 image: /assets/code_coverage/magnifier.png
 permalink: sonarqube-code-coverage-dotnetcore-multiple-test-projects
-published: false
 ---
 
 After having to configure another pipeline at a customer for a .NET Core project with multiple test projects and wanting test results and code coverage nicely visible in both Azure DevOps and SonarQube, I decided it was time to write the whole thing down for others to use.
 While there are some really nice blogposts out there all dealing with parts of what I wanted (like [this one](https://medium.com/agilix/collecting-test-coverage-using-coverlet-and-sonarqube-for-a-net-core-project-ef4a507d4b28)
-or [this one](https://abelsquidhead.com/index.php/2019/04/13/getting-code-coverage-info-for-a-net-core-app-in-azure-pipelines/)), I didn't find one that combined all of it, so here we are.<!--excerpt_end-->
+or [this one](https://abelsquidhead.com/index.php/2019/04/13/getting-code-coverage-info-for-a-net-core-app-in-azure-pipelines/) or [this one by my colleague Niels Nijveldt](https://nielsnijveldt.github.io/display-opencover-results-in-azure-devops/)), I didn't find one that combined all of it, so here we are.<!--excerpt_end-->
 
 _Disclaimer:_ All of this was written at 30/9/2019, possibly things changed since then. Use this as a quickstart/reference but do look if you can find more actual / easier solutions. Also, all of this has been done with the classic pipelines in Azure Devops. Using pipelines as code shouldn't change much and if you start from scratch I recommend you go for the YAML solution, keep the definition next to your sourcecode and treat it as such.
 
