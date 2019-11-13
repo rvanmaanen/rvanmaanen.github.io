@@ -1,4 +1,4 @@
----https://nielsnijveldt.github.io/display-opencover-results-in-azure-devops/)),
+---
 layout: post
 title:  "Creating a complete Azure DevOps pipeline for .NET Core, dealing with multiple test projects, SonarQube, ReportGenerator & more"
 categories: Azure DevOps .NET Core Code Coverage SonarQube
