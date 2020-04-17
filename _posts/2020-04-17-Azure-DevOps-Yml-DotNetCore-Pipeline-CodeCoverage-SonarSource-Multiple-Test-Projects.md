@@ -1,11 +1,12 @@
 ---
 layout: post
-title:  "Creating an Azure DevOps pipeline for .NET Core with multiple test projects, SonarQube, ReportGenerator & more"
-categories: Azure DevOps .NET Core Code Coverage SonarQube
+title:  "Azure DevOps Yml pipeline for a .NET Core solution with multiple test projects, using ReportGenerator to show merged coverage in SonarSource and Azure DevOps"
+categories: Azure DevOps .NET Core Code Coverage SonarSource ReportGenerator
 description: A guide on enabling code coverage and more in Azure Devops and SonarQube with multiple .NET Core test projects 
 excerpt_separator: <!--excerpt_end-->
 image: /assets/code_coverage/magnifier.png
 permalink: sonarqube-code-coverage-dotnetcore-multiple-test-projects
+published: false
 ---
 
 ```yml
@@ -92,19 +93,4 @@ steps:
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
-
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(TestOutputDirectory)'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    ArtifactName: 'allocation-artifacts'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 ```
-
-
