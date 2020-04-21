@@ -8,7 +8,7 @@ image: /assets/code_coverage/magnifier.png
 permalink: sonarsource-showing-too-many-conditions-in-code-coverage-with-multiple-dotnetcore-test-projects
 ---
 
-SonarSource made a great improvement, it will now show [conditional coverage of your tests](https://community.sonarsource.com/t/c-vb-net-sonarqube-and-sonarcloud-support-branch-condition-coverage-data/22384). Unfortunately, when using the pipeline as described in my previous blogpost, SonarSource reports way too many conditions. For instance, a simple `if(condition)` would result in 10 possible conditions which clearly is incorrect but easy to fix.<!--excerpt_end-->
+SonarSource made a great improvement, it will now show [conditional coverage of your tests](https://community.sonarsource.com/t/c-vb-net-sonarqube-and-sonarcloud-support-branch-condition-coverage-data/22384). Unfortunately, when using the pipeline as described in my previous blogpost, SonarSource reports way too many conditions. For instance, a simple `if(condition)` would result in 10 possible conditions which clearly is incorrect but easy to fix.<!--excerpt_end--> We submitted a [bug report](https://community.sonarsource.com/t/sonarsource-reports-invalid-code-coverage-when-using-opencover/23357) for this.
 
 The problem appears to be that for every test project an OpenCover file is created which shows the coverage for that single test projects. Every OpenCover file contains all statements and their conditions. SonarSource properly merges line coverage, but it appears to sum the amount of conditions. So where the most simple if statement should have 2 conditions, SonarSource actually reported 2x5=10 conditions (we have 5 test projects) with only 2 conditions being covered.
 
