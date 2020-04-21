@@ -1,16 +1,16 @@
 ---
 layout: post
-title:  "Fixing SonarSource code coverage condition count with multiple .NET Core test projects"
-categories: Azure DevOps .NET Core Merge Code Coverage SonarSource ReportGenerator
-description: Followup on my previous guide on enabling code coverage in Azure Devops and SonarQube with multiple .NET Core test projects - Simplified solution in yml that fixes SonarSource showing too many conditions
+title:  "Fixing SonarCloud code coverage condition count with multiple .NET Core test projects"
+categories: Azure DevOps .NET Core Merge Code Coverage SonarCloud ReportGenerator
+description: Followup on my previous guide on enabling code coverage in Azure Devops and SonarQube with multiple .NET Core test projects - Simplified solution in yml that fixes SonarCloud showing too many conditions
 excerpt_separator: <!--excerpt_end-->
 image: /assets/code_coverage/magnifier.png
 permalink: sonarsource-showing-too-many-conditions-in-code-coverage-with-multiple-dotnetcore-test-projects
 ---
 
-SonarSource made a great improvement, it will now show [conditional coverage of your tests](https://community.sonarsource.com/t/c-vb-net-sonarqube-and-sonarcloud-support-branch-condition-coverage-data/22384). Unfortunately, when using the pipeline as described in my previous blogpost, SonarSource reports way too many conditions. For instance, a simple `if(condition)` would result in 10 possible conditions which clearly is incorrect but easy to fix.<!--excerpt_end--> We submitted a [bug report](https://community.sonarsource.com/t/sonarsource-reports-invalid-code-coverage-when-using-opencover/23357) for this.
+SonarSource made a great improvement, it will now show [conditional coverage of your tests](https://community.sonarsource.com/t/c-vb-net-sonarqube-and-sonarcloud-support-branch-condition-coverage-data/22384). Unfortunately, when using the pipeline as described in my previous blogpost, SonarCloud reports way too many conditions. For instance, a simple `if(condition)` would result in 10 possible conditions which clearly is incorrect but easy to fix.<!--excerpt_end--> We submitted a [bug report](https://community.sonarsource.com/t/sonarsource-reports-invalid-code-coverage-when-using-opencover/23357) for this.
 
-The problem appears to be that for every test project an OpenCover file is created which shows the coverage for that single test projects. Every OpenCover file contains all statements and their conditions. SonarSource properly merges line coverage, but it appears to sum the amount of conditions. So where the most simple if statement should have 2 conditions, SonarSource actually reported 2x5=10 conditions (we have 5 test projects) with only 2 conditions being covered.
+The problem appears to be that for every test project an OpenCover file is created which shows the coverage for that single test projects. Every OpenCover file contains all statements and their conditions. SonarCloud properly merges line coverage, but it appears to sum the amount of conditions. So where the most simple if statement should have 2 conditions, SonarCloud actually reported 2x5=10 conditions (we have 5 test projects) with only 2 conditions being covered.
 
 This resulted in a massive drop in reported code coverage, as SonarCloud immediately started using conditional coverage as part of the calculations for "code coverage". This didn't make us look great anymore and more importantly our pull requests were failing. In the screenshot below the drop in coverage is clearly visible, along with the sudden appearance of conditional coverage. Time to fix this! Just want the Yml? Scroll a bit down :)
 
@@ -27,7 +27,7 @@ Many of the same things that are already described [in my previous blogpost](/so
 1. Restores NuGet packages from a private feed.
 1. Builds the code with the provided configuration, while skipping the restore step for each project saving a few seconds.
 1. Runs all tests, skipping restore and build steps for each project saving some more seconds. TRX files (`--logger trx`) and Cobertura files (`--collect:"XPlat Code Coverage"`) are written to the test output directory. The fact that it writes Cobertura files isn't explicit, it's just the default output of [Coverlet](https://github.com/tonerdo/coverlet).
-1. Runs ReportGenerator which collects all Cobertura files (one for each test project) and merges them. The output is written to 3 different formats: An HTML report to show in the build output, a Cobertura file to publish to Azure DevOps and a SonarQube specific format used by SonarSource. Make sure to ignore the same files as specified at step 4.
+1. Runs ReportGenerator which collects all Cobertura files (one for each test project) and merges them. The output is written to 3 different formats: An HTML report to show in the build output, a Cobertura file to publish to Azure DevOps and a SonarQube specific format used by SonarCloud. Make sure to ignore the same files as specified at step 4.
 1. SonarCloud analyzes the codebase.
 1. SonarCloud publishes the result to Azure DevOps to show if the Quality Gate passed for your build.
 1. WhiteSource bolt runs to scan your dependencies for vulnerabilities.
@@ -35,7 +35,7 @@ Many of the same things that are already described [in my previous blogpost](/so
 1. The artifact staging directory contents are published as build artifacts.
 
 # Improvements on pipeline from previous blogpost
-* ReportGenerator used to create a single truth that is used by both SonarSource and Azure DevOps. I would love to see both SonarCloud and Azure DevOps being able to deal with multiple test/coverage files, but currently this appears to be the best solution.
+* ReportGenerator used to create a single truth that is used by both SonarCloud and Azure DevOps. I would love to see both SonarCloud and Azure DevOps being able to deal with multiple test/coverage files, but currently this appears to be the best solution.
 * No more Coverlet.runsettings file needed to set Coverlet output to OpenCover.
 * New pipeline uses SonarCloud instead of SonarQube. Be aware, this requires a different extension in Azure DevOps:
 
