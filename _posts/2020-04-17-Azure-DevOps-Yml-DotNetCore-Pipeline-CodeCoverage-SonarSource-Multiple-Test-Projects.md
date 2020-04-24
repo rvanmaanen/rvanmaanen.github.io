@@ -20,7 +20,7 @@ This resulted in a massive drop in reported code coverage, as SonarCloud immedia
 Many of the same things that are already described [in my previous blogpost](/sonarqube-code-coverage-dotnetcore-multiple-test-projects). A summary:
 
 1. Pool/agent selection
-1. Variables are defined. The test output directory is important for the guide as it will contain all test & coverage files we need. Also, `disable.coverage.autogenerate` is set to true to prevent [issues with the ReportGenerator extension](https://github.com/microsoft/azure-pipelines-tasks/issues/10354).
+1. Variables are defined. The test output directory is important for the guide as it will contain all test & coverage files we need.
 1. Prepares for SonarCloud analysis. We're setting it up to collect TRX files which contain testresults and also to collect a single XML file containing all code coverage. Last, we are ignoring coverage on some files.
 1. Installs .NET Core 2.x runtime, as the SonarCloud plugin depends on it.
 1. Installs .NET Core 3.1.101 SDK to build our software.
@@ -37,6 +37,7 @@ Many of the same things that are already described [in my previous blogpost](/so
 # Improvements on pipeline from previous blogpost
 * ReportGenerator used to create a single truth that is used by both SonarCloud and Azure DevOps. I would love to see both SonarCloud and Azure DevOps being able to deal with multiple test/coverage files, but currently this appears to be the best solution.
 * No more Coverlet.runsettings file needed to set Coverlet output to OpenCover.
+* No longer generating HTML dashboards with ReportGenerator (standard PublishCodeCoverageResults works fine now). So no more need of `HtmlInline_AzurePipelines` parameter or  `disable.coverage.autogenerate` variable.
 * New pipeline uses SonarCloud instead of SonarQube. Be aware, this requires a different extension in Azure DevOps:
 
 ![Extensions for both SonarQube and SonarCloud]({{ "/assets/code_coverage_followup/sonarplugins.png" | absolute_url }})
@@ -52,7 +53,6 @@ variables:
   buildConfiguration: Release
   project: '$(Build.SourcesDirectory)/Solution.sln'
   testOutputDirectory: '$(Agent.TempDirectory)/testresults'
-  disable.coverage.autogenerate: true
 
 steps:
 - task: SonarCloudPrepare@1
@@ -71,7 +71,7 @@ steps:
   displayName: 'Install .NET Core 2.x runtime as it is needed for SonarCloud plugin'
   inputs:
     packageType: 'runtime'
-    version: '2.0.x'
+    version: '2.x'
     
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk'
@@ -86,7 +86,6 @@ steps:
     command: restore
     projects: '$(project)'
     vstsFeed: '00000000-0000-0000-0000-000000000000'
-    verbosityRestore: Normal
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
@@ -106,7 +105,7 @@ steps:
   inputs:
     reports: '$(TestOutputDirectory)/*/coverage.cobertura.xml'
     targetdir: '$(TestOutputDirectory)/mergedcoveragereport'
-    reporttypes: 'HtmlInline_AzurePipelines;Cobertura;SonarQube'
+    reporttypes: 'Cobertura;SonarQube'
     assemblyfilters: '-*Tests*'
     filefilters: '-*/Migrations/*.cs'
 
@@ -114,7 +113,6 @@ steps:
   inputs:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(TestOutputDirectory)/mergedcoveragereport/Cobertura.xml'
-    reportDirectory: '$(TestOutputDirectory)/mergedcoveragereport'
 
 - task: SonarCloudAnalyze@1
 
@@ -123,6 +121,8 @@ steps:
     pollingTimeoutSec: '300'
 
 - task: WhiteSource Bolt@20
+  inputs:
+    cwd: '$(Build.SourcesDirectory)'
 
 - task: DotNetCoreCLI@2
   inputs:
