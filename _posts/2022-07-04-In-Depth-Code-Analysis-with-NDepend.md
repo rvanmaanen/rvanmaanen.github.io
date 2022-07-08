@@ -8,13 +8,13 @@ image: /assets/ndepend/logo.png
 permalink: in-depth-code-analysis-with-ndepend
 ---
 
-After using NDepend for a while to analyze a few codebases, I wrote this blog about my experience, which I can summarize by saying it's a really powerful tool that gives you a lot of insights into your codebase like complexity, dependencies, dead code, code smells, comparisons between versions, etc. Go ahead and check it out at [the NDepend website](https://www.ndepend.com/) with a free trial, you won't regret it. Read on to get some of my experiences. Tip: Do make use of the extensive documentation!<!--excerpt_end-->
+After using NDepend for a while to analyze a few codebases, I wrote this blog about my experience, which I can summarize by saying it's a powerful tool that gives you a lot of insights into your codebase like complexity, dependencies, dead code, code smells, comparisons between versions, etc. Go ahead and check it out at [the NDepend website](https://www.ndepend.com/) with a free trial, you won't regret it. Read on to get some of my experiences. Tip: Do make use of the extensive documentation!<!--excerpt_end-->
 
 ## About NDepend
 
 The website of NDepend sums it up quite nicely: _NDepend is a .NET tool that provides deep insight into code bases. The tool empowers developers, architects and executives to make intelligent decisions on projects. The community name it the "Swiss Army Knife" for .NET programmers._
 
-I've used it to bring some objectivity to my analysis and opinion of legacy codebases, which really helps when needing to convince management that a codebase needs some love.
+I've used it to bring some objectivity to my analysis and opinion of legacy codebases, which helps when needing to convince management that a codebase needs some love.
 
 ![Azure DevOps NDepend rules view]({{ "/assets/ndepend/AzureDevOpsRules.png" | absolute_url }})
 
@@ -100,6 +100,6 @@ In the screenshot above: 242 new methods in 30 days, 496 new code smells (and 11
 
 ## How I used all of this
 
-I got asked to advice on how to best proceed with some software that has grown over the last 10+ years and evolved (according to the developers) into a big messy spaghetti with a lot of issues, like bad performance, regression issues and parts of the code they didn't dare to change. Management however thought it was just fine. After having a look at the codebase, I quickly agreed with the developers and architect. To have some objectivity besides all our opinions I decided to have them run SonarCloud and NDepend. Both tools gave the same indications: The code is full of smells and too big and too complex and doesn't have any tests. NDepend gave me more details here compared to SonarCloud, allowing me to ask follow-up questions better. I haven't used NDepend during development, so can't tell how things with analysis of Pull Requests for instance.
+I got asked to advice on how to best proceed with some software that has grown over the last 10+ years and evolved (according to the developers) into a big messy spaghetti with a lot of issues like bad performance, regression issues and parts of the code they didn't dare to change. Management however thought it was just fine. After having a look at the codebase, I quickly agreed with the developers and architect. To have some objectivity besides all our opinions I decided to have them run SonarCloud and NDepend. Both tools gave the same indications: The code is full of smells and too big and too complex and doesn't have any tests. NDepend gave me more details here compared to SonarCloud, allowing me to ask follow-up questions better. I haven't used NDepend during development, so can't tell how things with analysis of Pull Requests for instance.
 
 The results of these tools, the opinion of the team and my opinion as external consultant combined was enough to convince the customer that things need to improve.
