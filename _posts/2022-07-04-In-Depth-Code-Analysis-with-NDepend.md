@@ -103,3 +103,7 @@ In the screenshot above: 242 new methods in 30 days, 496 new code smells (and 11
 I got asked to advice on how to best proceed with some software that has grown over the last 10+ years and evolved (according to the developers) into a big messy spaghetti with a lot of issues like bad performance, regression issues and parts of the code they didn't dare to change. Management however thought it was just fine. After having a look at the codebase, I quickly agreed with the developers and architect. To have some objectivity besides all our opinions I decided to have them run SonarCloud and NDepend. Both tools gave the same indications: The code is full of smells and too big and too complex and doesn't have any tests. NDepend gave me more details here compared to SonarCloud, allowing me to ask follow-up questions better. I haven't used NDepend during development, so can't tell how things with analysis of Pull Requests for instance.
 
 The results of these tools, the opinion of the team and my opinion as external consultant combined was enough to convince the customer that things need to improve.
+
+## Disclaimer
+
+In order to write this blogpost I received a temporary license from NDepend, so I could run NDepend for a bit longer than the standard 14 day evaluation. For the Azure DevOps part a seperate license was needed. There I just used the trial license.
