@@ -106,4 +106,4 @@ The results of these tools, the opinion of the team and my opinion as external c
 
 ## Disclaimer
 
-In order to write this blogpost I received a temporary license from NDepend, so I could run NDepend for a bit longer than the standard 14 day evaluation. For the Azure DevOps part a seperate license was needed. There I just used the trial license.
+In order to write this blogpost, I received a temporary license from NDepend, so I could run NDepend for a bit longer than the standard 14 day evaluation. For the Azure DevOps part a separate license was needed. There I just used the trial license.
