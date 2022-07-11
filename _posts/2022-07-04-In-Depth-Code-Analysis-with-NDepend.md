@@ -20,7 +20,7 @@ I've used it to bring some objectivity to my analysis and opinion of legacy code
 
 ## Installation
 
-Like many other software, leave your contact information to download NDepend. I don't like this, but it's not a big deal to me. Them just unzip the downloaded file into a directory, because if you want you can just use NDepend without installing anything, nice! You get a 14-day free evaluation to test NDepend, so it's easy to give it a try.
+Like many other software, leave your contact information to download NDepend. I don't like this, but it's not a big deal to me. Then just unzip the downloaded file into a directory, because if you want you can just use NDepend without installing anything, nice! You get a 14-day free evaluation to test NDepend, so it's easy to give it a try.
 
 At this point you have a few options:
 
