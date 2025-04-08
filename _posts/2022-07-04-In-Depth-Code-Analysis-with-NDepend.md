@@ -60,7 +60,7 @@ You can also expand things, select elements and get more detailed information on
 
 ## Usability
 
-Alright! Looking good but I don't care about the test projects, so how do I get rid of those? This is where I started struggling a bit more and where the tool could be a bit more intuitive for me. Clicked on a button called 'assemblies', giving me the same graph but with a query editor to the left so I guess I was already looking at all the assemblies. Rewrote the LINQ query, pressed save and nothing happened. Also, I can't find where exactly that query is saved. Or did I just overwrite the default 'assemblies' query? 
+Alright! Looking good but I don't care about the test projects, so how do I get rid of those? This is where I started struggling a bit more and where the tool could be a bit more intuitive for me. Clicked on a button called 'assemblies', giving me the same graph but with a query editor to the left so I guess I was already looking at all the assemblies. Rewrote the LINQ query, pressed save and nothing happened. Also, I can't find where exactly that query is saved. Or did I just overwrite the default 'assemblies' query?
 
 Messed around a bit more and finally clicked 'Export to graph' which did what I wanted! A little later I also found out I could just remove elements by click on them and using one of the new buttons that appear. Before selecting an element:
 
@@ -84,7 +84,7 @@ There are many built-in rules in NDepend. You can just click on one of them and 
 
 Just run the NDepend.VisualStudioExtension.Installer executable and integration works immediately. It's basically the Visual NDepend tool but with the look and feel of Visual Studio. The main advantage I noticed was easier navigation to code that has issues and not having to run a separate tool.
 
-Results are stored in an 'NDependOut' folder with an accompanying 'ndproj' file that allows you to open the results later to continue. Or to run multiple analysis over time allowing you to see how things are evolving. Great stuff! 
+Results are stored in an 'NDependOut' folder with an accompanying 'ndproj' file that allows you to open the results later to continue. Or to run multiple analysis over time allowing you to see how things are evolving. Great stuff!
 
 ## Integrating in an Azure DevOps pipeline
 
