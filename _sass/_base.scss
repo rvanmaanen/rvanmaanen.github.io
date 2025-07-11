@@ -67,6 +67,12 @@ code {
     border: 1px solid rgba($color-copilot-purple, 0.2);
     border-radius: 8px;
     color: $color-white;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 pre.highlight code {
@@ -74,6 +80,35 @@ pre.highlight code {
     border: none !important;
     border-radius: 0;
     color: inherit;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+// Ensure code blocks within containers don't overflow
+pre.highlight {
+    overflow-x: auto;
+    max-width: 100%;
+    
+    // For very long lines, allow horizontal scrolling on the container
+    // but make it less intrusive
+    &::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: rgba($color-copilot-purple, 0.1);
+        border-radius: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: rgba($color-copilot-purple, 0.3);
+        border-radius: 3px;
+        
+        &:hover {
+            background: rgba($color-copilot-purple, 0.5);
+        }
+    }
 }
 
 // Content styling

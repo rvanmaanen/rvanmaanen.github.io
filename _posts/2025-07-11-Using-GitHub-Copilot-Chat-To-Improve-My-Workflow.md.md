@@ -9,6 +9,106 @@ permalink: automating-git-workflows-vscode-copilot-chat-terminal-auto-approval
 
 With the June 2025 ([v1.102](https://code.visualstudio.com/updates/v1_102#_terminal-auto-approval-experimental)) release of Visual Studio Code, I have streamlined my Git workflow by combining Copilot Chat's new features, custom prompts, and the experimental terminal auto-approval system. This setup allows me to automate the process of reviewing changes, generating commit messages, and pushing updates, all with minimal manual intervention and maximum safety.<!--excerpt_end-->
 
+## Index
+
+- [Some visuals](#some-visuals)
+- [Key Features Used](#key-features-used)
+- [Workflow triggered by /pushall](#workflow-triggered-by-pushall)
+- [How I Set It Up](#how-i-set-it-up)
+  - [Settings](#settings)
+  - [Prompts](#prompts)
+  - [Python Delay Script for allowing me to intervene](#python-delay-script-for-allowing-me-to-intervene)
+- [Benefits](#benefits)
+- [References](#references)
+
+## Some visuals
+
+Starting the workflow is as simple as typing `/pushall` in the Copilot Chat. In the following screenshots you'll see me start the prompt. 
+
+<div class="image-gallery">
+  <div class="image-item full-width">
+    <img src="{{ "/assets/auto-approve-terminal-commands/slashcommand.png" | relative_url }}" alt="Custom Prompts in VS Code">
+    <div class="image-caption">Starting with /pushall command</div>
+  </div>
+</div>
+
+Then it did some git diff magic and suggested a commit message to me:
+
+```text
+I can see there are changes to a blog post file. The changes include:
+
+- Adding a hyperlink to the Visual Studio Code v1.102 release notes
+- Adding a link to the official documentation
+
+Let me analyze these changes and suggest a commit message:
+
+Suggested commit message: "Add links to VS Code v1.102 release notes and Copilot customization docs"
+
+This is a clear, descriptive commit message that explains the specific improvements made to the blog post by adding helpful reference links.
+```
+
+Here are some two screenshots of the next possible scenarios, one where I abort the workflow and one where I continue with the commit and push.
+
+<style>
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.image-item {
+  flex: 1;
+  min-width: 250px;
+  max-width: 350px;
+  text-align: center;
+}
+
+.image-item.full-width {
+  flex: 1 1 100%;
+  max-width: 500px;
+}
+
+.image-item img {
+  width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.image-caption {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .image-gallery {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .image-item {
+    max-width: 100%;
+  }
+}
+</style>
+
+<div class="image-gallery">
+   <div class="image-item">
+    <img src="{{ "/assets/auto-approve-terminal-commands/controlc.png" | relative_url }}" alt="Aborting the workflow">
+    <div class="image-caption">Aborting with Ctrl+C</div>
+  </div>
+  <div class="image-item">
+    <img src="{{ "/assets/auto-approve-terminal-commands/continued.png" | relative_url }}" alt="Workflow in action">
+    <div class="image-caption">Workflow executing</div>
+  </div>
+</div>
+
+
+
 ## Key Features Used
 
 ### Terminal Auto-Approval (Experimental)
