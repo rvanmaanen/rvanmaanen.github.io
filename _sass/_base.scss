@@ -1,9 +1,9 @@
 // Set default font family and background for the entire site
 body {
     font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    background: linear-gradient(135deg, $gradient-start 0%, $gradient-middle 50%, $gradient-end 100%);
+    background: linear-gradient(135deg, $color-gradient-start 0%, $color-gradient-middle 50%, $color-gradient-end 100%);
     background-attachment: fixed;
-    color: $primary-color;
+    color: $color-white;
     min-height: 100vh;
 }
 
@@ -15,29 +15,30 @@ html {
 
 // Global link styling
 a {
-    color: $link-color;
+    color: $color-link-blue;
     transition: color 0.2s;
     text-decoration: none !important;
-    
+
     &:visited {
-        color: $copilot-purple;
+        color: $color-copilot-purple;
     }
 
     &:active,
     &:focus {
-        color: $link-hover;
+        color: $color-link-blue-hover;
     }
 
     // Prevent black color during loading or focus/active states
     &:link {
-        color: $link-color;
+        color: $color-link-blue;
     }
 
     // Hover effects only on devices that support hover
     @media (hover: hover) {
+
         &:hover,
         &:focus {
-            color: $link-hover;
+            color: $color-link-blue-hover;
             text-decoration: underline !important;
         }
     }
@@ -60,15 +61,19 @@ iframe.youtube {
 }
 
 // Code styling
-pre.highlight {
-    background-color: $code-background !important;
-    border: 1px solid $code-border;
+pre.highlight,
+code {
+    background-color: rgba($color-copilot-purple, 0.1) !important;
+    border: 1px solid rgba($color-copilot-purple, 0.2);
     border-radius: 8px;
-    color: $primary-color;
+    color: $color-white;
 }
 
-code {
-    background-color: transparent;
+pre.highlight code {
+    background: none !important;
+    border: none !important;
+    border-radius: 0;
+    color: inherit;
 }
 
 // Content styling
@@ -86,8 +91,8 @@ code {
     padding: 25px 0;
 
     .wrapper {
-        background-color: $wrapper-background;
-        border: 1px solid $wrapper-border-color;
+        background-color: rgba($color-dark-base, 0.8);
+        border: 1px solid rgba($color-wrapper-border, 0.2);
         border-radius: 15px;
         padding: 10px 15px 20px 20px;
         margin-top: 0;

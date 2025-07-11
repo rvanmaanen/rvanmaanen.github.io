@@ -1,38 +1,33 @@
 // Header specific styling - colors and text-decoration only
 .site-header {
-    color: $primary-color;
-    border-bottom: 1px solid $header-link-color;
+    color: $color-white;
+    border-bottom: 1px solid $color-white;
     background-color: transparent;
 
     .site-title {
-        color: $primary-color;
+        color: $color-white;
     }
 
     .site-nav {
         .page-link {
-            color: $primary-color;
+            color: $color-white;
         }
     }
 
     a {
-        color: $primary-color;
+        color: $color-white;
 
         &:visited {
-            color: $primary-color;
+            color: $color-white;
         }
 
         // Hover effects only on devices that support hover
         @media (hover: hover) {
             &:hover {
-                color: $copilot-purple;
+                color: $color-copilot-purple !important;
             }
         }
     }
-}
-
-a.page-link,a.page-link.contact {
-    text-decoration: none !important;
-    color: $primary-color;
 }
 
 // Regular styles
@@ -40,7 +35,7 @@ a.page-link,a.page-link.contact {
     // Custom page link styles
     a.page-link.regular {
         &::after {
-            background-color: $copilot-purple;
+            background-color: $color-copilot-purple;
         }
     }
 }
@@ -48,13 +43,13 @@ a.page-link,a.page-link.contact {
 // Mobile styles
 @media only screen and (max-width: 800px) {
     .site-nav {
-        background-color: $nav-background;
-        border: 1px solid $nav-border-color;
+        background-color: rgba($color-dark-base, 0.9);
+        border: 1px solid rgba($color-copilot-purple, 0.2);
         position: absolute;
         z-index: 1000;
     }
 }
 
 .site-nav .menu-icon>svg {
-    fill: $primary-color;
+    fill: $color-white;
 }

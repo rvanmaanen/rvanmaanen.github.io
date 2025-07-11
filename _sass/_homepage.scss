@@ -28,7 +28,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: $homepage-card-overlay-light;
+        background: rgba($color-dark-base, 0.7);
         z-index: 1;
     }
 
@@ -41,10 +41,10 @@
     .nav-content {
         position: relative;
         z-index: 2;
-        background: $homepage-card-overlay-lighter;
+        background: rgba($color-dark-base, 0.3);
         padding: 15px;
         border-radius: 12px;
-        border: 1px solid $homepage-card-border;
+        border: 1px solid rgba($color-copilot-purple, 0.3);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -55,12 +55,12 @@
     @media (hover: hover) {
         &:hover {
             &::before {
-                background: $homepage-card-overlay-lightest; // Much lighter overlay to let image shine through
+                background: rgba($color-dark-base, 0.2); // Much lighter overlay to let image shine through
             }
             
             .nav-content {
-                background: $homepage-card-overlay-hover; // Make content background more opaque on hover
-                border-color: $homepage-card-border-hover; // Brighter border
+                background: rgba($color-dark-base, 0.85); // Make content background more opaque on hover
+                border-color: rgba($color-copilot-purple, 0.6); // Brighter border
             }
         }
     }
@@ -86,7 +86,7 @@
         
         .nav-content {
             padding: 12px;
-            background: $homepage-card-overlay-medium; // Slightly more opaque for text readability
+            background: rgba($color-dark-base, 0.6); // Slightly more opaque for text readability
         }
     }
 }
@@ -110,7 +110,7 @@
         
         .nav-content {
             padding: 10px;
-            background: $homepage-card-overlay-light; // Ensure text is still readable
+            background: rgba($color-dark-base, 0.7); // Ensure text is still readable
         }
     }
 }

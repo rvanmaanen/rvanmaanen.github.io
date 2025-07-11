@@ -18,23 +18,23 @@
         align-items: center;
         min-height: 40px;
         padding: 15px;
-        background: $copilot-blue;
-        border: 1px solid $copilot-purple;
+        background: rgba($color-copilot-blue-base, 0.10);
+        border: 1px solid $color-copilot-purple;
         border-radius: 12px;
         text-decoration: none;
-        color: $primary-color;
+        color: $color-white;
         transition: all 0.3s ease;
         text-align: center;
         backdrop-filter: blur(10px);
         margin: 0;
-        box-shadow: 0 2px 8px $copilot-purple-shadow;
+        box-shadow: 0 2px 8px rgba($color-copilot-purple, 0.08);
 
         // Hover effects only on devices that support hover
         @media (hover: hover) {
             &:hover {
                 transform: scale(1.05);
-                background: $copilot-blue-hover;
-                box-shadow: 0 8px 25px $copilot-blue-hover;
+                background: rgba($color-copilot-blue-base, 0.18);
+                box-shadow: 0 8px 25px rgba($color-copilot-blue-base, 0.18);
                 color: inherit;
             }
         }
