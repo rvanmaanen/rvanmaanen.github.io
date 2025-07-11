@@ -7,7 +7,7 @@ excerpt_separator: <!--excerpt_end-->
 permalink: automating-git-workflows-vscode-copilot-chat-terminal-auto-approval
 ---
 
-With the June 2025 (v1.102) release of Visual Studio Code, I have streamlined my Git workflow by combining Copilot Chat's new features, custom prompts, and the experimental terminal auto-approval system. This setup allows me to automate the process of reviewing changes, generating commit messages, and pushing updates, all with minimal manual intervention and maximum safety.<!--excerpt_end-->
+With the June 2025 ([v1.102](https://code.visualstudio.com/updates/v1_102#_terminal-auto-approval-experimental)) release of Visual Studio Code, I have streamlined my Git workflow by combining Copilot Chat's new features, custom prompts, and the experimental terminal auto-approval system. This setup allows me to automate the process of reviewing changes, generating commit messages, and pushing updates, all with minimal manual intervention and maximum safety.<!--excerpt_end-->
 
 ## Key Features Used
 
@@ -21,6 +21,8 @@ With the June 2025 (v1.102) release of Visual Studio Code, I have streamlined my
 - **Prompt files:** I created reusable `.prompt.md` files in `.github/prompts` to guide Copilot Chat through my preferred Git workflow (review, commit, rebase, push). I can then trigger these prompts with simple commands like `/pushall` in chat.
 - **Instruction files:** My `.github/copilot-instructions.md` file describes some sensible defaults for Copilot to use, like using English. These are automatically included in chat requests, ensuring Copilot always follows my preferences.
 - **Agent mode:** I use agent mode to let Copilot Chat execute multi-step workflows, such as staging changes, generating commit messages, rebasing, and pushing, all triggered by a single prompt.
+
+[Look here for the offical docs](https://code.visualstudio.com/docs/copilot/copilot-customization)
 
 ## Workflow triggered by /pushall
 
