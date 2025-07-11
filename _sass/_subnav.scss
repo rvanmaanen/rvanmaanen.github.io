@@ -1,0 +1,70 @@
+// Subnav styling
+.subnav-wrapper {
+    background: $nav-background;
+    border-bottom: 1px solid $nav-border-color;
+    backdrop-filter: blur(10px);
+}
+
+.site-subnav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    max-width: 1024px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 20px;
+    min-height: 40px; // Ensure consistent height even when empty
+}
+
+.subpage-link {
+    position: relative;
+    font-weight: 500;
+    text-decoration: none;
+    color: $primary-color !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+
+    // Hover effects only on devices that support hover
+    @media (hover: hover) {
+        &:hover {
+            background: $copilot-purple-light;
+            color: $copilot-purple;
+        }
+    }
+
+    &.active {
+        background: $nav-border-color;
+        color: $copilot-purple;
+        font-weight: 600;
+    }
+
+    &:visited {
+        color: $primary-color;
+
+        // Hover effects only on devices that support hover
+        @media (hover: hover) {
+            &:hover {
+                color: $copilot-purple;
+            }
+        }
+
+        &.active {
+            color: $copilot-purple;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .site-subnav {
+        padding: 8px 15px;
+        gap: 10px;
+    }
+    
+    .subpage-link {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+}

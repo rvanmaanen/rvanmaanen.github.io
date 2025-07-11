@@ -1,0 +1,55 @@
+{
+  "name": "Jekyll",
+  "image": "mcr.microsoft.com/devcontainers/jekyll",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/powershell:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "DavidAnson.vscode-markdownlint",
+        "ms-vscode.powershell",
+        "Jekyll.vscode-jekyll-syntax",
+        "Jekyll.vscode-jekyll-snippets",
+        "ms-python.python"
+      ],
+      "settings": {
+        "chat.agent.enabled": true,
+        "chat.mcp.enabled": true,
+        "powershell.debugging.createTemporaryIntegratedConsole": true,
+        "terminal.integrated.defaultProfile.linux": "pwsh",
+        "github.copilot.chat.agent.terminal.allowList": {
+          "git": true,
+          "echo": true,
+          "cd": true,
+          "ls": true,
+          "cat": true,
+          "pwd": true,
+          "dir": true,
+          "Write-Host": true,
+          "Set-Location": true,
+          "Get-ChildItem": true,
+          "Get-Content": true,
+          "Get-Location": true,
+          "less": true,
+          "more": true,
+          "python3": true
+        },
+        "github.copilot.chat.agent.terminal.denyList": {
+          "rm": true,
+          "rmdir": true,
+          "del": true,
+          "kill": true,
+          "curl": true,
+          "wget": true,
+          "eval": true,
+          "chmod": true,
+          "chown": true,
+          "Remove-Item": true
+        }
+      }
+    }
+  },
+  "postCreateCommand": "PROFILE=\"$HOME/.config/powershell/Microsoft.PowerShell_profile.ps1\"; WELCOME=\"Write-Host \\\"Run './jekyll-with-reload.ps1' to start the website locally. Check the readme file for further information.\\\" -ForegroundColor Green\"; mkdir -p $(dirname $PROFILE); touch $PROFILE; grep -q 'jekyll-with-reload.ps1' $PROFILE || echo $WELCOME >> $PROFILE"
+}

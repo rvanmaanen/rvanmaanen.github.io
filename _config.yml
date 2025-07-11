@@ -1,11 +1,10 @@
 # Site settings
 title: r-vm.com
-email: rvanmaanen@xpirit.com
+email: reinier.vanmaanen@xebia.com
 description: >-
   A blog about things I did, hope it helps someone else!
 baseurl: ""
 url: "https://r-vm.com"
-twitter_username: maanenreinier
 github_username:  rvanmaanen
 linkedin_username: reiniervanmaanen
 show_excerpts: true

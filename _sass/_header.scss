@@ -1,0 +1,60 @@
+// Header specific styling - colors and text-decoration only
+.site-header {
+    color: $primary-color;
+    border-bottom: 1px solid $header-link-color;
+    background-color: transparent;
+
+    .site-title {
+        color: $primary-color;
+    }
+
+    .site-nav {
+        .page-link {
+            color: $primary-color;
+        }
+    }
+
+    a {
+        color: $primary-color;
+
+        &:visited {
+            color: $primary-color;
+        }
+
+        // Hover effects only on devices that support hover
+        @media (hover: hover) {
+            &:hover {
+                color: $copilot-purple;
+            }
+        }
+    }
+}
+
+a.page-link,a.page-link.contact {
+    text-decoration: none !important;
+    color: $primary-color;
+}
+
+// Regular styles
+@media only screen and (min-width: 800px) {
+    // Custom page link styles
+    a.page-link.regular {
+        &::after {
+            background-color: $copilot-purple;
+        }
+    }
+}
+
+// Mobile styles
+@media only screen and (max-width: 800px) {
+    .site-nav {
+        background-color: $nav-background;
+        border: 1px solid $nav-border-color;
+        position: absolute;
+        z-index: 1000;
+    }
+}
+
+.site-nav .menu-icon>svg {
+    fill: $primary-color;
+}

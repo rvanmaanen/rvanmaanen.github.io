@@ -1,0 +1,105 @@
+// Set default font family and background for the entire site
+body {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background: linear-gradient(135deg, $gradient-start 0%, $gradient-middle 50%, $gradient-end 100%);
+    background-attachment: fixed;
+    color: $primary-color;
+    min-height: 100vh;
+}
+
+// Always show scrollbar to prevent layout shifts
+html {
+    overflow-y: scroll;
+    scrollbar-width: thin; // For Firefox
+}
+
+// Global link styling
+a {
+    color: $link-color;
+    transition: color 0.2s;
+    text-decoration: none !important;
+    
+    &:visited {
+        color: $copilot-purple;
+    }
+
+    &:active,
+    &:focus {
+        color: $link-hover;
+    }
+
+    // Prevent black color during loading or focus/active states
+    &:link {
+        color: $link-color;
+    }
+
+    // Hover effects only on devices that support hover
+    @media (hover: hover) {
+        &:hover,
+        &:focus {
+            color: $link-hover;
+            text-decoration: underline !important;
+        }
+    }
+}
+
+iframe.youtube {
+    // Responsive YouTube embed
+    display: block;
+    margin: 0 auto 10px auto;
+    width: 100%;
+    max-width: 852px;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    max-height: 479px;
+    box-sizing: border-box;
+}
+
+.highlight {
+    background: transparent !important;
+}
+
+// Code styling
+pre.highlight {
+    background-color: $code-background !important;
+    border: 1px solid $code-border;
+    border-radius: 8px;
+    color: $primary-color;
+}
+
+code {
+    background-color: transparent;
+}
+
+// Content styling
+.post-header {
+    margin-bottom: 0;
+}
+
+.post-title {
+    font-size: 2em;
+    letter-spacing: unset;
+    line-height: unset;
+}
+
+.page-content {
+    padding: 25px 0;
+
+    .wrapper {
+        background-color: $wrapper-background;
+        border: 1px solid $wrapper-border-color;
+        border-radius: 15px;
+        padding: 10px 15px 20px 20px;
+        margin-top: 0;
+        backdrop-filter: blur(10px);
+    }
+}
+
+.footer-col {
+    margin: 0;
+}
+
+// Section title styling
+.section-title {
+    margin-bottom: 0;
+}

@@ -1,0 +1,122 @@
+// Tag filter button styling
+.tag-filter-btn {
+    margin: 2px;
+    padding: 4px 8px;
+    border: 1px solid $copilot-purple-medium;
+    background: $filter-background;
+    color: $primary-color;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+
+    // Hover effects only on devices that support hover
+    @media (hover: hover) {
+        &:hover {
+            background: $filter-border-hover;
+            border-color: $filter-border-hover;
+        }
+    }
+
+    &.active {
+        background: $filter-active-background;
+        color: $filter-active-text;
+        border-color: $filter-active-background;
+    }
+
+    &.disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        background: $filter-background-clear;
+        border-color: $filter-clear-border;
+    }
+
+    &.clear-btn {
+        background: $filter-remove-bg;
+        color: $filter-active-text;
+        border-color: $filter-remove-border;
+
+        // Hover effects only on devices that support hover
+        @media (hover: hover) {
+            &:hover {
+                background: $filter-remove-hover;
+            }
+        }
+    }
+
+    &.toggle-btn {
+        background: $filter-add-bg;
+        color: $filter-active-text;
+        border-color: $filter-add-border;
+
+        // Hover effects only on devices that support hover
+        @media (hover: hover) {
+            &:hover {
+                background: $filter-add-hover;
+                border-color: $filter-add-hover;
+            }
+        }
+
+        &.active {
+            background: $filter-neutral-bg;
+            color: $filter-active-text;
+            border-color: $filter-neutral-bg;
+        }
+    }
+
+    &.hidden-tag-btn {
+        &.active {
+            background: $filter-active-background;
+            color: $filter-active-text;
+            border-color: $filter-active-background;
+            opacity: 1;
+            border-style: solid;
+        }
+
+        &.disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+            background: $filter-background-disabled;
+            border-color: $filter-clear-border-alt;
+        }
+
+        // Tag filter button visibility
+        display: none; // Hide hidden-occurrence tags by default
+
+        &.show {
+            display: inline-block; // Show hidden-occurrence tags when 'More' is clicked
+        }
+    }
+}
+
+// Default visibility for regular tag filter buttons
+.tag-filter-btn {
+    display: inline-block; // Show all buttons by default
+}
+
+.date-filter-btn {
+    background: $filter-border;
+    border-color: $filter-border;
+
+    // Hover effects only on devices that support hover
+    @media (hover: hover) {
+        &:hover {
+            background: $filter-active-background;
+            color: $filter-active-text;
+            border-color: $filter-active-background;
+        }
+    }
+}
+
+// Ensure active state persists on mobile
+@media (pointer: coarse) {
+    .tag-filter-btn.active {
+        background: $filter-active-background !important;
+        color: $filter-active-text !important;
+        border-color: $filter-active-background !important;
+    }
+}
+
+// Tag filter container styling
+#tag-filters {
+    margin-bottom: 15px;
+}

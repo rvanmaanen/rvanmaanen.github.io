@@ -19,6 +19,7 @@ Finally, I went to the [Azure Functions Python Worker GitHub page](https://githu
 ![Azure Functions with Python]({{ "/assets/python_on_azure_functions/pythonfunctions.png" | absolute_url }})
 
 # Heads up
+
 Azure Functions in Python support in Visual Studio Code is still very basic. Building, testing, debugging and publishing is still done with the CLI. Support for a truely serverless deployment via the Consumption Plan isn't there as well yet, for now you're stuck with an App Service Plan. Last, not all bindings that are available for C# are available for Python yet, so no cool Service Bus integration at this moment. [All these issues are being worked on though!](https://github.com/Azure/azure-functions-python-worker/blob/dev/README.md)
 
 # TL;DR

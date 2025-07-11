@@ -1,0 +1,52 @@
+// Post grid styling
+.post-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+
+    p {
+        font-size: small;
+    }
+
+    .post-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 40px;
+        padding: 15px;
+        background: $copilot-blue;
+        border: 1px solid $copilot-purple;
+        border-radius: 12px;
+        text-decoration: none;
+        color: $primary-color;
+        transition: all 0.3s ease;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        margin: 0;
+        box-shadow: 0 2px 8px $copilot-purple-shadow;
+
+        // Hover effects only on devices that support hover
+        @media (hover: hover) {
+            &:hover {
+                transform: scale(1.05);
+                background: $copilot-blue-hover;
+                box-shadow: 0 8px 25px $copilot-blue-hover;
+                color: inherit;
+            }
+        }
+
+        p {
+            margin-bottom: 0;
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    .post-list {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,168 @@
+// =============================================================================
+// SASS VARIABLES
+// =============================================================================
+
+// =============================================================================
+// BASE COLOR PALETTE
+// =============================================================================
+
+// Raw color values - these are the source colors that all variations derive from
+$color-primary-text: #e6e8eb;
+$color-white: #ffffff;
+$color-copilot-purple: #bd93f9;
+$color-copilot-purple-alt: #9d72d9;
+$color-link-blue: #58a6ff;
+$color-link-blue-hover: #79c0ff;
+$color-footer-gray: #828282;
+$color-footer-gray-light: #a0a0a0;
+
+// Base colors as hex values for rgba() mixing
+$color-dark-base: #1a1a2e;
+$color-wrapper-border: #7f56d9;
+$color-copilot-blue-base: #1f6feb;
+
+// Gradient colors
+$color-gradient-start: #1a1a2e;
+$color-gradient-middle: #16213e;
+$color-gradient-end: #0f0f23;
+
+// Semantic colors
+$color-success: #28a745;
+$color-success-dark: #218838;
+$color-error: #d32f2f;
+$color-error-dark: #b71c1c;
+$color-neutral: #6c757d;
+
+// Filter colors
+$color-filter-clear: #646464;
+$color-filter-clear-alt: #505050;
+$color-filter-background-light: #e6e8eb;
+$color-filter-background-medium: #323232;
+$color-filter-background-dark: #1e1e1e;
+
+// =============================================================================
+// GLOBAL / BASE STYLES
+// =============================================================================
+
+// Primary colors
+$primary-color: $color-primary-text !default;
+
+// Body background gradient
+$gradient-start: $color-gradient-start !default;
+$gradient-middle: $color-gradient-middle !default;
+$gradient-end: $color-gradient-end !default;
+
+// Links
+$link-color: $color-link-blue !default;
+$link-hover: $color-link-blue-hover !default;
+
+// =============================================================================
+// HEADER & NAVIGATION
+// =============================================================================
+
+// Header/navigation backgrounds
+$nav-background: rgba($color-dark-base, 0.9) !default;
+
+// Header text and links
+$header-link-color: $color-white !default;
+$header-link-hover: $color-copilot-purple !default;
+
+// Navigation borders
+$nav-border-color: rgba($color-copilot-purple, 0.2) !default;
+
+// =============================================================================
+// FOOTER
+// =============================================================================
+
+$footer-text: $color-footer-gray !default;
+$footer-text-light: $color-footer-gray-light !default;
+
+// =============================================================================
+// MAIN CONTENT WRAPPER
+// =============================================================================
+
+$wrapper-background: rgba($color-dark-base, 0.8) !default;
+$wrapper-border-color: rgba($color-wrapper-border, 0.2) !default;
+
+// =============================================================================
+// HOMEPAGE NAVIGATION CARDS
+// =============================================================================
+
+// Homepage card backgrounds (ordered by opacity)
+$homepage-card-overlay-lightest: rgba($color-dark-base, 0.2) !default;
+$homepage-card-overlay-lighter: rgba($color-dark-base, 0.3) !default;
+$homepage-card-overlay-medium: rgba($color-dark-base, 0.6) !default;
+$homepage-card-overlay-light: rgba($color-dark-base, 0.7) !default;
+$homepage-card-overlay-hover: rgba($color-dark-base, 0.85) !default;
+
+// Homepage card borders
+$homepage-card-border: rgba($color-copilot-purple, 0.3) !default;
+$homepage-card-border-hover: rgba($color-copilot-purple, 0.6) !default;
+
+// =============================================================================
+// POSTS & ARTICLES
+// =============================================================================
+
+// Post card backgrounds
+$post-card-background: rgba($color-copilot-blue-base, 0.10) !default;
+$post-card-background-hover: rgba($color-copilot-blue-base, 0.18) !default;
+
+// Post card shadows
+$post-card-shadow: rgba($color-copilot-purple, 0.08) !default;
+$post-card-shadow-hover: rgba($color-copilot-blue-base, 0.18) !default;
+
+// Code highlighting
+$code-background: rgba($color-copilot-purple, 0.1) !default;
+$code-border: rgba($color-copilot-purple, 0.2) !default;
+
+// =============================================================================
+// COPILOT THEME ELEMENTS
+// =============================================================================
+
+// Brand colors
+$copilot-purple: $color-copilot-purple !default;
+$copilot-purple-solid: $color-copilot-purple-alt !default;
+
+// Purple variations (ordered by opacity)
+$copilot-purple-shadow: rgba($color-copilot-purple, 0.08) !default;
+$copilot-purple-light: rgba($color-copilot-purple, 0.1) !default;
+$copilot-purple-medium: rgba($color-copilot-purple, 0.3) !default;
+$copilot-purple-border-hover: rgba($color-copilot-purple, 0.5) !default;
+$copilot-purple-border-bright: rgba($color-copilot-purple, 0.6) !default;
+
+// Blue variations
+$copilot-blue: rgba($color-copilot-blue-base, 0.10) !default;
+$copilot-blue-hover: rgba($color-copilot-blue-base, 0.18) !default;
+
+// =============================================================================
+// FILTER SYSTEM
+// =============================================================================
+
+// Filter button backgrounds
+$filter-background: rgba($color-filter-background-light, 0.1) !default;
+$filter-background-clear: rgba($color-filter-background-medium, 0.2) !default;
+$filter-background-disabled: rgba($color-filter-background-dark, 0.3) !default;
+
+// Filter button borders
+$filter-border: rgba($color-copilot-purple, 0.3) !default;
+$filter-border-hover: rgba($color-copilot-purple, 0.5) !default;
+$filter-border-active: $color-copilot-purple-alt !default;
+
+// Filter clear button colors
+$filter-clear-border: rgba($color-filter-clear, 0.3) !default;
+$filter-clear-border-alt: rgba($color-filter-clear-alt, 0.4) !default;
+
+// Filter active state
+$filter-active-background: $color-copilot-purple-alt !default;
+$filter-active-text: $color-white !default;
+
+// Filter semantic colors
+$filter-add-bg: $color-success !default;
+$filter-add-border: $color-success !default;
+$filter-add-hover: $color-success-dark !default;
+
+$filter-remove-bg: $color-error !default;
+$filter-remove-border: $color-error-dark !default;
+$filter-remove-hover: $color-error-dark !default;
+
+$filter-neutral-bg: $color-neutral !default;
