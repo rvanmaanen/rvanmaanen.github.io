@@ -1,11 +1,11 @@
 ---
-layout: post
-title:  "In depth code analysis with NDepend"
-categories: Static Code Analysis NDepend Legacy
-description: My experience using NDepend to analyze legacy codebases
-excerpt_separator: <!--excerpt_end-->
-image: /assets/ndepend/logo.png
-permalink: in-depth-code-analysis-with-ndepend
+layout: "post"
+title: "In depth code analysis with NDepend"
+tags: ["Static Code Analysis", "NDepend", "Legacy Code", "Code Quality", "Software Analysis", "Code Metrics", "Technical Debt", "Refactoring", "Software Engineering", "Code Review", "Architecture Analysis", "Dependency Analysis", "Code Coverage", "Performance Analysis", "Software Maintenance", "Quality Assurance", "Development Tools", "Code Inspection", "Software Testing", "Best Practices"]
+description: "My experience using NDepend to analyze legacy codebases"
+excerpt_separator: "<!--excerpt_end-->"
+image: "/assets/ndepend/logo.png"
+permalink: "in-depth-code-analysis-with-ndepend"
 ---
 
 After using NDepend for a while to analyze a few codebases, I wrote this blog about my experience, which I can summarize by saying it's a powerful tool that gives you a lot of insights into your codebase like complexity, dependencies, dead code, code smells, comparisons between versions, etc. Go ahead and check it out at [the NDepend website](https://www.ndepend.com/) with a free trial, you won't regret it. Read on to get some of my experiences. Tip: Do make use of the extensive documentation!<!--excerpt_end-->

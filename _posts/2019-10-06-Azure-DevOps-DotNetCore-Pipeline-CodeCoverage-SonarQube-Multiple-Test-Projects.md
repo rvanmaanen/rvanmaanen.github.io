@@ -1,11 +1,11 @@
 ---
-layout: post
-title:  "Creating an Azure DevOps pipeline for .NET Core with multiple test projects, SonarQube, ReportGenerator & more"
-categories: Azure DevOps .NET Core Code Coverage SonarQube
-description: A guide on enabling code coverage and more in Azure Devops and SonarQube with multiple .NET Core test projects 
-excerpt_separator: <!--excerpt_end-->
-image: /assets/code_coverage/magnifier.png
-permalink: sonarqube-code-coverage-dotnetcore-multiple-test-projects
+layout: "post"
+title: "Creating an Azure DevOps pipeline for .NET Core with multiple test projects, SonarQube, ReportGenerator & more"
+tags: ["Azure DevOps", ".NET Core", "Code Coverage", "SonarQube", "ReportGenerator", "CI/CD", "Continuous Integration", "Pipeline", "Testing", "Build Pipeline", "DevOps", "Software Quality", "Code Analysis", "Multiple Test Projects", "MSBuild", "Azure Pipelines", "YAML", "Static Code Analysis", "Test Automation", "Quality Gates"]
+description: "A guide on enabling code coverage and more in Azure Devops and SonarQube with multiple .NET Core test projects"
+excerpt_separator: "<!--excerpt_end-->"
+image: "/assets/code_coverage/magnifier.png"
+permalink: "sonarqube-code-coverage-dotnetcore-multiple-test-projects"
 ---
 
 Update: A followup blogpost improving on this pipeline [is available here](/sonarsource-showing-too-many-conditions-in-code-coverage-with-multiple-dotnetcore-test-projects)!

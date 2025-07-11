@@ -1,10 +1,10 @@
 ---
-layout: post
+layout: "post"
 title: "Automating Git Workflows in VS Code with Copilot Chat, Custom Prompts, and Terminal Auto-Approval"
-categories: vscode copilot automation git
-description: Automate your entire Git workflow in Visual Studio Code using Copilot Chat, custom prompts, and the new terminal auto-approval feature
-excerpt_separator: <!--excerpt_end-->
-permalink: automating-git-workflows-vscode-copilot-chat-terminal-auto-approval
+tags: ["Visual Studio Code", "VS Code", "GitHub Copilot", "Copilot Chat", "Automation", "Git", "Workflow", "Productivity", "Developer Tools", "AI", "Terminal", "DevOps", "Configuration", "Custom Prompts", "Python", "PowerShell", "Development", "Software Engineering", "Code Review", "Version Control"]
+description: "Automate your entire Git workflow in Visual Studio Code using Copilot Chat, custom prompts, and the new terminal auto-approval feature"
+excerpt_separator: "<!--excerpt_end-->"
+permalink: "automating-git-workflows-vscode-copilot-chat-terminal-auto-approval.html"
 ---
 
 With the June 2025 ([v1.102](https://code.visualstudio.com/updates/v1_102#_terminal-auto-approval-experimental)) release of Visual Studio Code, I have streamlined my Git workflow by combining Copilot Chat's new features, custom prompts, and the experimental terminal auto-approval system. This setup allows me to automate the process of reviewing changes, generating commit messages, and pushing updates, all with minimal manual intervention and maximum safety.<!--excerpt_end-->
@@ -23,7 +23,7 @@ With the June 2025 ([v1.102](https://code.visualstudio.com/updates/v1_102#_termi
 
 ## Some visuals
 
-Starting the workflow is as simple as typing `/pushall` in the Copilot Chat. In the following screenshots you'll see me start the prompt. 
+Starting the workflow is as simple as typing `/pushall` in the Copilot Chat. In the following screenshots you'll see me start the prompt.
 
 <div class="image-gallery">
   <div class="image-item full-width">
@@ -49,53 +49,6 @@ This is a clear, descriptive commit message that explains the specific improveme
 
 Here are some two screenshots of the next possible scenarios, one where I abort the workflow and one where I continue with the commit and push.
 
-<style>
-.image-gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-.image-item {
-  flex: 1;
-  min-width: 250px;
-  max-width: 350px;
-  text-align: center;
-}
-
-.image-item.full-width {
-  flex: 1 1 100%;
-  max-width: 500px;
-}
-
-.image-item img {
-  width: 100%;
-  height: auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-.image-caption {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #666;
-  font-style: italic;
-}
-
-@media (max-width: 768px) {
-  .image-gallery {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .image-item {
-    max-width: 100%;
-  }
-}
-</style>
-
 <div class="image-gallery">
    <div class="image-item">
     <img src="{{ "/assets/auto-approve-terminal-commands/controlc.png" | relative_url }}" alt="Aborting the workflow">
@@ -106,8 +59,6 @@ Here are some two screenshots of the next possible scenarios, one where I abort 
     <div class="image-caption">Workflow executing</div>
   </div>
 </div>
-
-
 
 ## Key Features Used
 

@@ -1,11 +1,11 @@
 ---
-layout: post
-title:  "Blogging with Jekyll on Windows"
-categories: jekyll windows
-description: A quick start for anyone who wants to start blogging with Jekyll on Windows by using Ubuntu through the Windows Subsytem for Linux and GitHub pages.
-excerpt_separator: <!--excerpt_end-->
-image: /assets/blogging_with_jekyll/logos.png
-permalink: blogging-with-jekyll-on-windows
+layout: "post"
+title: "Blogging with Jekyll on Windows"
+tags: ["Jekyll", "Windows", "GitHub Pages", "Blog", "Ubuntu", "WSL", "Windows Subsystem for Linux", "Static Site Generator", "Web Development", "Ruby", "Markdown", "Git", "GitHub", "Development Environment", "Tutorial", "Getting Started", "Command Line", "Open Source", "Documentation", "Software Development"]
+description: "A quick start for anyone who wants to start blogging with Jekyll on Windows by using Ubuntu through the Windows Subsytem for Linux and GitHub pages."
+excerpt_separator: "<!--excerpt_end-->"
+image: "/assets/blogging_with_jekyll/logos.png"
+permalink: "blogging-with-jekyll-on-windows"
 ---
 ![Logos]({{ "/assets/blogging_with_jekyll/logos.png" | absolute_url }})
 

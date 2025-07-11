@@ -1,11 +1,11 @@
 ---
-layout: post
-title:  "Python on Azure Functions - Round 2"
-categories: Azure Functions Python
-description: Having another go at Python on Azure Functions
-excerpt_separator: <!--excerpt_end-->
-image: /assets/python_on_azure_functions/pythonfunctions_li.png
-permalink: python-on-azure-functions-round-2
+layout: "post"
+title: "Python on Azure Functions - Round 2"
+tags: ["Azure Functions", "Python", "Serverless", "Cloud Computing", "Microsoft Azure", "Function Apps", "Development", "Programming", "Python Development", "Azure Portal", "Serverless Computing", "Cloud Development", "Azure CLI", "Deployment", "Troubleshooting", "Web Development", "Cloud Services", "Azure SDK", "Function Runtime", "Performance"]
+description: "Having another go at Python on Azure Functions"
+excerpt_separator: "<!--excerpt_end-->"
+image: "/assets/python_on_azure_functions/pythonfunctions_li.png"
+permalink: "python-on-azure-functions-round-2"
 ---
 
 A while ago a customer really wanted a solution based on Python. We already decided on Azure Functions, but Python support at that time was still in preview. I decided to evaluate exactly how preview it was. The result wasn't really pretty: I didn't get things to work in Azure, we gave up and told the customer we really needed to stick with C# for the time being. You can read all about it [in this blog post](/python-on-azure-functions).

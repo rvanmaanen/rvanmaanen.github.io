@@ -1,11 +1,11 @@
 ---
-layout: post
-title:  "Python Azure Function with Visual Studio Code"
-categories: Azure Functions Python Windows 10
-description: My experience setting up an Azure Function with Python and Visual Studio Code on a Windows 10 machine
-excerpt_separator: <!--excerpt_end-->
-image: /assets/python_on_azure_functions/pythonfunctions_li.png
-permalink: python-on-azure-functions
+layout: "post"
+title: "Python Azure Function with Visual Studio Code"
+tags: ["Azure Functions", "Python", "Windows 10", "Visual Studio Code", "VS Code", "Serverless", "Cloud Computing", "Microsoft Azure", "Development", "Programming", "Function Apps", "Azure CLI", "Deployment", "Development Environment", "Cloud Development", "Python Development", "Azure Portal", "Serverless Computing", "Web Development", "Cloud Services"]
+description: "My experience setting up an Azure Function with Python and Visual Studio Code on a Windows 10 machine"
+excerpt_separator: "<!--excerpt_end-->"
+image: "/assets/python_on_azure_functions/pythonfunctions_li.png"
+permalink: "python-on-azure-functions"
 ---
 
 *Update: Others, like Jeff Hollan, have been able to get am Azure Function working with Python. He did have to change something in the requirements.txt as well, same as I mentioned here. Have a look at [this GitHub issue](https://github.com/Azure/azure-functions-python-worker/issues/164). I'll give it another shot myself soon. Update: [Read about my second attempt here](/python-on-azure-functions-round-2)*

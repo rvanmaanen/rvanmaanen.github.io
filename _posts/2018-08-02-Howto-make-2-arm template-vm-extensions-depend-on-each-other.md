@@ -1,10 +1,10 @@
 ---
-layout: post
-title:  "How to make two VM extensions depend on each other in ARM"
-categories: HowTo ARM Template VM extensions depends on Chocolatey Server
-description: How I fixed my Chocolatey Server ARM template by using DSC and a custom script extension that depend on each other
-excerpt_separator: <!--excerpt_end-->
-permalink: depend-on-multiple-arm-script-extensions
+layout: "post"
+title: "How to make two VM extensions depend on each other in ARM"
+tags: ["ARM Templates", "Azure Resource Manager", "VM Extensions", "Dependencies", "Chocolatey Server", "DSC", "Desired State Configuration", "PowerShell", "Azure", "Infrastructure as Code", "Cloud Infrastructure", "Virtual Machines", "Azure VMs", "Custom Script Extension", "Configuration Management", "DevOps", "Cloud Computing", "Azure Automation", "Template Development", "Azure CLI"]
+description: "How I fixed my Chocolatey Server ARM template by using DSC and a custom script extension that depend on each other"
+excerpt_separator: "<!--excerpt_end-->"
+permalink: "depend-on-multiple-arm-script-extensions"
 ---
 
 Recently I helped [Rob Bos](https://rajbos.github.io/) by creating an ARM template, that allowed him to spin up a VM in Azure and which would host a Chocolatey Server. Rob wrote [a nice blog post](https://rajbos.github.io/blog/2018/07/20/chocolatey-server-azure) about this. As he mentions in his post, there are still some issues with the ARM template. On major thing is fixed though: The DSC step no longer fails and it's no longer necessary to manually execute PowerShell. Here's how I fixed it.<!--excerpt_end-->

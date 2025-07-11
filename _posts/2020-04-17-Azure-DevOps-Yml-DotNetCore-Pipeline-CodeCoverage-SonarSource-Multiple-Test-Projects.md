@@ -1,11 +1,11 @@
 ---
-layout: post
-title:  "Fixing SonarCloud code coverage condition count with multiple .NET Core test projects"
-categories: Azure DevOps .NET Core Merge Code Coverage SonarCloud ReportGenerator
-description: Followup on my previous guide on enabling code coverage in Azure Devops and SonarQube with multiple .NET Core test projects - Simplified solution in yml that fixes SonarCloud showing too many conditions
-excerpt_separator: <!--excerpt_end-->
-image: /assets/code_coverage/magnifier.png
-permalink: sonarsource-showing-too-many-conditions-in-code-coverage-with-multiple-dotnetcore-test-projects
+layout: "post"
+title: "Fixing SonarCloud code coverage condition count with multiple .NET Core test projects"
+tags: ["Azure DevOps", ".NET Core", "Code Coverage", "SonarCloud", "ReportGenerator", "CI/CD", "Continuous Integration", "Pipeline", "Testing", "Build Pipeline", "DevOps", "Software Quality", "Code Analysis", "Multiple Test Projects", "MSBuild", "Azure Pipelines", "YAML", "Static Code Analysis", "Test Automation", "Quality Gates"]
+description: "Followup on my previous guide on enabling code coverage in Azure Devops and SonarQube with multiple .NET Core test projects - Simplified solution in yml that fixes SonarCloud showing too many conditions"
+excerpt_separator: "<!--excerpt_end-->"
+image: "/assets/code_coverage/magnifier.png"
+permalink: "sonarsource-showing-too-many-conditions-in-code-coverage-with-multiple-dotnetcore-test-projects"
 ---
 
 SonarSource made a great improvement, it will now show [conditional coverage of your tests](https://community.sonarsource.com/t/c-vb-net-sonarqube-and-sonarcloud-support-branch-condition-coverage-data/22384). Unfortunately, when using the pipeline as described in my previous blogpost, SonarCloud reports way too many conditions. For instance, a simple `if(condition)` would result in 10 possible conditions which clearly is incorrect but easy to fix.<!--excerpt_end--> We submitted a [bug report](https://community.sonarsource.com/t/sonarsource-reports-invalid-code-coverage-when-using-opencover/23357) for this.
