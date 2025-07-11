@@ -4,7 +4,7 @@ applyTo: "**/*.md"
 
 # Instructions for AI models when generating markdown files
 
-If you have not read them, fetch `/workspaces/tech/.github/copilot-instructions.md` and use these instructions as well.
+If you have not read them, fetch `/workspaces/rvanmaanen.github.io/.github/copilot-instructions.md` and use these instructions as well.
 
 ## Terminology
 

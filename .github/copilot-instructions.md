@@ -1,6 +1,6 @@
 # Instructions for AI models when generating any content
 
-When creating markdown files, if you have not read them, fetch `/workspaces/tech/.github/markdown-instructions.md` and use these instructions as well.
+When creating markdown files, if you have not read them, fetch `/workspaces/rvanmaanen.github.io/.github/markdown-instructions.md` and use these instructions as well.
 
 ## Reusable prompts
 
