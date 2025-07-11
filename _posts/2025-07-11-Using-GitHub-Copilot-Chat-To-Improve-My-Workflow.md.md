@@ -92,7 +92,7 @@ Follow these steps exactly, do not use other methods for the things I am asking 
 1. Always use the following command to list all changed files and show the diffs, even if you think there are no changed files: `git --no-pager diff`
 2. Analyze the changes and suggest a clear, descriptive commit message.
 3. Explain to the user that they have 10 seconds to stop the script you are about to start and you will continue if they do not.
-4. Run this script and continue if the exit code is 0, ask them what is wrong if the exit code is 1: `python3 /workspaces/tech/.github/prompts/pushall.10-second-delay.py`
+4. Run this script and continue if the exit code is 0, ask them what is wrong if the exit code is 1: `python3 /workspaces/rvanmaanen.github.io/.github/prompts/pushall.10-second-delay.py`
 
 ## Step 2: Stage and commit all changes
 
