@@ -54,6 +54,8 @@ This rest of this post provides a high-level overview of the improvements. The c
 - [pushall-delay.ps1]({{ "/assets/pushall/pushall-delay.ps1" | relative_url }}) - Enhanced user confirmation script
 - [get-git-changes.ps1]({{ "/assets/pushall/get-git-changes.ps1" | relative_url }}) - Git analysis script
 
+If you want to use this, make sure you at least have the GitHub MCP server configured. Also, I haven't tested this outside my own environment, so please mention any bugs to me and I'll try to fix them for everyone!
+
 ### Tips
 
 First off, a small tip. If you know what you want to do, you can just still use the prompt and just give some additional instructions:
