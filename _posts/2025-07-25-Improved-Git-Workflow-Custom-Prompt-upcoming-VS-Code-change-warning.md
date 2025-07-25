@@ -50,7 +50,7 @@ Because I had the most fun creating this, let me start off by how the new termin
 
 This rest of this post provides a high-level overview of the improvements. The complete updated files are available for download:
 
-- [pushall.prompt.md]({{ "/assets/pushall/pushall.prompt.md" | relative_url }}) - The main workflow prompt
+- [pushall.prompt.txt (rename to md)]({{ "/assets/pushall/pushall.prompt.txt" | relative_url }}) - The main workflow prompt
 - [pushall-delay.ps1]({{ "/assets/pushall/pushall-delay.ps1" | relative_url }}) - Enhanced user confirmation script
 - [get-git-changes.ps1]({{ "/assets/pushall/get-git-changes.ps1" | relative_url }}) - Git analysis script
 
