@@ -23,7 +23,7 @@ Since my last post about automating Git workflows, two important developments ha
 
 1. **Custom Prompt Improvements:** I've refined my `/pushall` prompt based on real-world usage, adding better error handling, smarter commit message generation, enhanced safety checks, new terminal UI and switched to PowerShell for the scripts.
 
-2. **Breaking VS Code Changes:** Microsoft has made significant changes to the terminal auto-approval configuration that will require updating your settings. These changes are already merged and will ship in VS Code v1.103 (July 2025 release, shipped in August 2025).
+2. **Breaking VS Code Changes:** Microsoft has made significant changes to the terminal auto-approval configuration that will require updating your settings. These changes are already merged and will likely be part of VS Code v1.103 ([July 2025 release](https://github.com/microsoft/vscode/milestone/319), shipped in August 2025).
 
 The good news is that the changes from Microsoft improve the functionality by consolidating the configuration and adding regex flag support. However, you'll need to update your settings to avoid any disruption to your workflow.
 
@@ -194,6 +194,17 @@ The biggest change is that the separate `allowList` and `denyList` settings have
 }
 ```
 
+### Configuration name change
+
+In addition to consolidating the settings, Microsoft is also planning to change the setting names entirely. According to [VS Code issue #253314](https://github.com/microsoft/vscode/issues/253314), they want to rename the settings from `github.copilot.chat.agent.terminal.*` to `chat.agent.terminal.*` as this functionality is being moved to the core VS Code terminal feature.
+
+This means the final configuration names will likely be:
+
+- `chat.agent.terminal.allowList` (instead of `github.copilot.chat.agent.terminal.allowList`)
+- `chat.agent.terminal.denyList` (instead of `github.copilot.chat.agent.terminal.denyList`)
+
+These changes are part of a larger effort tracked in [issue #252650](https://github.com/microsoft/vscode/issues/252650) to move the entire terminal auto-approval functionality from the GitHub Copilot extension into VS Code core. This means you might need to update your configuration again when this migration is complete.
+
 ### Enhanced Regex Support (PR #256754)
 
 The second improvement adds support for **regex flags and case-insensitive matching**:
@@ -232,16 +243,19 @@ Use this to simplify the configuration.
 
 ### 3. Timeline
 
-These changes are already merged and will be included in the **July 2025 release** of VS Code (v1.103), which will be shipped in **August 2025**. Only when you update to this version will the old configuration stop working.
+These changes are already merged and will likely be included in the **July 2025 release** of VS Code (v1.103), which will be shipped in **August 2025**. Only when you update to this version will the old configuration stop working.
 
 ## References
 
 - [Previous post: Automating my Git workflow in VS Code]({{ "/automating-my-git-workflow-vscode-copilot-chat-terminal-auto-approval.html" | relative_url }})
+- [VS Code Issue #252650: Move terminal auto approval from Copilot extension to core](https://github.com/microsoft/vscode/issues/252650)
+- [VS Code Issue #253314: Change github.copilot.chat.agent.terminal.allowList to chat.agent.terminal.allowList](https://github.com/microsoft/vscode/issues/253314)
 - [VS Code Issue #253472: Terminal auto approval - merge allow and deny list](https://github.com/microsoft/vscode/issues/253472)
 - [VS Code Issue #256742: Terminal auto approval - support regex flags and case insensitive remove-item](https://github.com/microsoft/vscode/issues/256742)
 - [VS Code PR #256725: Merge allow and deny lists into autoApprove](https://github.com/microsoft/vscode/pull/256725)
 - [VS Code PR #256754: Support regex flags and case insensitive remove-item](https://github.com/microsoft/vscode/pull/256754)
 - [VS Code v1.102 Release Notes](https://code.visualstudio.com/updates/v1_102#_terminal-auto-approval-experimental)
+- [VS Code July 2025 Milestone](https://github.com/microsoft/vscode/milestone/319)
 - [Customize Copilot with Instructions and Prompts](https://code.visualstudio.com/docs/copilot/copilot-customization)
 
 *This article was co-written with GitHub Copilot Chat*
