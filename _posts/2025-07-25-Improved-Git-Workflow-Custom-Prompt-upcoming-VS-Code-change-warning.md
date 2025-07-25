@@ -159,7 +159,8 @@ You still just call /pushall and things (should) work:
 
 ⚠️ **Important Breaking Change Alert!** ⚠️
 
-Microsoft has merged two significant changes to the terminal auto-approval feature that will affect your current configuration:
+Microsoft has merged two significant changes to the terminal auto-approval feature that will affect your current configuration. They're described next.
+However, I want to highlight it seems they plan to change it even more by changing the name from `github.copilot.chat.agent.terminal.autoApprove` to `chat.agent.terminal.allowList` and `chat.agent.terminal.denyList` so you even might need to use these settings by the time the new version gets released.
 
 ### Configuration Consolidation (PR #256725)
 
