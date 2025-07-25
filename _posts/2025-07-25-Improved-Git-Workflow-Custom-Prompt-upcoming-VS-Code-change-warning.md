@@ -221,7 +221,7 @@ The third improvement adds support for **regex flags and case-insensitive matchi
 **Examples of new regex capabilities:**
 
 ```json
-"github.copilot.chat.agent.terminal.autoApprove": {
+"chat.agent.terminal.autoApprove": {
     "/^git\\s+/i": true,           // Case-insensitive git commands
     "/^Get-ChildItem\\b/i": true,  // Case-insensitive PowerShell
     "/^echo.*/s": true,            // Dotall flag for multiline
