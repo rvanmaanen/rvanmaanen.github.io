@@ -29,15 +29,46 @@ The good news is that the changes from Microsoft improve the functionality by co
 
 ## Improved Custom Prompt
 
-After using the `/pushall` command for several weeks, I learned what worked and what didn't. So I rewrote it. The original was 175 lines, the new one is 226 lines. Not exactly a revolution, but it handles real-world scenarios much better.
+After using the `/pushall` command for a while, I learned what worked and what didn't. So I rewrote it. The original was 175 lines, the new one is 226 lines. Not exactly a revolution, but it handles real-world scenarios much better.
+
+### Better Terminal Experience
+
+Because I had the most fun creating this, let me start off by how the new terminal output looks like. Btw, it's fully responsive if you resize :)
+
+<div class="image-gallery">
+  <div class="image-item full-width">
+    <img src="{{ "/assets/pushall/wide-terminal.png" | relative_url }}" alt="Enhanced terminal UI with progress bars and responsive layout. Wide view.">
+    <div class="image-caption">The PowerShell scripts look nicer and handle window resizing properly.</div>
+  </div>
+  <div class="image-item">
+    <img src="{{ "/assets/pushall/small-terminal.png" | relative_url }}" alt="Enhanced terminal UI with progress bars and responsive layout. Small view.">
+    <div class="image-caption">The same terminal but then resized.</div>
+  </div>
+</div>
 
 ### Actual files
 
-This post provides a high-level overview of the improvements. The complete updated files are available for download:
+This rest of this post provides a high-level overview of the improvements. The complete updated files are available for download:
 
 - [pushall.prompt.md]({{ "/assets/pushall/pushall.prompt.md" | relative_url }}) - The main workflow prompt
 - [pushall-delay.ps1]({{ "/assets/pushall/pushall-delay.ps1" | relative_url }}) - Enhanced user confirmation script
 - [get-git-changes.ps1]({{ "/assets/pushall/get-git-changes.ps1" | relative_url }}) - Git analysis script
+
+### Tips
+
+First off, a small tip. If you know what you want to do, you can just still use the prompt and just give some additional instructions:
+
+```text
+/pushall skip the approval steps, make a new branch, move my changes there, create a PR and assign to Copilot
+```
+
+Results in:
+
+```text
+I'll follow the pushall workflow instructions and skip the approval steps as requested. Let me start by checking the current branch and changes.
+```
+
+This just very quickly performs this entire workflow without any interruptions.
 
 ### What Changed
 
@@ -66,15 +97,6 @@ This post provides a high-level overview of the improvements. The complete updat
   - Structured commit message generation from JSON analysis
   - PR creation and management steps
   - Copilot review request functionality
-
-### Better Terminal Experience
-
-<div class="image-gallery">
-  <div class="image-item full-width">
-    <img src="{{ "/assets/pushall/enhanced-terminal-ui.png" | relative_url }}" alt="Enhanced terminal UI with progress bars and responsive layout">
-    <div class="image-caption">The PowerShell scripts look nicer and handle window resizing properly</div>
-  </div>
-</div>
 
 ### The Actual Improvements
 

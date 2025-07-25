@@ -35,15 +35,13 @@ tools: ['changes', 'codebase', 'editFiles', 'extensions', 'fetch', 'findTestFile
 
 **NEVER use PowerShell scripts for GitHub API operations - always use the GitHub MCP Server tools listed above.**
 
-1. **Check current branch and current changes:**
+1. **Check current branch:**
 
     ```pwsh
     pwsh .\.github\prompts\get-git-changes.ps1
     ```
 
-    This script captures comprehensive git changes analysis, including git status, individual diff files, and branch information, saving it to `.tmp/git-changes-analysis/` directory. The main analysis data is in `git-changes-analysis.json` and individual `.diff` files are created for each changed file.
-    
-    The analysis file also contains the name of the current branch. In further steps, this will be referred to as `[BRANCHNAME]`
+    To get the current branch name, read the analysis file at `.tmp/git-changes-analysis/git-changes-analysis.json` and look at the `branch.current` field. In further steps, this will be referred to as `[BRANCHNAME]`
 
 2. **Branch protection check:** Only do this if you are on the `main` branch!
 
@@ -67,7 +65,10 @@ tools: ['changes', 'codebase', 'editFiles', 'extensions', 'fetch', 'findTestFile
     - **Exit code 0 (user did not abort):** Continue with step 4
     - **Exit code 1 (user aborted):** Ask the user what's wrong, then still perform step 2 to ask which branch they want to move to.
 
-4. **Analyze changes and prepare commit message:** Read the analysis output `.tmp/git-changes-analysis/git-changes-analysis.json` and the corresponding `.diff` files. Then carefully analyze the comprehensive changes information and prepare a clear, descriptive commit message that explains what was changed and why. The commit message will be referenced as `[COMMITMESSAGE]`.
+4. **Analyze changes and prepare commit message**
+    The script from step 1 captures comprehensive git changes analysis, including git status, individual diff files, and branch  information, saving it to `.tmp/git-changes-analysis/` directory. The main analysis data is in `git-changes-analysis.json` and individual `.diff` files are created for each changed file.
+
+    Read the analysis output and the corresponding diff files. Then carefully analyze the comprehensive changes information and prepare a clear, descriptive commit message that explains what was changed and why. The commit message will be referenced as `[COMMITMESSAGE]`. It should not be too long, but should summarize the changes made in a clear and concise manner, grouped by functionality and not by file.
 
     **Instructions:**
 
@@ -99,16 +100,10 @@ tools: ['changes', 'codebase', 'editFiles', 'extensions', 'fetch', 'findTestFile
     ```
     Enhanced PowerShell workflow scripts with responsive terminal UX and improved documentation
 
-    1. Major improvements to pushall-delay.ps1:
-    - Added responsive terminal resizing with dynamic layout recalculation
-    - Improved error handling with safe fallbacks for console operations
-    - Added helper functions for consistent progress bar rendering
-    - Enhanced visual presentation with proper spacing and alignment
-
-    2. Improved git changes analysis script (get-git-changes.ps1):
+    1. Improved git changes analysis script:
     - Added terminal clearing for cleaner output presentation
 
-    3. Enhanced workflow documentation (pushall.prompt.md):
+    2. Enhanced workflow documentation:
     - Improved user interaction guidelines for PR creation and Copilot review requests
     - Better workflow control with mandatory user confirmation steps"
     ```

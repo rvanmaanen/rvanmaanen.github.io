@@ -143,3 +143,40 @@ pre.highlight {
 .section-title {
     margin-bottom: 0;
 }
+
+// Table styling
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+    background-color: rgba($color-dark-base, 0.3);
+    border: 1px solid rgba($color-wrapper-border, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid rgba($color-wrapper-border, 0.2);
+        color: $color-white;
+    }
+    
+    th {
+        background-color: rgba($color-copilot-purple, 0.2);
+        font-weight: 600;
+        border-bottom: 2px solid rgba($color-copilot-purple, 0.4);
+    }
+    
+    tr:nth-child(even) {
+        background-color: rgba($color-dark-base, 0.2);
+    }
+    
+    tr:hover {
+        background-color: rgba($color-copilot-purple, 0.1);
+    }
+    
+    // Remove border from last row
+    tr:last-child td {
+        border-bottom: none;
+    }
+}

@@ -130,7 +130,8 @@ try {
         $headerBorder = "═" * $layout.BoxWidth
         $headerText = "⚠️  ACTION REQUIRED  ⚠️"
         $headerPadding = [Math]::Max(0, [Math]::Floor(($layout.BoxWidth - $headerText.Length) / 2))
-        $headerLine = (" " * $headerPadding) + $headerText + (" " * ($layout.BoxWidth - $headerPadding - $headerText.Length))
+        $remainingSpace = [Math]::Max(0, ($layout.BoxWidth - $headerPadding - $headerText.Length))
+        $headerLine = (" " * $headerPadding) + $headerText + (" " * $remainingSpace)
         
         Write-Host $headerBorder -ForegroundColor Cyan
         Write-Host $headerLine -ForegroundColor Yellow
@@ -145,8 +146,9 @@ try {
         
         # Display the main message in a dynamic box
         # Generate borders
-        $topBorder = "┌" + ("─" * ($layout.BoxWidth - 2)) + "┐"
-        $bottomBorder = "└" + ("─" * ($layout.BoxWidth - 2)) + "┘"
+        $borderWidth = [Math]::Max(0, ($layout.BoxWidth - 2))
+        $topBorder = "┌" + ("─" * $borderWidth) + "┐"
+        $bottomBorder = "└" + ("─" * $borderWidth) + "┘"
         
         Write-Host $topBorder -ForegroundColor Green
         
@@ -165,7 +167,7 @@ try {
                         # Output the current line if it has content
                         if ($currentLine) {
                             $contentLength = $currentLine.Length
-                            $padding = ($layout.BoxWidth - 4 - $contentLength)
+                            $padding = [Math]::Max(0, ($layout.BoxWidth - 4 - $contentLength))
                             Write-Host "│ " -NoNewline -ForegroundColor Green
                             Write-Host $currentLine -NoNewline -ForegroundColor Yellow
                             Write-Host (" " * $padding) -NoNewline
@@ -178,7 +180,7 @@ try {
                 # Output the final line
                 if ($currentLine) {
                     $contentLength = $currentLine.Length
-                    $padding = ($layout.BoxWidth - 4 - $contentLength)
+                    $padding = [Math]::Max(0, ($layout.BoxWidth - 4 - $contentLength))
                     Write-Host "│ " -NoNewline -ForegroundColor Green
                     Write-Host $currentLine -NoNewline -ForegroundColor Yellow
                     Write-Host (" " * $padding) -NoNewline
@@ -187,7 +189,7 @@ try {
             } else {
                 # Normal line that fits in the box - ensure proper padding
                 $contentLength = $line.Length
-                $padding = ($layout.BoxWidth - 4 - $contentLength)
+                $padding = [Math]::Max(0, ($layout.BoxWidth - 4 - $contentLength))
                 Write-Host "│ " -NoNewline -ForegroundColor Green
                 Write-Host $line -NoNewline -ForegroundColor Yellow
                 Write-Host (" " * $padding) -NoNewline
@@ -345,7 +347,8 @@ try {
         $footerBorder = "═" * $layout.BoxWidth
         $abortText = "🛑 ABORTED 🛑"
         $abortPadding = [Math]::Max(0, [Math]::Floor(($layout.BoxWidth - $abortText.Length) / 2))
-        $abortLine = (" " * $abortPadding) + $abortText + (" " * ($layout.BoxWidth - $abortPadding - $abortText.Length))
+        $remainingSpace = [Math]::Max(0, ($layout.BoxWidth - $abortPadding - $abortText.Length))
+        $abortLine = (" " * $abortPadding) + $abortText + (" " * $remainingSpace)
         
         Write-Host $footerBorder -ForegroundColor Red
         Write-Host $abortLine -ForegroundColor Red
@@ -367,7 +370,8 @@ try {
         $footerBorder = "═" * $layout.BoxWidth
         $proceedText = "✅ PROCEEDING ✅"
         $proceedPadding = [Math]::Max(0, [Math]::Floor(($layout.BoxWidth - $proceedText.Length) / 2))
-        $proceedLine = (" " * $proceedPadding) + $proceedText + (" " * ($layout.BoxWidth - $proceedPadding - $proceedText.Length))
+        $remainingSpace = [Math]::Max(0, ($layout.BoxWidth - $proceedPadding - $proceedText.Length))
+        $proceedLine = (" " * $proceedPadding) + $proceedText + (" " * $remainingSpace)
         
         Write-Host $footerBorder -ForegroundColor Green
         Write-Host $proceedLine -ForegroundColor Green
