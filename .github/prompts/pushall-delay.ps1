@@ -333,7 +333,6 @@ try {
         }
         Start-Sleep -Milliseconds 500
     }
-    
     Write-Host ""
     
     if ($script:Aborted) {

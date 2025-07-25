@@ -70,7 +70,7 @@ tools: ['changes', 'codebase', 'editFiles', 'extensions', 'fetch', 'findTestFile
 
     Read the analysis output and the corresponding diff files. Then carefully analyze the comprehensive changes information and prepare a clear, descriptive commit message that explains what was changed and why. The commit message will be referenced as `[COMMITMESSAGE]`. It should not be too long, but should summarize the changes made in a clear and concise manner, grouped by functionality and not by file.
 
-    **Instructions:**
+5. **Analyze and prepare commit message:** Carefully analyze the comprehensive changes information from the git-changes-analysis.json file and prepare a clear, descriptive commit message that explains what was changed and why.
 
     - Review the `status.summary` to understand the scope of changes
     - **CRITICAL**: Use exact `diffPath` values from `diff.diffFiles[]` array in the JSON - do NOT assume filename formats

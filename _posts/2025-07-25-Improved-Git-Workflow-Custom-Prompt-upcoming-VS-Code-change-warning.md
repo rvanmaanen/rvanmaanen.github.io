@@ -1,13 +1,13 @@
 ---
 layout: "post"
 title: "Improved Git Workflow Custom Prompt & Upcoming VS Code change warning"
-tags: ["Visual Studio Code", "VS Code", "GitHub Copilot", "Copilot Chat", "Git", "Workflow", "Custom Prompts", "Terminal", "Automation", "Developer Tools", "Configuration", "Updates", "Version Control"]
+tags: ["AI", "Visual Studio Code", "GitHub Copilot", "Git", "Workflow", "Custom Prompts", "Terminal", "Automation", "Developer Tools", "Configuration", "Updates", "Version Control"]
 description: "Updates to my Git workflow custom prompt and important changes coming to VS Code terminal auto-approval"
 excerpt_separator: "<!--excerpt_end-->"
 permalink: "improved-git-workflow-custom-prompt-upcoming-vscode-change-warning.html"
 ---
 
-Following up on [my previous post]({{ "/automating-my-git-workflow-vscode-copilot-chat-terminal-auto-approval.html" | relative_url }}) about automating Git workflows with VS Code and Copilot Chat, I've made some improvements to my custom prompt and discovered an important upcoming change in VS Code that affects the terminal auto-approval feature.<!--excerpt_end-->
+Following up on [my previous post]({{ "/automating-my-git-workflow-vscode-copilot-chat-terminal-auto-approval.html" | relative_url }}) about automating Git workflows with VS Code and GitHub Copilot Chat, I've made some improvements to my custom prompt and discovered an important upcoming change in VS Code that affects the terminal auto-approval feature.<!--excerpt_end-->
 
 ## Index
 
@@ -21,7 +21,7 @@ Following up on [my previous post]({{ "/automating-my-git-workflow-vscode-copilo
 
 Since my last post about automating Git workflows, two important developments have occurred:
 
-1. **Custom Prompt Improvements:** I've refined my `/pushall` prompt based on real-world usage, adding better error handling, smarter commit message generation, enhanced safety checks, new terminal UI and switched to PowerShell for the scripts.
+1. **Custom Prompt Improvements:** I've refined my `/pushall` prompt based on real-world usage, adding better error handling, smarter commit message generation by AI, enhanced safety checks, new terminal UI and switched to PowerShell for the scripts.
 
 2. **Breaking VS Code Changes:** Microsoft has made significant changes to the terminal auto-approval configuration that will require updating your settings. These changes are already merged and will likely be part of VS Code v1.103 ([July 2025 release](https://github.com/microsoft/vscode/milestone/319), shipped in August 2025).
 
