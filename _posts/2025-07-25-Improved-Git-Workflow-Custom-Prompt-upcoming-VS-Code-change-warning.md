@@ -21,7 +21,7 @@ Following up on my previous post about automating Git workflows with VS Code and
 
 Since my last post about automating Git workflows, two important developments have occurred:
 
-1. **Custom Prompt Improvements:** I've refined my `/pushall` prompt based on real-world usage, adding better error handling, smarter commit message generation, enhanced safety checks and switched to PowerShell for the scripts.
+1. **Custom Prompt Improvements:** I've refined my `/pushall` prompt based on real-world usage, adding better error handling, smarter commit message generation, enhanced safety checks, new terminal UI and switched to PowerShell for the scripts.
 
 2. **Breaking VS Code Changes:** Microsoft has made significant changes to the terminal auto-approval configuration that will require updating your settings. These changes are already merged and will ship in VS Code v1.103 (July 2025 release, shipped in August 2025).
 
