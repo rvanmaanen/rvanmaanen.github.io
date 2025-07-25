@@ -7,7 +7,7 @@ excerpt_separator: "<!--excerpt_end-->"
 permalink: "improved-git-workflow-custom-prompt-upcoming-vscode-change-warning.html"
 ---
 
-Following up on my previous post about automating Git workflows with VS Code and Copilot Chat, I've made some improvements to my custom prompt and discovered an important upcoming change in VS Code that affects the terminal auto-approval feature.<!--excerpt_end-->
+Following up on [my previous post]({{ "/automating-my-git-workflow-vscode-copilot-chat-terminal-auto-approval.html" | relative_url }}) about automating Git workflows with VS Code and Copilot Chat, I've made some improvements to my custom prompt and discovered an important upcoming change in VS Code that affects the terminal auto-approval feature.<!--excerpt_end-->
 
 ## Index
 
@@ -143,6 +143,17 @@ The following should be enough in your allowList to automatically have the promp
   "pwsh": true
 }
 ```
+
+### To be clear, the usage has not changed
+
+You still just call /pushall and things (should) work:
+
+<div class="image-gallery">
+  <div class="image-item full-width">
+    <img src="{{ "/assets/auto-approve-terminal-commands/slashcommand.png" | relative_url }}" alt="Custom Prompts in VS Code">
+    <div class="image-caption">Starting with /pushall command</div>
+  </div>
+</div>
 
 ## Upcoming VS Code Changes
 
