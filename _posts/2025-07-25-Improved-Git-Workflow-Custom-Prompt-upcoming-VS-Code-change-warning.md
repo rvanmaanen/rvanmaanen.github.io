@@ -195,9 +195,18 @@ The biggest change is that the separate `allowList` and `denyList` settings have
 
 ### Configuration name change
 
-In addition to consolidating the settings, Microsoft is also planning to change the setting names entirely, according to [VS Code issue #253314](https://github.com/microsoft/vscode/issues/253314). This means the final configuration names will likely be:
+In addition to consolidating the settings, Microsoft is also planning to change the setting names entirely, according to [VS Code issue #253314](https://github.com/microsoft/vscode/issues/253314). This means the final configuration names will likely be: `chat.agent.terminal.autoApprove`:
 
-- `chat.agent.terminal.autoApprove` (instead of `github.copilot.chat.agent.terminal.autoApprove`)
+```json
+"chat.agent.terminal.autoApprove": {
+    "git": true,
+    "echo": true,
+    "ls": true,
+    "rm": false,
+    "curl": false,
+    "wget": false
+}
+```
 
 These changes are part of a larger effort tracked in [issue #252650](https://github.com/microsoft/vscode/issues/252650) to move the entire terminal auto-approval functionality from the GitHub Copilot extension into VS Code core. This means you might need to update your configuration again when this migration is complete.
 
