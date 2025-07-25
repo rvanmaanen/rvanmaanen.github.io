@@ -120,10 +120,15 @@ This just very quickly performs this entire workflow without any interruptions.
 - **Old:** Single 10-second delay with basic terminal output
 - **New:** Multiple confirmation points with enhanced UI and progress feedback
 
-#### 5. **Error Handling**
+#### 5. **Intelligent Defaults for Unattended Operation**
 
-- **Old:** Basic error messages and conflict guidance
-- **New:** Comprehensive error handling with detailed troubleshooting steps
+- **Old:** Required manual confirmation at every step, blocking automation
+- **New:** Sensible defaults allow completely unattended operation when you're confident about your changes - if you're on the right branch or on main (where it auto-creates a feature branch), the entire workflow runs without any user intervention needed
+
+#### 6. **Enhanced Terminal UI**
+
+- **Old:** Simple text-based output with basic messaging
+- **New:** Responsive, colored terminal design with progress bars, proper formatting, and dynamic resizing support
 
 ### Comparison Table
 
@@ -135,7 +140,8 @@ This just very quickly performs this entire workflow without any interruptions.
 | **Conflict Resolution** | Basic instructions | Enhanced guidance |
 | **User Experience** | Single Python delay script | Multiple PowerShell confirmations |
 | **GitHub Integration** | None | PR creation and updates |
-| **Error Handling** | Basic error messages | Comprehensive error handling |
+| **Automation** | Required manual intervention | Intelligent defaults for unattended operation |
+| **Terminal UI** | Simple text-based output | Responsive, colored design with progress bars |
 | **Workflow Steps** | 4 simple steps | 14 detailed steps |
 
 ### VS Code Terminal Allow List
