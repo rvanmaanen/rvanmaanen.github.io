@@ -5,6 +5,14 @@
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers/features/powershell:1": {}
   },
+  "forwardPorts": [
+    4000
+  ],
+  "portsAttributes": {
+    "4000": {
+      "label": "Jekyll Server"
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -12,37 +20,126 @@
         "ms-vscode.powershell",
         "Jekyll.vscode-jekyll-syntax",
         "Jekyll.vscode-jekyll-snippets",
-        "ms-python.python"
+        "ms-python.python",
+        "Shopify.theme-check-vscode"
       ],
       "settings": {
         "chat.agent.enabled": true,
         "chat.mcp.enabled": true,
         "powershell.debugging.createTemporaryIntegratedConsole": true,
         "terminal.integrated.defaultProfile.linux": "pwsh",
+        "remote.autoForwardPorts": false,
+        "remote.autoForwardPortsSource": "hybrid",
         "github.copilot.chat.agent.terminal.allowList": {
-          "git": true,
           "echo": true,
           "cd": true,
           "ls": true,
           "cat": true,
           "pwd": true,
           "dir": true,
-          "Write-Host": true,
-          "Set-Location": true,
+          "less": true,
+          "more": true,
+          "head": true,
+          "tail": true,
+          "tree": true,
+          "file": true,
+          "stat": true,
+          "which": true,
+          "whoami": true,
+          "id": true,
+          "uname": true,
+          "date": true,
+          "uptime": true,
+          "history": true,
+          "env": true,
+          
+          "ps": true,
+          "top": true,
+          "netstat": true,
+          "df": true,
+          "du": true,
+          "free": true,
+          
+          "grep": true,
+          "wc": true,
+          "sort": true,
+          "uniq": true,
+          "cut": true,
+          "tr": true,
+          "find": true,
+          "diff": true,
+          
           "Get-ChildItem": true,
           "Get-Content": true,
           "Get-Location": true,
-          "less": true,
-          "more": true,
-          "python3": true
+          "Get-Date": true,
+          "Get-Random": true,
+          "Get-Process": true,
+          "Get-Service": true,
+          "Test-Path": true,
+          "Join-Path": true,
+          "Split-Path": true,
+          "Resolve-Path": true,
+          "Select-String": true,
+          "Sort-Object": true,
+          "Where-Object": true,
+          "ForEach-Object": true,
+          "Measure-Object": true,
+          "Select-Object": true,
+          "Group-Object": true,
+          "Compare-Object": true,
+          "ConvertTo-Json": true,
+          "ConvertFrom-Json": true,
+          "Write-Host": true,
+          "Write-Output": true,
+          "Write-Error": true,
+          "Write-Warning": true,
+          "Write-Verbose": true,
+          "Write-Debug": true,
+
+          "Set-Content": true,
+          "Set-Location": true,
+          "Out-File": true,
+          
+          "curl": true,
+          "wget": true,
+          "ssh": true,
+          "scp": true,
+          "rsync": true,
+          
+          "pwsh": true,
+          "python3": true,
+          "python": true,
+          "node": true,
+          "ruby": true,
+          "go": true,
+          "java": true,
+          
+          "npm": true,
+          "yarn": true,
+          "pnpm": true,
+          "pip": true,
+          "pip3": true,
+          "gem": true,
+          "cargo": true,
+          "rustc": true,
+          "javac": true,
+          "mvn": true,
+          "gradle": true,
+          "make": true,
+          "cmake": true,
+          "bundle": true,
+          
+          "git": true,
+          "jekyll": true,
+          "rspec": true,
+          "npx playwright": true
         },
         "github.copilot.chat.agent.terminal.denyList": {
           "rm": true,
           "rmdir": true,
           "del": true,
           "kill": true,
-          "curl": true,
-          "wget": true,
           "eval": true,
           "chmod": true,
           "chown": true,
@@ -50,6 +147,5 @@
         }
       }
     }
-  },
-  "postCreateCommand": "PROFILE=\"$HOME/.config/powershell/Microsoft.PowerShell_profile.ps1\"; WELCOME=\"Write-Host \\\"Run './jekyll-with-reload.ps1' to start the website locally. Check the readme file for further information.\\\" -ForegroundColor Green\"; mkdir -p $(dirname $PROFILE); touch $PROFILE; grep -q 'jekyll-with-reload.ps1' $PROFILE || echo $WELCOME >> $PROFILE"
+  }
 }
