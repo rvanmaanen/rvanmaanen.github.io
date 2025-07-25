@@ -159,8 +159,7 @@ You still just call /pushall and things (should) work:
 
 ⚠️ **Important Breaking Change Alert!** ⚠️
 
-Microsoft has merged two significant changes to the terminal auto-approval feature that will affect your current configuration. They're described next.
-However, I want to highlight it seems they plan to change it even more by changing the name from `github.copilot.chat.agent.terminal.autoApprove` to `chat.agent.terminal.allowList` and `chat.agent.terminal.denyList` so you even might need to use these settings by the time the new version gets released.
+Microsoft has merged and planned three significant changes to the terminal auto-approval feature that will affect your current configuration.
 
 ### Configuration Consolidation (PR #256725)
 
@@ -207,7 +206,7 @@ These changes are part of a larger effort tracked in [issue #252650](https://git
 
 ### Enhanced Regex Support (PR #256754)
 
-The second improvement adds support for **regex flags and case-insensitive matching**:
+The third improvement adds support for **regex flags and case-insensitive matching**:
 
 - **Regex flags:** You can now use JavaScript regex flags like `i` (case-insensitive), `m` (multiline), `s` (dotall), etc.
 - **Case-insensitive matching:** Perfect for PowerShell commands that might have different casing
