@@ -130,8 +130,7 @@ try {
         $headerBorder = "═" * $layout.BoxWidth
         $headerText = "⚠️  ACTION REQUIRED  ⚠️"
         $headerPadding = [Math]::Max(0, [Math]::Floor(($layout.BoxWidth - $headerText.Length) / 2))
-        $remainingSpace = [Math]::Max(0, ($layout.BoxWidth - $headerPadding - $headerText.Length))
-        $headerLine = (" " * $headerPadding) + $headerText + (" " * $remainingSpace)
+        $headerLine = (" " * $headerPadding) + $headerText + (" " * ($layout.BoxWidth - $headerPadding - $headerText.Length))
         
         Write-Host $headerBorder -ForegroundColor Cyan
         Write-Host $headerLine -ForegroundColor Yellow
@@ -144,64 +143,60 @@ try {
         Write-Host " to abort this process. $Warning" -ForegroundColor White
         Write-Host ""
         
-        # Only display the message box if there's actual content
-        if (-not [string]::IsNullOrWhiteSpace($message)) {
-            # Display the main message in a dynamic box
-            # Generate borders
-            $borderWidth = [Math]::Max(0, ($layout.BoxWidth - 2))
-            $topBorder = "┌" + ("─" * $borderWidth) + "┐"
-            $bottomBorder = "└" + ("─" * $borderWidth) + "┘"
-            
-            Write-Host $topBorder -ForegroundColor Green
-            
-            foreach ($line in $layout.MessageLines) {
-                # Handle long lines that exceed box width
-                if ($line.Length -gt ($layout.BoxWidth - 4)) {
-                    # Word wrap long lines
-                    $words = $line -split ' '
-                    $currentLine = ''
-                    
-                    foreach ($word in $words) {
-                        $testLine = if ($currentLine) { $currentLine + ' ' + $word } else { $word }
-                        if ($testLine.Length -le ($layout.BoxWidth - 4)) {
-                            $currentLine = $testLine
-                        } else {
-                            # Output the current line if it has content
-                            if ($currentLine) {
-                                $contentLength = $currentLine.Length
-                                $padding = [Math]::Max(0, ($layout.BoxWidth - 4 - $contentLength))
-                                Write-Host "│ " -NoNewline -ForegroundColor Green
-                                Write-Host $currentLine -NoNewline -ForegroundColor Yellow
-                                Write-Host (" " * $padding) -NoNewline
-                                Write-Host " │" -ForegroundColor Green
-                            }
-                            $currentLine = $word
+        # Display the main message in a dynamic box
+        # Generate borders
+        $topBorder = "┌" + ("─" * ($layout.BoxWidth - 2)) + "┐"
+        $bottomBorder = "└" + ("─" * ($layout.BoxWidth - 2)) + "┘"
+        
+        Write-Host $topBorder -ForegroundColor Green
+        
+        foreach ($line in $layout.MessageLines) {
+            # Handle long lines that exceed box width
+            if ($line.Length -gt ($layout.BoxWidth - 4)) {
+                # Word wrap long lines
+                $words = $line -split ' '
+                $currentLine = ''
+                
+                foreach ($word in $words) {
+                    $testLine = if ($currentLine) { $currentLine + ' ' + $word } else { $word }
+                    if ($testLine.Length -le ($layout.BoxWidth - 4)) {
+                        $currentLine = $testLine
+                    } else {
+                        # Output the current line if it has content
+                        if ($currentLine) {
+                            $contentLength = $currentLine.Length
+                            $padding = ($layout.BoxWidth - 4 - $contentLength)
+                            Write-Host "│ " -NoNewline -ForegroundColor Green
+                            Write-Host $currentLine -NoNewline -ForegroundColor Yellow
+                            Write-Host (" " * $padding) -NoNewline
+                            Write-Host " │" -ForegroundColor Green
                         }
+                        $currentLine = $word
                     }
-                    
-                    # Output the final line
-                    if ($currentLine) {
-                        $contentLength = $currentLine.Length
-                        $padding = [Math]::Max(0, ($layout.BoxWidth - 4 - $contentLength))
-                        Write-Host "│ " -NoNewline -ForegroundColor Green
-                        Write-Host $currentLine -NoNewline -ForegroundColor Yellow
-                        Write-Host (" " * $padding) -NoNewline
-                        Write-Host " │" -ForegroundColor Green
-                    }
-                } else {
-                    # Normal line that fits in the box - ensure proper padding
-                    $contentLength = $line.Length
-                    $padding = [Math]::Max(0, ($layout.BoxWidth - 4 - $contentLength))
+                }
+                
+                # Output the final line
+                if ($currentLine) {
+                    $contentLength = $currentLine.Length
+                    $padding = ($layout.BoxWidth - 4 - $contentLength)
                     Write-Host "│ " -NoNewline -ForegroundColor Green
-                    Write-Host $line -NoNewline -ForegroundColor Yellow
+                    Write-Host $currentLine -NoNewline -ForegroundColor Yellow
                     Write-Host (" " * $padding) -NoNewline
                     Write-Host " │" -ForegroundColor Green
                 }
+            } else {
+                # Normal line that fits in the box - ensure proper padding
+                $contentLength = $line.Length
+                $padding = ($layout.BoxWidth - 4 - $contentLength)
+                Write-Host "│ " -NoNewline -ForegroundColor Green
+                Write-Host $line -NoNewline -ForegroundColor Yellow
+                Write-Host (" " * $padding) -NoNewline
+                Write-Host " │" -ForegroundColor Green
             }
-            
-            Write-Host $bottomBorder -ForegroundColor Green
-            Write-Host ""
         }
+        
+        Write-Host $bottomBorder -ForegroundColor Green
+        Write-Host ""
         
         # Display abort instructions
         Write-Host "💡 Press " -NoNewline -ForegroundColor Cyan
@@ -333,6 +328,7 @@ try {
         }
         Start-Sleep -Milliseconds 500
     }
+    
     Write-Host ""
     
     if ($script:Aborted) {
@@ -349,8 +345,7 @@ try {
         $footerBorder = "═" * $layout.BoxWidth
         $abortText = "🛑 ABORTED 🛑"
         $abortPadding = [Math]::Max(0, [Math]::Floor(($layout.BoxWidth - $abortText.Length) / 2))
-        $remainingSpace = [Math]::Max(0, ($layout.BoxWidth - $abortPadding - $abortText.Length))
-        $abortLine = (" " * $abortPadding) + $abortText + (" " * $remainingSpace)
+        $abortLine = (" " * $abortPadding) + $abortText + (" " * ($layout.BoxWidth - $abortPadding - $abortText.Length))
         
         Write-Host $footerBorder -ForegroundColor Red
         Write-Host $abortLine -ForegroundColor Red
@@ -372,8 +367,7 @@ try {
         $footerBorder = "═" * $layout.BoxWidth
         $proceedText = "✅ PROCEEDING ✅"
         $proceedPadding = [Math]::Max(0, [Math]::Floor(($layout.BoxWidth - $proceedText.Length) / 2))
-        $remainingSpace = [Math]::Max(0, ($layout.BoxWidth - $proceedPadding - $proceedText.Length))
-        $proceedLine = (" " * $proceedPadding) + $proceedText + (" " * $remainingSpace)
+        $proceedLine = (" " * $proceedPadding) + $proceedText + (" " * ($layout.BoxWidth - $proceedPadding - $proceedText.Length))
         
         Write-Host $footerBorder -ForegroundColor Green
         Write-Host $proceedLine -ForegroundColor Green

@@ -48,23 +48,42 @@ try {
     # Parse status into structured data first
     $statusLines = @($status | Where-Object { $_ })
     
-    # Generate individual diff files for each changed file
+    # Generate individual diff files for each changed file (staged and unstaged)
     $diffFiles = @()
-    $changedFiles = @($diffNameOnly | Where-Object { $_ })
-    
-    foreach ($file in $changedFiles) {
+    $unstagedChangedFiles = @($diffNameOnly | Where-Object { $_ })
+    $stagedChangedFiles = @(git --no-pager diff --cached --name-only 2>$null | Where-Object { $_ })
+    $allChangedFiles = @($unstagedChangedFiles + $stagedChangedFiles | Sort-Object -Unique)
+
+    Write-Host "Detected changed files (unstaged): $($unstagedChangedFiles -join ', ')" -ForegroundColor DarkGray
+    Write-Host "Detected changed files (staged): $($stagedChangedFiles -join ', ')" -ForegroundColor DarkGray
+    Write-Host "All changed files: $($allChangedFiles -join ', ')" -ForegroundColor DarkGray
+
+    foreach ($file in $allChangedFiles) {
         $safeName = $file -replace '[\\/:*?"<>|]', '-'
-        $diffFileName = "$safeName.diff"
-        $diffFilePath = Join-Path $OutputDir $diffFileName
-        
-        # Get diff for this specific file
-        $fileDiff = git --no-pager diff -- $file 2>$null
-        if ($fileDiff) {
-            $fileDiff | Out-File -FilePath $diffFilePath -Encoding UTF8
+        # Write unstaged diff if present
+        $unstagedDiff = git --no-pager diff -- $file 2>$null
+        if ($unstagedDiff) {
+            $unstagedDiffFileName = "$safeName.unstaged.diff"
+            $unstagedDiffFilePath = Join-Path $OutputDir $unstagedDiffFileName
+            $unstagedDiff | Out-File -FilePath $unstagedDiffFilePath -Encoding UTF8
             $diffFiles += [PSCustomObject]@{
                 originalFile = $file
-                diffFile = $diffFileName
-                diffPath = $diffFilePath
+                diffFile = $unstagedDiffFileName
+                diffPath = $unstagedDiffFilePath
+                staged = $false
+            }
+        }
+        # Write staged diff if present
+        $stagedDiff = git --no-pager diff --cached -- $file 2>$null
+        if ($stagedDiff) {
+            $stagedDiffFileName = "$safeName.staged.diff"
+            $stagedDiffFilePath = Join-Path $OutputDir $stagedDiffFileName
+            $stagedDiff | Out-File -FilePath $stagedDiffFilePath -Encoding UTF8
+            $diffFiles += [PSCustomObject]@{
+                originalFile = $file
+                diffFile = $stagedDiffFileName
+                diffPath = $stagedDiffFilePath
+                staged = $true
             }
         }
     }
