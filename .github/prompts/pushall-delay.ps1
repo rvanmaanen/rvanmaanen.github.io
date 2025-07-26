@@ -12,6 +12,9 @@ param(
     [int]$Delay = 10
 )
 
+$ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
+
 # Add message from file if provided
 if ($MessageFile) {
     if (Test-Path $MessageFile) {

@@ -16,6 +16,9 @@ param(
     [string]$OutputDir = ".tmp/git-changes-analysis"
 )
 
+$ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
+
 # Remove old analysis directory if it exists
 if (Test-Path $OutputDir) {
     Remove-Item $OutputDir -Recurse -Force
@@ -53,10 +56,6 @@ try {
     $unstagedChangedFiles = @($diffNameOnly | Where-Object { $_ })
     $stagedChangedFiles = @(git --no-pager diff --cached --name-only 2>$null | Where-Object { $_ })
     $allChangedFiles = @($unstagedChangedFiles + $stagedChangedFiles | Sort-Object -Unique)
-
-    Write-Host "Detected changed files (unstaged): $($unstagedChangedFiles -join ', ')" -ForegroundColor DarkGray
-    Write-Host "Detected changed files (staged): $($stagedChangedFiles -join ', ')" -ForegroundColor DarkGray
-    Write-Host "All changed files: $($allChangedFiles -join ', ')" -ForegroundColor DarkGray
 
     foreach ($file in $allChangedFiles) {
         $safeName = $file -replace '[\\/:*?"<>|]', '-'
@@ -159,7 +158,7 @@ try {
             stats = $diffStat
             filesChanged = @($diffNameOnly | Where-Object { $_ })
             diffFiles = $diffFiles
-            hasChanges = $changedFiles.Count -gt 0
+            hasChanges = $allChangedFiles.Count -gt 0
         }
         changes = [PSCustomObject]@{
             fileDetails = $fileChanges
