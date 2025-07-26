@@ -9,6 +9,10 @@ permalink: "automating-my-git-workflow-vscode-copilot-chat-terminal-auto-approva
 
 With the latest release of Visual Studio Code ([v1.102](https://code.visualstudio.com/updates/v1_102#_terminal-auto-approval-experimental)) from the 9th of July, I have streamlined my Git workflow by combining Copilot Chat's new features, custom prompts, and the experimental terminal auto-approval system. This setup allows me to automate the process of reviewing changes, generating commit messages, and pushing updates, all with minimal manual intervention and maximum safety.<!--excerpt_end-->
 
+## Updated version
+
+I made a lot of improvements to the script and workflow. Check out the new version in [this blogpost](2025-07-25-Improved-Git-Workflow-Custom-Prompt-upcoming-VS-Code-change-warning.html)
+
 ## Index
 
 - [Some visuals](#some-visuals)

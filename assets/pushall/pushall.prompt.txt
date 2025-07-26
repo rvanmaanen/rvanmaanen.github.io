@@ -11,27 +11,7 @@ tools: ['changes', 'codebase', 'editFiles', 'extensions', 'fetch', 'findTestFile
 **CRITICAL**: When instructed to use the `.\.github\prompts\pushall-delay.ps1` script, ALWAYS do so and do exactly as instructed.
 **CRITICAL**: Do not give me any information I did not explicitly ask for. Always give me the least amount of information I need to proceed.
 **CRITICAL**: All codeblock commands MUST be used exactly as provided. Do not alter them in any way.
-**CRITICAL**: Use the GitHub MCP tools as much as possible when you need to interact with GitHub (comprehensive API access for pull requests, issues, reviews, etc.).
-
-##⚠️ CRITICAL: Command Usage Guidelines
-
-**Git Operations**: Use PowerShell/Git commands directly:
-- `git add .` - Stage changes
-- `git commit -F ".tmp/git-changes-analysis/commit-message.txt"` - Commit with message from file
-- `git pull --rebase` - Pull with rebase
-- `git push` - Push changes
-
-**GitHub API Operations**: Use GitHub MCP Server tools ONLY:
-- `mcp_github_create_pull_request` - Create new pull requests
-- `mcp_github_update_pull_request` - Update existing pull requests  
-- `mcp_github_get_pull_request_reviews` - Check for existing reviews
-- `mcp_github_request_copilot_review` - Request Copilot code reviews
-- `mcp_github_list_pull_requests` - Check for existing PRs
-
-**File Operations**: Use PowerShell commands and tools:
-- `Get-Content`, `Set-Content` - File reading/writing
-- `.\.github\prompts\get-git-changes.ps1` - Git analysis
-- `.\.github\prompts\pushall-delay.ps1` - User confirmation with delay
+**CRITICAL**: Exclusivly use the GitHub MCP tools for GitHub related actions, such as listing and creating pull and updating pull requests requests. Or listing and requesting code reviews. **Never** use `gh`
 
 **NEVER use PowerShell scripts for GitHub API operations - always use the GitHub MCP Server tools listed above.**
 
