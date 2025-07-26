@@ -56,6 +56,13 @@ Once you hit that 300 request limit, your organization has several options:
 
 But here's where it gets interesting - organizations can choose to disable premium requests rather than pay for overages, leaving developers stuck with only the included models.
 
+<div class="image-gallery">
+  <div class="image-item half-size">
+    <img src="{{ "/assets/github-copilot-personal-org/image.png" | relative_url }}" alt="Creating a personal GitHub organization to bypass premium request">
+    <div class="image-caption">Creating a personal GitHub organization to bypass premium request.</div>
+  </div>
+</div>
+
 ## The Personal Organization Workaround
 
 If your corporate organization has disabled premium requests and won't budge on the budget, here's the workaround:
