@@ -122,6 +122,24 @@ pre.highlight {
     line-height: unset;
 }
 
+// Header sizing adjustments
+h3 {
+    font-size: 1.4em !important;
+}
+
+h4 {
+    font-size: 1.2em !important;
+}
+
+h5 {
+    font-size: 1.1em !important;
+}
+
+h6 {
+    font-size: 1em !important;
+    font-weight: 600 !important;
+}
+
 .page-content {
     padding: 25px 0;
 
