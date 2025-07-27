@@ -2,7 +2,7 @@
 mode: 'agent'
 description: 'Step-by-step git workflow for committing, rebasing, and pushing changes with branch protection, comprehensive change analysis, and optional PR creation'
 model: Claude Sonnet 4
-tools: ['runCommands', 'github']
+tools: ['runCommands', 'search', 'github']
 ---
 
 # Step-by-Step Git Commit, Rebase, Conflict Resolution, and Push Workflow
