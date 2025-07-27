@@ -95,6 +95,17 @@ Here's where the workaround becomes even more sophisticated. You can connect you
 
 This means any usage above 600 premium requests gets billed through Azure at $0.04 USD per request, which can be particularly advantageous if you have MPN benefits or Azure credits.
 
+At first, after my second batch of 300 premium requests were gone, I again was blocked. I needed to set this setting to my name before I was allowed to continue. You can find it in the [Copilot Features](https://github.com/settings/copilot/features) settings.
+
+<div class="image-gallery">
+  <div class="image-item half-size">
+    <img src="{{ "/assets/github-copilot-personal-org/usage-billed-to.png" | relative_url }}" alt="Choose who pays for your Copilot premium requests usage. Included usage from their license applies.">
+    <div class="image-caption">Choose who pays for your Copilot premium requests usage. Included usage from their license applies..</div>
+  </div>
+</div>
+
+**DISCLAIMER**: I'm not entirely convinced yet that Premium Requests >600 are considered metered usage, but I'll keep an eye out on my [billing overview](https://github.com/settings/billing). It does include a tab on Copilot and premium requests, but it's still at 0 for me. Might just be a bit slow to update.
+
 ## Cost Analysis
 
 Let's break down the real costs:
