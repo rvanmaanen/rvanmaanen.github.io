@@ -98,7 +98,7 @@ This means any usage above 600 premium requests gets billed through Azure at $0.
 At first, after my second batch of 300 premium requests were gone, I again was blocked. I needed to set this setting to my name before I was allowed to continue. You can find it in the [Copilot Features](https://github.com/settings/copilot/features) settings.
 
 <div class="image-gallery">
-  <div class="image-item half-size">
+  <div class="image-item full-width">
     <img src="{{ "/assets/github-copilot-personal-org/usage-billed-to.png" | relative_url }}" alt="Choose who pays for your Copilot premium requests usage. Included usage from their license applies.">
     <div class="image-caption">Choose who pays for your Copilot premium requests usage. Included usage from their license applies..</div>
   </div>
