@@ -5,8 +5,10 @@
 
 .DESCRIPTION
     Captures complete git status, diff, and branch information for the pushall workflow.
-    Saves structured data to JSON file and creates individual .diff files for each changed file
-    in a dedicated analysis directory for easy parsing in subsequent workflow steps.
+    Saves structured data to JSON file and creates unified .diff files showing what the 
+    final commit would look like if all current changes (staged, unstaged, and untracked) 
+    were staged and committed together. Uses git's simulation capabilities for accurate 
+    "what-if" analysis.
 
 .PARAMETER OutputDir
     Directory to save the git changes output (default: .tmp/git-changes-analysis)
@@ -19,9 +21,13 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
+# Suppress progress bars for cleaner output
+$ProgressPreference = 'SilentlyContinue'
+
 # Remove old analysis directory if it exists
 if (Test-Path $OutputDir) {
-    Remove-Item $OutputDir -Recurse -Force
+    Write-Host "Removing old output before continuing..."
+    Remove-Item $OutputDir -Recurse -Force | Out-Null
 }
 
 # Create fresh output directory
@@ -48,79 +54,131 @@ try {
     $remoteCommits = git log --oneline 'HEAD..@{upstream}' 2>$null
     $hasRemoteChanges = -not [string]::IsNullOrWhiteSpace($remoteCommits)
     
-    # Parse status into structured data first
-    $statusLines = @($status | Where-Object { $_ })
-    
-    # Generate individual diff files for each changed file (staged and unstaged)
-    $diffFiles = @()
-    $unstagedChangedFiles = @($diffNameOnly | Where-Object { $_ })
-    $stagedChangedFiles = @(git --no-pager diff --cached --name-only 2>$null | Where-Object { $_ })
-    $allChangedFiles = @($unstagedChangedFiles + $stagedChangedFiles | Sort-Object -Unique)
-
-    foreach ($file in $allChangedFiles) {
-        $safeName = $file -replace '[\\/:*?"<>|]', '-'
-        # Write unstaged diff if present
-        $unstagedDiff = git --no-pager diff -- $file 2>$null
-        if ($unstagedDiff) {
-            $unstagedDiffFileName = "$safeName.unstaged.diff"
-            $unstagedDiffFilePath = Join-Path $OutputDir $unstagedDiffFileName
-            $unstagedDiff | Out-File -FilePath $unstagedDiffFilePath -Encoding UTF8
-            $diffFiles += [PSCustomObject]@{
-                originalFile = $file
-                diffFile = $unstagedDiffFileName
-                diffPath = $unstagedDiffFilePath
-                staged = $false
-            }
-        }
-        # Write staged diff if present
-        $stagedDiff = git --no-pager diff --cached -- $file 2>$null
-        if ($stagedDiff) {
-            $stagedDiffFileName = "$safeName.staged.diff"
-            $stagedDiffFilePath = Join-Path $OutputDir $stagedDiffFileName
-            $stagedDiff | Out-File -FilePath $stagedDiffFilePath -Encoding UTF8
-            $diffFiles += [PSCustomObject]@{
-                originalFile = $file
-                diffFile = $stagedDiffFileName
-                diffPath = $stagedDiffFilePath
-                staged = $true
-            }
-        }
+    # Parse git status output
+    $statusLines = git status --porcelain
+    $summary = @{
+        totalFiles = 0
+        new = 0
+        modified = 0
+        deleted = 0
+        renamed = 0
+        hasChanges = $false
     }
     
-    # Parse individual file changes for better commit message crafting
-    $fileChanges = @()
+    $files = @{
+        new = @()
+        modified = @()
+        deleted = @()
+        renamed = @()
+    }
+    
+    $fileDetails = @()
+    $allChangedFiles = @()
+    
     foreach ($line in $statusLines) {
-        if ($line -match '^(.)(.) (.+)$') {
-            $indexStatus = $matches[1]
-            $workTreeStatus = $matches[2]
-            $fileName = $matches[3]
+        if ($line.Length -ge 3) {
+            $status = $line.Substring(0, 2)
+            $file = $line.Substring(3)
             
-            $changeType = switch -Regex ("$indexStatus$workTreeStatus") {
-                '^M.' { "Modified" }
-                '^A.' { "Added" }
-                '^D.' { "Deleted" }
-                '^R.' { "Renamed" }
-                '^C.' { "Copied" }
-                '^.M' { "Modified (unstaged)" }
-                '^.D' { "Deleted (unstaged)" }
-                '^\?\?' { "Untracked" }
-                default { "Changed" }
+            $summary.totalFiles++
+            $summary.hasChanges = $true
+            
+            # Determine final change type (what will happen when committed/pushed)
+            $changeType = "Modified" # default
+            
+            switch -Regex ($status) {
+                '^\?\?' { 
+                    $changeType = "New"
+                    $summary.new++
+                    $files.new += $file
+                }
+                '^A.' { 
+                    $changeType = "New"
+                    $summary.new++
+                    $files.new += $file
+                }
+                '^.A' { 
+                    $changeType = "New"
+                    $summary.new++
+                    $files.new += $file
+                }
+                '^D.' { 
+                    $changeType = "Deleted"
+                    $summary.deleted++
+                    $files.deleted += $file
+                }
+                '^.D' { 
+                    $changeType = "Deleted"
+                    $summary.deleted++
+                    $files.deleted += $file
+                }
+                '^R.' { 
+                    $changeType = "Renamed"
+                    $summary.renamed++
+                    $files.renamed += $file
+                }
+                default { 
+                    $changeType = "Modified"
+                    $summary.modified++
+                    $files.modified += $file
+                }
             }
             
-            $fileChanges += [PSCustomObject]@{
-                file = $fileName
-                status = "$indexStatus$workTreeStatus"
+            $fileDetails += @{
+                file = $file
+                status = $status
                 changeType = $changeType
-                isStaged = $indexStatus -ne ' ' -and $indexStatus -ne '?'
             }
+            
+            $allChangedFiles += $file
         }
     }
-    $modifiedFiles = @($statusLines | Where-Object { $_ -match "^.M" })
-    $untrackedFiles = @($statusLines | Where-Object { $_ -match "^\?\?" })
-    $addedFiles = @($statusLines | Where-Object { $_ -match "^A" })
-    $deletedFiles = @($statusLines | Where-Object { $_ -match "^.D" })
-    $renamedFiles = @($statusLines | Where-Object { $_ -match "^R" })
-    $stagedFiles = @($statusLines | Where-Object { $_ -match "^[AM]" })
+
+    # Generate diff files for each changed file
+    $diffFiles = @()
+    
+    foreach ($file in $allChangedFiles) {
+        # Create safe filename for diff
+        $safeFileName = $file -replace '[/\\:*?"<>|]', '-'
+        $diffFileName = "$safeFileName.diff"
+        $diffPath = Join-Path $outputDir $diffFileName
+        
+        try {
+            # Check if file is tracked or untracked
+            $isTracked = $true
+            try {
+                git ls-files --error-unmatch $file 2>$null | Out-Null
+            } catch {
+                $isTracked = $false
+            }
+            
+            if ($isTracked) {
+                # For tracked files, use git diff HEAD
+                $diffContent = git diff HEAD -- $file
+            } else {
+                # For untracked files, show as new file
+                try {
+                    $diffContent = git diff --no-index /dev/null $file 2>$null
+                } catch {
+                    # Fallback: create manual diff for untracked file
+                    $fileContent = Get-Content $file -Raw -ErrorAction SilentlyContinue
+                    $diffContent = "@@ -0,0 +1,$((($fileContent -split "`n").Length)) @@`n"
+                    $diffContent += ($fileContent -split "`n" | ForEach-Object { "+$_" }) -join "`n"
+                }
+            }
+            
+            if ($diffContent) {
+                $diffContent | Out-File -FilePath $diffPath -Encoding utf8
+                $diffFiles += @{
+                    originalFile = $file
+                    diffFile = $diffFileName
+                    diffPath = $diffPath
+                }
+            }
+        } catch {
+            Write-Warning "Failed to generate diff for $file`: $($_.Exception.Message)"
+        }
+    }
     
     # Create comprehensive JSON structure
     $gitData = [PSCustomObject]@{
@@ -133,35 +191,28 @@ try {
             hasRemoteChanges = $hasRemoteChanges
             remoteCommits = @($remoteCommits | Where-Object { $_ })
         }
-        status = [PSCustomObject]@{
-            raw = $status
-            summary = [PSCustomObject]@{
-                totalFiles = $statusLines.Count
-                modified = $modifiedFiles.Count
-                untracked = $untrackedFiles.Count
-                added = $addedFiles.Count
-                deleted = $deletedFiles.Count
-                renamed = $renamedFiles.Count
-                staged = $stagedFiles.Count
-                hasChanges = $statusLines.Count -gt 0
-            }
-            files = [PSCustomObject]@{
-                modified = @($modifiedFiles | ForEach-Object { $_.Substring(3) })
-                untracked = @($untrackedFiles | ForEach-Object { $_.Substring(3) })
-                added = @($addedFiles | ForEach-Object { $_.Substring(3) })
-                deleted = @($deletedFiles | ForEach-Object { $_.Substring(3) })
-                renamed = @($renamedFiles | ForEach-Object { $_.Substring(3) })
-                staged = @($stagedFiles | ForEach-Object { $_.Substring(3) })
-            }
+        summary = [PSCustomObject]@{
+            totalFiles = $summary.totalFiles
+            new = $summary.new
+            modified = $summary.modified
+            deleted = $summary.deleted
+            renamed = $summary.renamed
+            hasChanges = $summary.hasChanges
+        }
+        files = [PSCustomObject]@{
+            new = $files.new
+            modified = $files.modified
+            deleted = $files.deleted
+            renamed = $files.renamed
         }
         diff = [PSCustomObject]@{
             stats = $diffStat
-            filesChanged = @($diffNameOnly | Where-Object { $_ })
+            filesChanged = $allChangedFiles
             diffFiles = $diffFiles
             hasChanges = $allChangedFiles.Count -gt 0
         }
         changes = [PSCustomObject]@{
-            fileDetails = $fileChanges
+            fileDetails = $fileDetails
         }
     }
     
@@ -169,12 +220,17 @@ try {
     $changesByType = @{}
     $changesByDirectory = @{}
     
-    foreach ($change in $fileChanges) {
-        # Group by change type
-        if (-not $changesByType.ContainsKey($change.changeType)) {
-            $changesByType[$change.changeType] = @()
+    # Process each file change exactly once
+    foreach ($change in $fileDetails) {
+        $type = $change.changeType
+        
+        # Initialize array if needed
+        if (-not $changesByType.ContainsKey($type)) {
+            $changesByType[$type] = @()
         }
-        $changesByType[$change.changeType] += $change.file
+        
+        # Add file to this change type
+        $changesByType[$type] += $change.file
         
         # Group by directory
         $dir = Split-Path $change.file -Parent
@@ -195,10 +251,11 @@ try {
     if ($gitData.branch.upstream) {
         Write-Host "   • Upstream: $($gitData.branch.upstream)" -ForegroundColor Cyan
     }
-    Write-Host "   • Total files changed: $($gitData.status.summary.totalFiles)" -ForegroundColor Cyan
-    Write-Host "   • Modified: $($gitData.status.summary.modified)" -ForegroundColor Cyan
-    Write-Host "   • Untracked: $($gitData.status.summary.untracked)" -ForegroundColor Cyan
-    Write-Host "   • Staged: $($gitData.status.summary.staged)" -ForegroundColor Cyan
+    Write-Host "   • Total files changed: $($gitData.summary.totalFiles)" -ForegroundColor Cyan
+    Write-Host "   • New: $($gitData.summary.new)" -ForegroundColor Cyan
+    Write-Host "   • Modified: $($gitData.summary.modified)" -ForegroundColor Cyan
+    Write-Host "   • Deleted: $($gitData.summary.deleted)" -ForegroundColor Cyan
+    Write-Host "   • Renamed: $($gitData.summary.renamed)" -ForegroundColor Cyan
     
     if ($gitData.branch.hasUnpushedCommits) {
         Write-Host "   • Unpushed commits: $($gitData.branch.unpushedCommits.Count)" -ForegroundColor Yellow
@@ -213,15 +270,15 @@ try {
     # Show change analysis for commit message crafting
     if ($gitData.changes.fileDetails.Count -gt 0) {
         Write-Host "🔍 Changes by type:" -ForegroundColor Yellow
-        foreach ($type in $changesByType.Keys) {
+        foreach ($type in ($changesByType.Keys | Sort-Object)) {
             $count = $changesByType[$type].Count
-            Write-Host "   • $type`: $count files" -ForegroundColor Cyan
+            Write-Host "   • $type`: $count file$(if ($count -ne 1) { 's' })" -ForegroundColor Cyan
         }
         
         Write-Host "📁 Changes by directory:" -ForegroundColor Yellow
-        foreach ($dir in $changesByDirectory.Keys | Sort-Object) {
+        foreach ($dir in ($changesByDirectory.Keys | Sort-Object)) {
             $count = $changesByDirectory[$dir].Count
-            Write-Host "   • $dir`: $count files" -ForegroundColor Cyan
+            Write-Host "   • $dir`: $count file$(if ($count -ne 1) { 's' })" -ForegroundColor Cyan
         }
     }
     
