@@ -29,18 +29,55 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$ProgressPreference = 'SilentlyContinue'
 Set-StrictMode -Version Latest
+
+# Exit code constants
+$EXIT_CODE_SUCCESS = 0
+$EXIT_CODE_GIT_FAILURE = 2
 
 # Validate parameter combinations
 if ($CompareRemoteWithMain -and $CompareLocalWithMain) {
     throw "CompareRemoteWithMain and CompareLocalWithMain cannot be used together. Choose one comparison mode."
 }
 
-# Suppress progress bars for cleaner output
-$ProgressPreference = 'SilentlyContinue'
+
 
 try {
     Write-Host "Analyzing git changes..." -ForegroundColor Cyan
+    
+    # Critical validation: Check if git repository is in a valid state
+    Write-Host "🔍 Validating git repository state..." -ForegroundColor Cyan
+    
+    # Check if we're in a git repository
+    $gitDir = git rev-parse --git-dir 2>$null
+    if ($LASTEXITCODE -ne 0 -or -not $gitDir) {
+        throw "Not in a git repository or git directory is corrupted"
+    }
+    
+    # Check for git index lock (indicates interrupted git operation)
+    $gitRootDir = git rev-parse --show-toplevel 2>$null
+    if ($LASTEXITCODE -eq 0 -and $gitRootDir) {
+        $indexLock = Join-Path $gitRootDir ".git/index.lock"
+        if (Test-Path $indexLock) {
+            throw "Git index is locked (.git/index.lock exists). Another git operation may be in progress or was interrupted."
+        }
+    }
+    
+    # Check for merge conflicts
+    $mergeHead = Join-Path $gitDir "MERGE_HEAD"
+    if (Test-Path $mergeHead) {
+        throw "Repository is in merge state. Please complete or abort the merge before continuing."
+    }
+    
+    # Check for rebase in progress
+    $rebaseApply = Join-Path $gitDir "rebase-apply"
+    $rebaseMerge = Join-Path $gitDir "rebase-merge"
+    if ((Test-Path $rebaseApply) -or (Test-Path $rebaseMerge)) {
+        throw "Repository is in rebase state. Please complete or abort the rebase before continuing."
+    }
+    
+    Write-Host "✅ Git repository state is valid" -ForegroundColor Green
     
     # Remove old analysis directory if it exists
     if (Test-Path $OutputDir) {
@@ -53,18 +90,21 @@ try {
     
     # Get current branch
     $currentBranch = git branch --show-current 2>$null
-    if (-not $currentBranch) {
-        throw "Not in a git repository or unable to determine current branch"
+    if ($LASTEXITCODE -ne 0 -or -not $currentBranch) {
+        throw "Not in a git repository or unable to determine current branch (git exit code: $LASTEXITCODE)"
     }
     
     # Check remote branch status using git ls-remote (minimal network operation)
     $remoteBranch = @{
-        exists     = $false
-        hasUpdates = $false
-        localSha   = $null
-        remoteSha  = $null
-        origin     = $null
-        branchName = $currentBranch
+        exists                = $false
+        hasUpdates            = $false
+        localAhead            = $false
+        diverged              = $false
+        localBasedOnNewerMain = $false
+        localSha              = $null
+        remoteSha             = $null
+        origin                = $null
+        branchName            = $currentBranch
     }
     
     $remoteMain = @{
@@ -79,47 +119,116 @@ try {
     try {
         # Get the remote origin URL
         $remoteOrigin = git remote get-url origin 2>$null
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning "Could not get remote origin URL (git exit code: $LASTEXITCODE)"
+            $remoteOrigin = $null
+        }
+        
         if ($remoteOrigin) {
             $remoteBranch.origin = $remoteOrigin
             $remoteMain.origin = $remoteOrigin
             
             # Get local commit SHA for current branch
             $localSha = git rev-parse HEAD 2>$null
-            if ($localSha) {
-                $remoteBranch.localSha = $localSha
+            if ($LASTEXITCODE -ne 0 -or -not $localSha) {
+                throw "Could not get local commit SHA (git exit code: $LASTEXITCODE)"
+            }
+            $remoteBranch.localSha = $localSha
+            
+            # Check remote branch using ls-remote (doesn't pull anything)
+            $lsRemoteOutput = git ls-remote origin "refs/heads/$currentBranch" 2>$null
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Could not check remote branch status via ls-remote (git exit code: $LASTEXITCODE)"
+            }
+            elseif ($lsRemoteOutput -and $lsRemoteOutput.Trim()) {
+                # Remote branch exists
+                $remoteBranch.exists = $true
+                $remoteSha = ($lsRemoteOutput -split '\s+')[0]
+                $remoteBranch.remoteSha = $remoteSha
                 
-                # Check remote branch using ls-remote (doesn't pull anything)
-                $lsRemoteOutput = git ls-remote origin "refs/heads/$currentBranch" 2>$null
-                if ($lsRemoteOutput -and $lsRemoteOutput.Trim()) {
-                    # Remote branch exists
-                    $remoteBranch.exists = $true
-                    $remoteSha = ($lsRemoteOutput -split '\s+')[0]
-                    $remoteBranch.remoteSha = $remoteSha
+                # Determine the relationship between local and remote branches
+                if ($remoteSha -ne $localSha) {
+                    # Check if remote is ancestor of local (local is ahead) or vice versa
+                    $isRemoteAncestor = git merge-base --is-ancestor $remoteSha $localSha 2>$null
+                    $remoteIsAncestor = ($LASTEXITCODE -eq 0)
                     
-                    # Check if remote has different commits (updates we don't have)
-                    if ($remoteSha -ne $localSha) {
-                        $remoteBranch.hasUpdates = $true
+                    if ($remoteIsAncestor) {
+                        # Remote is ancestor of local - local is ahead, no updates needed
+                        $remoteBranch.hasUpdates = $false
+                        $remoteBranch.localAhead = $true
+                    }
+                    else {
+                        # Check if local is ancestor of remote (remote is ahead)
+                        $isLocalAncestor = git merge-base --is-ancestor $localSha $remoteSha 2>$null
+                        $localIsAncestor = ($LASTEXITCODE -eq 0)
+                        
+                        if ($localIsAncestor) {
+                            # Local is ancestor of remote - remote has updates we need
+                            $remoteBranch.hasUpdates = $true
+                            $remoteBranch.localAhead = $false
+                        }
+                        else {
+                            # Branches have diverged - check if this might be due to a rebase
+                            $remoteBranch.hasUpdates = $true
+                            $remoteBranch.diverged = $true
+                            $remoteBranch.localAhead = $false
+                            
+                            # Additional analysis: check if local branch is based on more recent main
+                            $localMergeBaseWithMain = git merge-base HEAD origin/main 2>$null
+                            $remoteMergeBaseWithMain = git merge-base $remoteSha origin/main 2>$null
+                            
+                            if ($LASTEXITCODE -eq 0 -and $localMergeBaseWithMain -and $remoteMergeBaseWithMain) {
+                                # Compare how recent each branch's base is relative to main
+                                $localBaseIsNewer = git merge-base --is-ancestor $remoteMergeBaseWithMain $localMergeBaseWithMain 2>$null
+                                if ($LASTEXITCODE -eq 0) {
+                                    $remoteBranch.localBasedOnNewerMain = $true
+                                }
+                            }
+                        }
                     }
                 }
+                else {
+                    # SHAs are identical - branches are in sync
+                    $remoteBranch.hasUpdates = $false
+                    $remoteBranch.localAhead = $false
+                }
+            }
+            
+            # Check remote main branch status (without fetching)
+            $lsRemoteMainOutput = git ls-remote origin "refs/heads/main" 2>$null
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Could not check remote main branch status via ls-remote (git exit code: $LASTEXITCODE)"
+            }
+            elseif ($lsRemoteMainOutput -and $lsRemoteMainOutput.Trim()) {
+                $remoteMainSha = ($lsRemoteMainOutput -split '\s+')[0]
+                $remoteMain.remoteSha = $remoteMainSha
                 
-                # Check remote main branch status (without fetching)
-                $lsRemoteMainOutput = git ls-remote origin "refs/heads/main" 2>$null
-                if ($lsRemoteMainOutput -and $lsRemoteMainOutput.Trim()) {
-                    $remoteMainSha = ($lsRemoteMainOutput -split '\s+')[0]
-                    $remoteMain.remoteSha = $remoteMainSha
-                    
-                    # Get our local main branch SHA (merge-base with main)
-                    $localMainSha = git rev-parse main 2>$null
-                    if ($localMainSha) {
-                        $remoteMain.localSha = $localMainSha
-                        
-                        # Check if remote main has moved ahead of our local main
+                # Get our local main branch SHA
+                $localMainSha = git rev-parse main 2>$null
+                if ($LASTEXITCODE -eq 0 -and $localMainSha) {
+                    $remoteMain.localSha = $localMainSha
+                }
+                
+                # Check if current branch needs to rebase against main
+                # Find the merge-base between current branch and remote main
+                $mergeBase = git merge-base HEAD origin/main 2>$null
+                if ($LASTEXITCODE -eq 0 -and $mergeBase) {
+                    # Check if remote main has commits beyond the merge-base
+                    $commitsAhead = git rev-list --count "$mergeBase..origin/main" 2>$null
+                    if ($LASTEXITCODE -eq 0 -and [int]$commitsAhead -gt 0) {
+                        $remoteMain.hasUpdates = $true
+                    }
+                }
+                else {
+                    # If we can't find merge-base or are on main, check direct comparison
+                    if ($currentBranch -eq "main") {
+                        # On main branch: check if remote main is ahead of local main
                         if ($remoteMainSha -ne $localMainSha) {
                             $remoteMain.hasUpdates = $true
                         }
                     }
                     else {
-                        # If we don't have main locally, we definitely need to sync
+                        # Can't determine merge-base, assume we need updates
                         $remoteMain.hasUpdates = $true
                     }
                 }
@@ -133,6 +242,24 @@ try {
     # Determine analysis mode
     if ($CompareRemoteWithMain) {
         Write-Host "🌐 Comparing current remote branch with main..." -ForegroundColor Magenta
+        
+        # Check network connectivity before attempting remote operations
+        if (-not $remoteBranch.origin) {
+            throw "No remote origin configured - cannot perform remote comparison"
+        }
+        
+        # Test network connectivity to remote
+        try {
+            Write-Host "🔌 Testing network connectivity to remote..." -ForegroundColor Cyan
+            git ls-remote --exit-code origin HEAD 2>$null | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                throw "Cannot connect to remote origin. Check network connectivity and credentials."
+            }
+            Write-Host "✅ Network connectivity to remote confirmed" -ForegroundColor Green
+        }
+        catch {
+            throw "Network connectivity test failed: $($_.Exception.Message)"
+        }
         
         # For main comparison, we need to compare current remote branch vs remote main
         if (-not $remoteBranch.exists) {
@@ -149,18 +276,41 @@ try {
             
             # We need to fetch to get the remote refs for comparison
             try {
+                Write-Host "🔄 Fetching remote branches for comparison..." -ForegroundColor Cyan
                 git fetch origin $currentBranch --quiet 2>$null
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Failed to fetch current branch from remote (git exit code: $LASTEXITCODE)"
+                }
+                
                 git fetch origin main --quiet 2>$null
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Failed to fetch main branch from remote (git exit code: $LASTEXITCODE)"
+                }
+                
                 $currentRemoteRef = "origin/$currentBranch"
                 $mainRemoteRef = "origin/main"
                 
+                # Verify the remote refs exist after fetch
+                git show-ref --verify --quiet "refs/remotes/$currentRemoteRef" 2>$null | Out-Null
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Remote branch $currentRemoteRef does not exist after fetch"
+                }
+                
+                git show-ref --verify --quiet "refs/remotes/$mainRemoteRef" 2>$null | Out-Null
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Remote main branch $mainRemoteRef does not exist after fetch"
+                }
+                
                 # Get list of changed files between remote branch and remote main
                 $branchToMainChanges = git diff --name-status $mainRemoteRef $currentRemoteRef 2>$null
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Failed to get diff between $mainRemoteRef and $currentRemoteRef (git exit code: $LASTEXITCODE)"
+                }
                 $statusLines = $branchToMainChanges
             }
             catch {
-                Write-Warning "Could not fetch remote branches for comparison: $($_.Exception.Message)"
-                $statusLines = @()
+                Write-Error "Could not fetch remote branches for comparison: $($_.Exception.Message)"
+                throw "Git fetch operation failed - cannot continue safely with remote comparison"
             }
         }
     }
@@ -171,6 +321,9 @@ try {
             Write-Host "ℹ️  Currently on main branch - analyzing uncommitted changes only" -ForegroundColor Blue
             # For main branch, just analyze local uncommitted changes
             $statusLines = git status --porcelain 2>$null
+            if ($LASTEXITCODE -ne 0) {
+                throw "Failed to get git status (git exit code: $LASTEXITCODE)"
+            }
         }
         else {
             Write-Host "📊 Analyzing uncommitted changes in context of main branch differences..." -ForegroundColor Cyan
@@ -179,9 +332,20 @@ try {
             try {
                 # First get changes between current branch and main (committed changes)
                 $branchToMainChanges = git diff --name-status main HEAD 2>$null
+                if ($LASTEXITCODE -ne 0) {
+                    # Check if main branch exists locally
+                    git show-ref --verify --quiet refs/heads/main 2>$null | Out-Null
+                    if ($LASTEXITCODE -ne 0) {
+                        throw "Local main branch does not exist. Please fetch or checkout main branch first."
+                    }
+                    throw "Failed to get diff between main and HEAD (git exit code: $LASTEXITCODE)"
+                }
                 
                 # Then get uncommitted changes 
                 $localChanges = git status --porcelain 2>$null
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Failed to get git status for local changes (git exit code: $LASTEXITCODE)"
+                }
                 
                 # Combine both sets of changes for comprehensive analysis
                 $allChanges = @()
@@ -218,8 +382,8 @@ try {
                 $statusLines = $allChanges | Sort-Object -Unique
             }
             catch {
-                Write-Warning "Could not analyze local branch changes: $($_.Exception.Message)"
-                $statusLines = @()
+                Write-Error "Could not analyze local branch changes: $($_.Exception.Message)"
+                throw "Git diff operation failed - cannot continue safely with local branch analysis"
             }
         }
     }
@@ -227,6 +391,9 @@ try {
         Write-Host "📁 Analyzing local changes..." -ForegroundColor Cyan
         # Get git status for local changes
         $statusLines = git status --porcelain 2>$null
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to get git status for local changes (git exit code: $LASTEXITCODE)"
+        }
     }
     
     # Initialize tracking variables
@@ -284,7 +451,7 @@ try {
         
         # Determine change type based on git status codes
         $changeType = if (($CompareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") -or 
-                          ($CompareLocalWithMain -and $currentBranch -ne "main")) {
+            ($CompareLocalWithMain -and $currentBranch -ne "main")) {
             # Handle git diff --name-status single character codes (for CompareRemoteWithMain or CompareLocalWithMain)
             switch ($status) {
                 'A' { 
@@ -397,20 +564,39 @@ try {
                     $currentRemoteRef = "origin/$currentBranch"
                     $mainRemoteRef = "origin/main"
                     $diffContent = git diff $mainRemoteRef $currentRemoteRef -- $file 2>$null
+                    if ($LASTEXITCODE -ne 0) {
+                        Write-Warning "Failed to generate diff for $file against remote main (git exit code: $LASTEXITCODE)"
+                        continue
+                    }
                 }
                 else {
                     # For CompareLocalWithMain, show diff between current state (including uncommitted) and main
                     $diffContent = git diff main -- $file 2>$null
+                    if ($LASTEXITCODE -ne 0) {
+                        Write-Warning "Failed to generate diff for $file against main (git exit code: $LASTEXITCODE)"
+                        continue
+                    }
                 }
             }
             else {
                 # For local analysis, use existing logic
                 # Check if file is tracked
                 $isTracked = $null -ne (git ls-files $file 2>$null)
+                if ($LASTEXITCODE -ne 0) {
+                    Write-Warning "Failed to check if $file is tracked (git exit code: $LASTEXITCODE)"
+                    continue
+                }
             
                 $diffContent = if ($isTracked) {
                     # For tracked files, show diff against HEAD
-                    git diff HEAD -- $file 2>$null
+                    $diffOutput = git diff HEAD -- $file 2>$null
+                    if ($LASTEXITCODE -ne 0) {
+                        Write-Warning "Failed to generate diff for tracked file $file (git exit code: $LASTEXITCODE)"
+                        $null
+                    }
+                    else {
+                        $diffOutput
+                    }
                 }
                 else {
                     # For untracked files, show as entirely new
@@ -436,22 +622,67 @@ try {
             }
         }
         catch {
-            Write-Warning "Failed to generate diff for $file`: $($_.Exception.Message)"
+            Write-Error "Failed to generate diff for $file`: $($_.Exception.Message)"
+            # Don't throw here as this is per-file processing, but log the error
         }
     }
 
-    # Get diff statistics
-    $diffStat = if ($allChangedFiles.Count -gt 0) {
-        git diff --stat HEAD 2>$null
+    # Create consolidated file objects grouped by change type
+    $consolidatedFiles = @{
+        new      = @()
+        modified = @()
+        deleted  = @()
+        renamed  = @()
     }
-    else {
-        @()
+    
+    foreach ($fileDetail in $fileDetails) {
+        $file = $fileDetail.file
+        $changeType = $fileDetail.changeType
+        $diffInfo = $diffFiles | Where-Object { $_.originalFile -eq $file } | Select-Object -First 1
+        
+        $fileObject = @{
+            file = $file
+        }
+        
+        # Add diff information if available
+        if ($diffInfo) {
+            $fileObject.diffPath = $diffInfo.diffPath
+        }
+        
+        # Add file to appropriate change type category
+        switch ($changeType) {
+            "New" { 
+                $consolidatedFiles.new += $fileObject
+            }
+            "Modified" { 
+                $consolidatedFiles.modified += $fileObject
+            }
+            "Modified (Type Change)" { 
+                $consolidatedFiles.modified += $fileObject
+            }
+            "Deleted" { 
+                $consolidatedFiles.deleted += $fileObject
+            }
+            "Renamed" { 
+                $consolidatedFiles.renamed += $fileObject
+            }
+        }
     }
 
-    # Create JSON structure
-    $gitData = [PSCustomObject]@{
+    # Enhanced summary with core statistics
+    $enhancedSummary = @{
+        totalFiles = $summary.totalFiles
+        new        = $summary.new
+        modified   = $summary.modified
+        deleted    = $summary.deleted
+        renamed    = $summary.renamed
+        hasChanges = $summary.hasChanges
+    }
+
+    # Create consolidated JSON structure with reduced duplication
+    $gitData = @{
         timestamp = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
-        analysis  = [PSCustomObject]@{
+        analysis  = @{
             type        = if ($CompareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") { 
                 "branch-to-main" 
             }
@@ -480,17 +711,21 @@ try {
                 "Analysis of local changes and repository status" 
             }
         }
-        branch    = [PSCustomObject]@{
+        summary   = $enhancedSummary
+        branch    = @{
             current = $currentBranch
-            remote  = [PSCustomObject]@{
-                exists     = $remoteBranch.exists
-                hasUpdates = $remoteBranch.hasUpdates
-                localSha   = $remoteBranch.localSha
-                remoteSha  = $remoteBranch.remoteSha
-                origin     = $remoteBranch.origin
-                branchName = $remoteBranch.branchName
+            remote  = @{
+                exists                = $remoteBranch.exists
+                hasUpdates            = $remoteBranch.hasUpdates
+                localAhead            = $remoteBranch.localAhead
+                diverged              = $remoteBranch.diverged
+                localBasedOnNewerMain = $remoteBranch.localBasedOnNewerMain
+                localSha              = $remoteBranch.localSha
+                remoteSha             = $remoteBranch.remoteSha
+                origin                = $remoteBranch.origin
+                branchName            = $remoteBranch.branchName
             }
-            main    = [PSCustomObject]@{
+            main    = @{
                 exists     = $remoteMain.exists
                 hasUpdates = $remoteMain.hasUpdates
                 localSha   = $remoteMain.localSha
@@ -499,29 +734,7 @@ try {
                 branchName = $remoteMain.branchName
             }
         }
-        summary   = [PSCustomObject]@{
-            totalFiles = $summary.totalFiles
-            new        = $summary.new
-            modified   = $summary.modified
-            deleted    = $summary.deleted
-            renamed    = $summary.renamed
-            hasChanges = $summary.hasChanges
-        }
-        files     = [PSCustomObject]@{
-            new      = $files.new
-            modified = $files.modified
-            deleted  = $files.deleted
-            renamed  = $files.renamed
-        }
-        diff      = [PSCustomObject]@{
-            stats        = $diffStat
-            filesChanged = $allChangedFiles
-            diffFiles    = $diffFiles
-            hasChanges   = $allChangedFiles.Count -gt 0
-        }
-        changes   = [PSCustomObject]@{
-            fileDetails = $fileDetails
-        }
+        files     = $consolidatedFiles
     }
 
     # Save to JSON
@@ -556,9 +769,32 @@ try {
         if ($gitData.branch.remote.exists) {
             Write-Host "   • Remote branch exists: ✅" -ForegroundColor Green
             if ($gitData.branch.remote.hasUpdates) {
-                Write-Host "   • Remote has updates: ⚠️  YES" -ForegroundColor Red
+                if ($gitData.branch.remote.diverged) {
+                    if ($gitData.branch.remote.localBasedOnNewerMain) {
+                        Write-Host "   • Branch status: ⚠️  DIVERGED - local rebased on newer main" -ForegroundColor Yellow
+                        Write-Host "   • Local SHA:  $($gitData.branch.remote.localSha)" -ForegroundColor Cyan
+                        Write-Host "   • Remote SHA: $($gitData.branch.remote.remoteSha)" -ForegroundColor Cyan
+                        Write-Host "   • Action recommended: Push with --force-with-lease (local is more current)" -ForegroundColor Green
+                    }
+                    else {
+                        Write-Host "   • Branch status: ⚠️  DIVERGED - both local and remote have unique commits" -ForegroundColor Red
+                        Write-Host "   • Local SHA:  $($gitData.branch.remote.localSha)" -ForegroundColor Cyan
+                        Write-Host "   • Remote SHA: $($gitData.branch.remote.remoteSha)" -ForegroundColor Cyan
+                        Write-Host "   • Action needed: Fetch and merge or rebase to resolve divergence" -ForegroundColor Yellow
+                    }
+                }
+                else {
+                    Write-Host "   • Remote has updates: ⚠️  YES - remote is ahead" -ForegroundColor Red
+                    Write-Host "   • Local SHA:  $($gitData.branch.remote.localSha)" -ForegroundColor Cyan
+                    Write-Host "   • Remote SHA: $($gitData.branch.remote.remoteSha)" -ForegroundColor Cyan
+                    Write-Host "   • Action needed: Pull or fetch to get latest changes" -ForegroundColor Yellow
+                }
+            }
+            elseif ($gitData.branch.remote.localAhead) {
+                Write-Host "   • Local is ahead: ✅ Ready to push" -ForegroundColor Green
                 Write-Host "   • Local SHA:  $($gitData.branch.remote.localSha)" -ForegroundColor Cyan
                 Write-Host "   • Remote SHA: $($gitData.branch.remote.remoteSha)" -ForegroundColor Cyan
+                Write-Host "   • Action available: Push to update remote branch" -ForegroundColor Green
             }
             else {
                 Write-Host "   • Remote is in sync: ✅" -ForegroundColor Green
@@ -588,30 +824,46 @@ try {
     }
 
     # Show change analysis if there are changes
-    if ($gitData.changes.fileDetails -and $gitData.changes.fileDetails.Count -gt 0) {
-        # Group changes by type and directory for analysis
-        $changesByType = @{}
-        $changesByDirectory = @{}
+    $hasFiles = ($gitData.files.new.Count -gt 0) -or 
+                ($gitData.files.modified.Count -gt 0) -or 
+                ($gitData.files.deleted.Count -gt 0) -or 
+                ($gitData.files.renamed.Count -gt 0)
     
-        foreach ($change in $fileDetails) {
-            $type = $change.changeType
-            if (-not $changesByType.ContainsKey($type)) {
-                $changesByType[$type] = @()
-            }
-            $changesByType[$type] += $change.file
+    if ($hasFiles) {
+        # Analyze changes by directory for all file types
+        $changesByDirectory = @{}
         
-            $dir = Split-Path $change.file -Parent
-            if ([string]::IsNullOrEmpty($dir)) { $dir = "root" }
-            if (-not $changesByDirectory.ContainsKey($dir)) {
-                $changesByDirectory[$dir] = @()
+        # Process each change type
+        foreach ($changeType in @('new', 'modified', 'deleted', 'renamed')) {
+            foreach ($fileObj in $gitData.files.$changeType) {
+                $dir = Split-Path $fileObj.file -Parent
+                if ([string]::IsNullOrEmpty($dir)) { $dir = "root" }
+                if (-not $changesByDirectory.ContainsKey($dir)) {
+                    $changesByDirectory[$dir] = @()
+                }
+                $changesByDirectory[$dir] += @{
+                    file = $fileObj.file
+                    changeType = $changeType
+                }
             }
-            $changesByDirectory[$dir] += $change
         }
     
         Write-Host "🔍 Changes by type:" -ForegroundColor Yellow
-        foreach ($type in ($changesByType.Keys | Sort-Object)) {
-            $count = $changesByType[$type].Count
-            Write-Host "   • $type`: $count file$(if ($count -ne 1) { 's' })" -ForegroundColor Cyan
+        if ($gitData.files.new.Count -gt 0) {
+            $count = $gitData.files.new.Count
+            Write-Host "   • New: $count file$(if ($count -ne 1) { 's' })" -ForegroundColor Cyan
+        }
+        if ($gitData.files.modified.Count -gt 0) {
+            $count = $gitData.files.modified.Count
+            Write-Host "   • Modified: $count file$(if ($count -ne 1) { 's' })" -ForegroundColor Cyan
+        }
+        if ($gitData.files.deleted.Count -gt 0) {
+            $count = $gitData.files.deleted.Count
+            Write-Host "   • Deleted: $count file$(if ($count -ne 1) { 's' })" -ForegroundColor Cyan
+        }
+        if ($gitData.files.renamed.Count -gt 0) {
+            $count = $gitData.files.renamed.Count
+            Write-Host "   • Renamed: $count file$(if ($count -ne 1) { 's' })" -ForegroundColor Cyan
         }
     
         Write-Host "📁 Changes by directory:" -ForegroundColor Yellow
@@ -624,15 +876,26 @@ try {
         Write-Host "   • No local changes detected" -ForegroundColor Green
     }
 
-    exit 0
+    exit $EXIT_CODE_SUCCESS
 }
 catch {
-    Write-Host "❌ Error occurred during get-git-changes.ps1" -ForegroundColor Red
+    Write-Host "❌ Critical error occurred during git analysis" -ForegroundColor Red
+    Write-Host "🚨 This indicates a serious git repository or network issue" -ForegroundColor Red
+    Write-Host "" -ForegroundColor Red
     Write-Host "Exception Type: $($_.Exception.GetType().FullName)" -ForegroundColor Red
     Write-Host "Exception Message: $($_.Exception.Message)" -ForegroundColor Red
     Write-Host "Stack Trace:" -ForegroundColor Red
     Write-Host $_.Exception.StackTrace -ForegroundColor Red
     Write-Host "Script Stack Trace:" -ForegroundColor Red
     Write-Host $_.ScriptStackTrace -ForegroundColor Red
-    throw
+    Write-Host "" -ForegroundColor Red
+    Write-Host "⚠️  DO NOT CONTINUE with pushall or other git operations until this is resolved!" -ForegroundColor Red
+    Write-Host "🔧 Recommended actions:" -ForegroundColor Yellow
+    Write-Host "   1. Check git repository integrity: git fsck" -ForegroundColor Yellow
+    Write-Host "   2. Verify network connectivity if using remote operations" -ForegroundColor Yellow
+    Write-Host "   3. Ensure no other git operations are running" -ForegroundColor Yellow
+    Write-Host "   4. Check for merge conflicts or incomplete operations" -ForegroundColor Yellow
+    
+    # Set a specific exit code to indicate git operation failure
+    exit $EXIT_CODE_GIT_FAILURE  # Exit code indicates git operation failure
 }
