@@ -504,6 +504,16 @@ try {
                     $files.new += $file
                     "New"
                 }
+                '^[MD]' { 
+                    $summary.modified++
+                    $files.modified += $file
+                    "Modified"
+                }
+                '^.[MD]' { 
+                    $summary.modified++
+                    $files.modified += $file
+                    "Modified"
+                }
                 '^D' { 
                     $summary.deleted++
                     $files.deleted += $file
@@ -518,16 +528,6 @@ try {
                     $summary.renamed++
                     $files.renamed += $file
                     "Renamed"
-                }
-                '^M' { 
-                    $summary.modified++
-                    $files.modified += $file
-                    "Modified"
-                }
-                '^.M' { 
-                    $summary.modified++
-                    $files.modified += $file
-                    "Modified"
                 }
                 default { 
                     $summary.modified++
