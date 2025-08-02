@@ -1,6 +1,6 @@
 ---
 mode: "agent"
-description: "Step-by-step workflow for "
+description: "Step-by-step workflow for safely and precisely executing code and GitHub operations according to strict instructions."
 model: "Claude Sonnet 4"
 ---
 
@@ -18,7 +18,7 @@ model: "Claude Sonnet 4"
 - Confirm the step completed successfully and you followed all instructions. If not, go back and do what you missed.
 - State which step you're moving to next  
 - Verify all required outputs exist before proceeding
-- Use the checkpoint format: "✅ Step [X] completed successfully. Moving to Step [Y]."
+- Verify you satisfied the conditions for the checkpoint and then write them out to the user: "✅ Step [X] completed successfully. Moving to Step [Y].". 
 - If you find yourself thinking "I know what this step wants me to accomplish" - STOP. Read the step again and follow the literal instructions.
 - Never substitute your own interpretation for the written instructions, even if you think your approach is better or more efficient.
 
@@ -105,8 +105,10 @@ model: "Claude Sonnet 4"
     - **Exit code 0 (user did not abort):** "✅ Step 7 completed successfully. User confirmed working on branch [BRANCHNAME]. Moving to Step 8."
     - **Exit code 1 (user aborted):** Help the user fix the issue (switching branches, etc.), then state: "✅ Step 7 completed successfully. Issue resolved. Moving to Step 8."
 
-8. **Comprehensive git analysis:** Perform complete analysis of ALL changes in the workspace.
+8. **Comprehensive PREPARATION FOR COMMIT:**
 
+    **CRITICAL**: This is only preparation. Do NOT commit until you are told.
+    **CRITICAL**: This step is DIFFERENT than what you will do later in step 17. Do NOT confuse them.
     **CRITICAL**: This step ALWAYS executes regardless of which path you took to reach it. Step 2 only checked the current branch - we have NOT properly analyzed ALL changes yet. This is where the comprehensive analysis happens.
 
     **Call the get-git-changes script to perform the first comprehensive analysis of all workspace changes:**
@@ -151,7 +153,7 @@ model: "Claude Sonnet 4"
 
     **CHECKPOINT**: "✅ Step 8 completed successfully. Comprehensive git analysis complete. Current branch: [BRANCHNAME]. Moving to Step 9."
     
-9. **Prepare commit message:** Based on the comprehensive changes analysis from step 8, prepare a structured commit message:
+9. **Create commit MESSAGE:** Based on the comprehensive changes analysis from step 8, prepare a structured commit message:
 
     **Commit Message Structure:**
     - For the summary, focus on the PURPOSE and INTENT behind the changes, not just what was changed. The implementation can be more technical.
@@ -223,10 +225,10 @@ model: "Claude Sonnet 4"
 
     Read the `branch.remote.exists` and `branch.remote.hasUpdates` fields from the git-changes-analysis.json file in the `.tmp/git-changes-analysis/` directory.
     
-    **If branch.remote.exists is false OR branch.remote.hasUpdates is false:**
+    **If `branch.remote.exists` is false OR `branch.remote.hasUpdates` is false:**
     Skip the remote pull operation.
     
-    **If branch.remote.exists is true and branch.remote.hasUpdates is true:**
+    **If `branch.remote.exists` is true and `branch.remote.hasUpdates` is true:**
 
     ```pwsh
     git pull --rebase
@@ -240,10 +242,10 @@ model: "Claude Sonnet 4"
 
     Read the `branch.main.hasUpdates` field from the git-changes-analysis.json file in the `.tmp/git-changes-analysis/` directory.
     
-    **If branch.main.hasUpdates is false:**
+    **If `branch.main.hasUpdates` is false:**
     Your branch is already up-to-date with main.
     
-    **If branch.main.hasUpdates is true:**
+    **If `branch.main.hasUpdates` is true:**
 
     ```pwsh
     git rebase main
@@ -257,13 +259,13 @@ model: "Claude Sonnet 4"
 
     Use the `branch.remote.exists` field to determine the appropriate push command.
 
-    **If branch.remote.exists is false (new branch):**
+    **If `branch.remote.exists` is false (new branch):**
 
     ```pwsh
     git push --set-upstream origin [BRANCHNAME]
     ```
     
-    **If branch.remote.exists is true (existing branch):**
+    **If `branch.remote.exists` is true (existing branch):**
 
     ```pwsh
     git push
@@ -281,30 +283,26 @@ model: "Claude Sonnet 4"
 
     **CHECKPOINT**: Based on exit code, state either:
     - **Exit code 0 (user did not abort):** "✅ Step 16 completed successfully. User wants to proceed with PR operations. Moving to Step 17."
-    - **Exit code 1 (user aborted):** "✅ Step 16 completed successfully. User aborted PR operations. Workflow is complete."
+    - **Exit code 1 (user aborted):** "✅ Step 16 completed successfully. User aborted PR operations. Moving to Step 22."
  
-17. **Comprehensive analysis and preparation:**
+17. **COLLECT comprehensive data:**
 
-    **CRITICAL**: First run the get git changes script again, but this time with an additional flag:
-
-    Read the `branch.remote.exists` field from `.tmp/git-changes-analysis/git-changes-analysis.json`.
-
-    If branch.remote.exists is **true** (remote branch exists):
+    **CRITICAL**: This step is about data collection only. Do NOT analyze or create PR content yet.
+    **CRITICAL**: This step is DIFFERENT than what you did earlier in step 8. Do NOT confuse them.
+    **CRITICAL**: Execute the following command EXACTLY AS IS including the `-CompareWithMain` flag:
     
     ```pwsh
-    pwsh ./.github/prompts/get-git-changes.ps1 -CompareRemoteWithMain
+    pwsh ./.github/prompts/get-git-changes.ps1 -CompareWithMain
     ```
     
-    If branch.remote.exists is **false** (no remote branch):
+    **CHECKPOINT**: "✅ Step 17 completed successfully. Comprehensive data collection complete. Moving to Step 18."
 
-    ```pwsh
-    pwsh ./.github/prompts/get-git-changes.ps1 -CompareLocalWithMain
-    ```
-    
-    **CRITICAL**: After executing the git changes analysis command, read the new analysis file containing all files changed compared to main branch. This contents might be very different than what you saw in step 8!
-    
-    **CRITICAL**: Analyze ALL changes, then make sure you have answers to ALL questions listed below. If you need more information, use whatever tools you need: Read from the local workspace, use the GitHub MCP server to look at issues or other pull requests, use local Git tools, anything you need. 
-    
+18. **ANALYZE changes and PREPARE pull request TITLE and MESSAGE:**
+
+    **CRITICAL**: This is analysis and preparation only. Do NOT create a pull request until you are told.
+    **CRITICAL**: Using the data collected in step 17, analyze ALL changes mentioned in `.tmp/git-changes-analysis/git-changes-analysis.json` and make sure you have answers to ALL questions listed below.
+    **CRITICAL**: If you need to look at other files in this repository to get a complete picture, do that as well!
+
     **Questions on WHAT was done (Functional Changes):**
     - What specific functionality was added, modified, or removed?
     - What user-facing or developer-facing capabilities changed?
@@ -337,45 +335,46 @@ model: "Claude Sonnet 4"
     - System Impact: What internal processes or behaviors changed?
     - Quality Impact: How do these changes improve code quality, performance, or maintainability?
     
-    **CRITICAL**: Prepare for PR Creation
-    Synthesize your analysis into:
+    As the final thing in step 18, do the following:
+
+    **CRITICAL**: Synthesize your analysis into the following, but do NOT write the title or description to a file or the chat. Store it internally for later use:
     - A clear, descriptive PR title (focused on the primary functional change)
     - A PR description that tells the story at a high level: problem → solution → impact, do not make it very extensive. Then follow with the technical changes. You do not need to include the answers to all the qusetions listed above.
 
-    Do NOT write the title or description to a file or the chat. Store it internally for later use.
-    
-    **CHECKPOINT**: "✅ Step 17 completed successfully. Comprehensive change analysis and PR preparation complete. Moving to Step 18."
+    **CHECKPOINT**: "✅ Step 18 completed successfully. Comprehensive change analysis and PR preparation complete. Moving to Step 19."
 
-18. **Check for existing pull requests:** 
+19. **CHECK for existing pull requests:** 
     
     Read the `branch.remote.exists` field from `.tmp/git-changes-analysis/git-changes-analysis.json` to determine if there can be existing pull requests.
     
-    **If branch.remote.exists is true (remote branch exists):**
+    **If `branch.remote.exists` is true (remote branch exists):**
     
     - Use the GitHub MCP tools to check if there is already an open pull request for the current branch.
     
-    **If branch.remote.exists is false (no remote branch):**
+    **If `branch.remote.exists` is false (no remote branch):**
 
     - Do nothing, because there is no remote branch and there can be no pull request.
    
-    **CHECKPOINT**: "✅ Step 18 completed successfully. Existing PR check complete. Moving to Step 19."
+    **CHECKPOINT**: "✅ Step 19 completed successfully. Existing PR check complete. Moving to Step 20."
 
-19. **Update existing PR or create new PR:**
+20. **UPDATE existing PR or CREATE new PR:**
 
-    Use the exact PR title and description you prepared in step 17 based on your comprehensive analysis to update or create a pull request.
+    Use the exact PR title and description you prepared in step 18 based on your comprehensive analysis to update or create a pull request, based on the outcome of step 19.
 
-    **If there is an existing PR (from step 18):**
+    **CRITICAL**: After this step you are not done yet, keep following the steps!
+
+    **If there is an existing PR:**
     - Update the pull request title and description.
-    - Do not display the updated PR information, just share the title, the PR number and the link.
+    - Do not display the updated PR information. This will happen later.
 
     **If there is no existing PR:**
     - Create a pull request using the GitHub MCP tools.
     - Set head branch to your current branch and base branch to main
-    - Do not display the updated PR information, just share the title, the PR number and the link.
+    - Do not display the updated PR information. This will happen later.
 
-    **CHECKPOINT**: "✅ Step 19 completed successfully. PR created/updated with prepared title and description. Moving to Step 20."
+    **CHECKPOINT**: "✅ Step 20 completed successfully. PR created/updated with prepared title and description. Moving to Step 21."
 
-20. **Request Optional Copilot review:**
+21. **Request Copilot review:**
 
     **CRITICAL**: Use the GitHub MCP tools to check if Copilot has already reviewed the PR. Then do the following:
     
@@ -392,8 +391,28 @@ model: "Claude Sonnet 4"
     ```
 
     **CHECKPOINT**: Based on exit code, state either:
-    - **Exit code 0 (user did not abort):** Use the GitHub MCP tools to request automated feedback from Copilot, then state: "✅ Step 20 completed successfully. Copilot review requested. Workflow is complete."
-    - **Exit code 1 (user aborted):** "✅ Step 20 completed successfully. User skipped Copilot review. Workflow is complete."
+    - **Exit code 0 (user did not abort):** Use the GitHub MCP tools to request automated feedback from Copilot, then state: "✅ Step 21 completed successfully. Copilot review requested. Moving to Step 22."
+    - **Exit code 1 (user aborted):** "✅ Step 21 completed successfully. User skipped Copilot review. Moving to Step 22."
+
+22. **Workflow completion and final summary**
+
+This step provides the final workflow summary and completion status.
+
+**Execute the following actions:**
+
+a. **Display completion header:**
+   ```
+   ✅ **PUSHALL WORKFLOW COMPLETED SUCCESSFULLY** ✅
+   ```
+
+b. **Provide final workflow summary** with the following sections:
+   - **🎯 Final Workflow Summary**: Brief overview of what was accomplished
+   - **🎉 Workflow Execution**: Steps completed, execution mode, duration, final result
+
+c. **Include relevant links** (if PR was created/updated):
+   - Link to the pull request with descriptive text
+
+**Checkpoint:** ✅ Step 22 completed successfully. Workflow execution summary provided and pushall process is complete.
 
 ## Branch Rebase Instructions
 

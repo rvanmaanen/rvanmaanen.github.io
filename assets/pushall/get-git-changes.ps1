@@ -12,20 +12,18 @@
 .PARAMETER OutputDir
     Directory to save the git changes output (default: .tmp/git-changes-analysis)
 
-.PARAMETER CompareRemoteWithMain
-    Switch to compare current remote branch with main branch instead of analyzing local changes.
-    When enabled, analyzes changes between the current remote branch and remote main branch.
-
-.PARAMETER CompareLocalWithMain
-    Switch to compare local uncommitted changes against main branch instead of just remote branches.
-    This is useful for scenarios where you want to analyze uncommitted changes in the context of main branch differences.
-    Cannot be used together with CompareRemoteWithMain.
+.PARAMETER CompareWithMain
+    Switch to intelligently compare current branch changes against remote main branch.
+    Automatically determines the comparison strategy:
+    - If current branch exists on remote: compares remote branch vs remote main (fetches both)
+    - If current branch is local-only: compares local branch vs remote main (fetches remote main)
+    - If on main branch: analyzes only uncommitted changes
+    This provides comprehensive analysis of all changes relative to remote main regardless of branch state.
 #>
 
 param(
     [string]$OutputDir = ".tmp/git-changes-analysis",
-    [switch]$CompareRemoteWithMain,
-    [switch]$CompareLocalWithMain
+    [switch]$CompareWithMain
 )
 
 $ErrorActionPreference = "Stop"
@@ -36,14 +34,12 @@ Set-StrictMode -Version Latest
 $EXIT_CODE_SUCCESS = 0
 $EXIT_CODE_GIT_FAILURE = 2
 
-# Validate parameter combinations
-if ($CompareRemoteWithMain -and $CompareLocalWithMain) {
-    throw "CompareRemoteWithMain and CompareLocalWithMain cannot be used together. Choose one comparison mode."
-}
-
-
-
 try {
+    # Remove old analysis directory if it exists
+    if (Test-Path $OutputDir) {
+        Remove-Item $OutputDir -Recurse -Force | Out-Null
+    }
+
     Write-Host "Analyzing git changes..." -ForegroundColor Cyan
     
     # Critical validation: Check if git repository is in a valid state
@@ -78,12 +74,8 @@ try {
     }
     
     Write-Host "✅ Git repository state is valid" -ForegroundColor Green
-    
-    # Remove old analysis directory if it exists
-    if (Test-Path $OutputDir) {
-        Remove-Item $OutputDir -Recurse -Force | Out-Null
-    }
-    
+   
+   
     # Create fresh output directory
     New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
     $OutputPath = Join-Path $OutputDir "git-changes-analysis.json"
@@ -239,8 +231,21 @@ try {
         Write-Warning "Could not check remote branch status: $($_.Exception.Message)"
     }
     
+    $compareLocalWithMain = $false
+    $compareRemoteWithMain = $false
+    
+    if($compareWithMain) {
+        $compareLocalWithMain = $true
+        $compareRemoteWithMain = $false
+
+        if($remoteBranch.exists) {
+            $compareLocalWithMain = $false
+            $compareRemoteWithMain = $true
+        }
+    }
+
     # Determine analysis mode
-    if ($CompareRemoteWithMain) {
+    if ($compareRemoteWithMain) {
         Write-Host "🌐 Comparing current remote branch with main..." -ForegroundColor Magenta
         
         # Check network connectivity before attempting remote operations
@@ -314,7 +319,7 @@ try {
             }
         }
     }
-    elseif ($CompareLocalWithMain) {
+    elseif ($compareLocalWithMain) {
         Write-Host "🔍 Comparing local uncommitted changes against main branch..." -ForegroundColor Magenta
         
         if ($currentBranch -eq "main") {
@@ -326,19 +331,27 @@ try {
             }
         }
         else {
-            Write-Host "📊 Analyzing uncommitted changes in context of main branch differences..." -ForegroundColor Cyan
+            Write-Host "📊 Comparing current local branch with remote main..." -ForegroundColor Cyan
             
-            # Get diff between current local branch and main, including uncommitted changes
+            # Compare current local branch (including uncommitted changes) against remote main
             try {
-                # First get changes between current branch and main (committed changes)
-                $branchToMainChanges = git diff --name-status main HEAD 2>$null
+                # First ensure we have remote main
+                Write-Host "🔄 Fetching remote main for comparison..." -ForegroundColor Cyan
+                git fetch origin main --quiet 2>$null
                 if ($LASTEXITCODE -ne 0) {
-                    # Check if main branch exists locally
-                    git show-ref --verify --quiet refs/heads/main 2>$null | Out-Null
-                    if ($LASTEXITCODE -ne 0) {
-                        throw "Local main branch does not exist. Please fetch or checkout main branch first."
-                    }
-                    throw "Failed to get diff between main and HEAD (git exit code: $LASTEXITCODE)"
+                    throw "Failed to fetch main branch from remote (git exit code: $LASTEXITCODE)"
+                }
+                
+                # Verify remote main exists after fetch
+                git show-ref --verify --quiet "refs/remotes/origin/main" 2>$null | Out-Null
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Remote main branch does not exist after fetch"
+                }
+                
+                # Get changes between current local branch and remote main (committed changes)
+                $branchToMainChanges = git diff --name-status origin/main HEAD 2>$null
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Failed to get diff between origin/main and HEAD (git exit code: $LASTEXITCODE)"
                 }
                 
                 # Then get uncommitted changes 
@@ -382,7 +395,7 @@ try {
                 $statusLines = $allChanges | Sort-Object -Unique
             }
             catch {
-                Write-Error "Could not analyze local branch changes: $($_.Exception.Message)"
+                Write-Error "Could not analyze local branch changes against remote main: $($_.Exception.Message)"
                 throw "Git diff operation failed - cannot continue safely with local branch analysis"
             }
         }
@@ -426,7 +439,7 @@ try {
         $file = ""
         
         # Handle different git command output formats
-        if ($CompareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") {
+        if ($compareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") {
             # git diff --name-status format: "M\tfilename" or "A\tfilename"
             if ($line.Contains("`t")) {
                 $parts = $line -split "`t", 2
@@ -450,8 +463,8 @@ try {
         $summary.hasChanges = $true
         
         # Determine change type based on git status codes
-        $changeType = if (($CompareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") -or 
-            ($CompareLocalWithMain -and $currentBranch -ne "main")) {
+        $changeType = if (($compareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") -or 
+            ($compareLocalWithMain -and $currentBranch -ne "main")) {
             # Handle git diff --name-status single character codes (for CompareRemoteWithMain or CompareLocalWithMain)
             switch ($status) {
                 'A' { 
@@ -556,10 +569,10 @@ try {
         $diffPath = Join-Path $OutputDir $diffFileName
     
         try {
-            if (($CompareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") -or 
-                ($CompareLocalWithMain -and $currentBranch -ne "main")) {
+            if (($compareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") -or 
+                ($compareLocalWithMain -and $currentBranch -ne "main")) {
                 # For main comparison or local branch comparison, show diff against main
-                if ($CompareRemoteWithMain) {
+                if ($compareRemoteWithMain) {
                     # For CompareRemoteWithMain, show diff between current remote branch and remote main
                     $currentRemoteRef = "origin/$currentBranch"
                     $mainRemoteRef = "origin/main"
@@ -570,10 +583,10 @@ try {
                     }
                 }
                 else {
-                    # For CompareLocalWithMain, show diff between current state (including uncommitted) and main
-                    $diffContent = git diff main -- $file 2>$null
+                    # For CompareLocalWithMain, show diff between current state (including uncommitted) and remote main
+                    $diffContent = git diff origin/main -- $file 2>$null
                     if ($LASTEXITCODE -ne 0) {
-                        Write-Warning "Failed to generate diff for $file against main (git exit code: $LASTEXITCODE)"
+                        Write-Warning "Failed to generate diff for $file against remote main (git exit code: $LASTEXITCODE)"
                         continue
                     }
                 }
@@ -613,7 +626,7 @@ try {
             }
         
             if ($diffContent) {
-                $diffContent | Out-File -FilePath $diffPath -Encoding utf8
+                $diffContent | Out-File -FilePath $diffPath -Encoding utf8 -Force
                 $diffFiles += @{
                     originalFile = $file
                     diffFile     = $diffFileName
@@ -683,28 +696,28 @@ try {
     $gitData = @{
         timestamp = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
         analysis  = @{
-            type        = if ($CompareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") { 
+            type        = if ($compareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") { 
                 "branch-to-main" 
             }
-            elseif ($CompareLocalWithMain -and $currentBranch -ne "main") { 
+            elseif ($compareLocalWithMain -and $currentBranch -ne "main") { 
                 "local-branch-to-main" 
             }
             else { 
                 "local" 
             }
-            mode        = if ($CompareRemoteWithMain) { 
+            mode        = if ($compareRemoteWithMain) { 
                 "branch-main-comparison" 
             }
-            elseif ($CompareLocalWithMain) { 
+            elseif ($compareLocalWithMain) { 
                 "local-branch-main-comparison" 
             }
             else { 
                 "local-changes" 
             }
-            description = if ($CompareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") { 
+            description = if ($compareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") { 
                 "Analysis of changes between current remote branch and remote main branch" 
             }
-            elseif ($CompareLocalWithMain -and $currentBranch -ne "main") {
+            elseif ($compareLocalWithMain -and $currentBranch -ne "main") {
                 "Analysis of local uncommitted changes in context of main branch differences"
             }
             else { 
@@ -739,15 +752,17 @@ try {
 
     # Save to JSON
     $jsonOutput = $gitData | ConvertTo-Json -Depth 10 -Compress:$false
-    $jsonOutput | Out-File -FilePath $OutputPath -Encoding UTF8
+    $jsonOutput | Out-File -FilePath $OutputPath -Encoding UTF8 -Force
+
+    Start-Sleep 1
 
     # Display summary
     Write-Host "✅ Git analysis saved to: $OutputPath" -ForegroundColor Green
 
-    $analysisType = if ($CompareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") { 
+    $analysisType = if ($compareRemoteWithMain -and $remoteBranch.exists -and $currentBranch -ne "main") { 
         "Branch vs Main Changes" 
     }
-    elseif ($CompareLocalWithMain -and $currentBranch -ne "main") { 
+    elseif ($compareLocalWithMain -and $currentBranch -ne "main") { 
         "Local Branch vs Main Changes" 
     }
     else { 
