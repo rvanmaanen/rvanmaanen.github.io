@@ -234,7 +234,7 @@ model: "Claude Sonnet 4"
     git pull --rebase
     ```
     
-    If the rebase stops for any reason, use the [Branch Rebase Instructions](#branch-rebase-instructions) section below.
+    **CRITICAL**: If the rebase stops for any reason, use the [Branch Rebase Instructions](#branch-rebase-instructions) section below. When you are done rebasing, you must continue with the main workflow steps, starting from the checkpoint in this step.
 
     **CHECKPOINT**: "✅ Step 13 completed successfully. Remote branch synchronization complete. Moving to Step 14."
     
@@ -251,7 +251,7 @@ model: "Claude Sonnet 4"
     git rebase main
     ```
     
-    If the rebase stops for any reason, use the [Branch Rebase Instructions](#branch-rebase-instructions) section below.
+    **CRITICAL**: If the rebase stops for any reason, use the [Branch Rebase Instructions](#branch-rebase-instructions) section below. When you are done rebasing, you must continue with the main workflow steps, starting from the checkpoint in this step.
 
     **CHECKPOINT**: "✅ Step 14 completed successfully. Main branch synchronization complete. Moving to Step 15."
 
@@ -299,6 +299,7 @@ model: "Claude Sonnet 4"
 
 18. **ANALYZE changes and PREPARE pull request TITLE and MESSAGE:**
 
+    **CRITICAL**: Do NOT continue until you have done EVERYTHING in this step. This is crucial for creating a meaningful pull request.
     **CRITICAL**: This is analysis and preparation only. Do NOT create a pull request until you are told.
     **CRITICAL**: Using the data collected in step 17, analyze ALL changes mentioned in `.tmp/git-changes-analysis/git-changes-analysis.json` and make sure you have answers to ALL questions listed below.
     **CRITICAL**: If you need to look at other files in this repository to get a complete picture, do that as well!
@@ -335,9 +336,9 @@ model: "Claude Sonnet 4"
     - System Impact: What internal processes or behaviors changed?
     - Quality Impact: How do these changes improve code quality, performance, or maintainability?
     
-    As the final thing in step 18, do the following:
+    As the FINAL thing in step 18, do the following:
 
-    **CRITICAL**: Synthesize your analysis into the following, but do NOT write the title or description to a file or the chat. Store it internally for later use:
+    **CRITICAL**: Synthesize your analysis into the following and store it INTERNALLY for later use:
     - A clear, descriptive PR title (focused on the primary functional change)
     - A PR description that tells the story at a high level: problem → solution → impact, do not make it very extensive. Then follow with the technical changes. You do not need to include the answers to all the qusetions listed above.
 
@@ -491,4 +492,5 @@ c. **Repeat until rebase completes:** Continue handling interruptions until git 
 d. **Rebase completion:** The rebase is complete when git no longer reports conflicts and returns to the normal prompt
 
 **Post-Rebase Validation:**
-After successful rebase completion, the branch is now synchronized with the target branch and ready to continue with the workflow.
+
+**CRITICAL**: After successful rebase completion, continue WHERE YOU LEFT OFF in the main workflow.
