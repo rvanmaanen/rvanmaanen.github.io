@@ -81,11 +81,13 @@ model: "Claude Sonnet 4"
     git reset --soft HEAD~$(git rev-list --count HEAD ^origin/main)
     ```
     
-    Then create and switch to the new branch:
+    Then create and switch to a new branch:
 
     ```pwsh
     git checkout -b [BRANCHNAME]
     ```
+
+    **CRITICAL**: If the new branch already exists, delete it first! We should ALWAYS have a clean branch to work from.
 
     **CHECKPOINT**: "✅ Step 5 completed successfully. Created and switched to branch. Moving to Step 7."
 
@@ -285,19 +287,20 @@ model: "Claude Sonnet 4"
     - **Exit code 0 (user did not abort):** "✅ Step 16 completed successfully. User wants to proceed with PR operations. Moving to Step 17."
     - **Exit code 1 (user aborted):** "✅ Step 16 completed successfully. User aborted PR operations. Moving to Step 22."
  
-17. **COLLECT comprehensive data:**
+17. **PREPARE for data analysis:**
 
-    **CRITICAL**: This step is about data collection only. Do NOT analyze or create PR content yet.
-    **CRITICAL**: This step is DIFFERENT than what you did earlier in step 8. Do NOT confuse them.
+    **CRITICAL**: This step is about data PREPARATION only. Do NOT analyze or create PR content yet.
+    **CRITICAL**: This step is DIFFERENT than what you did earlier in steps 8 to 15, so do NOT confuse them and DO NOT skip any of the following steps.
+    **CRITICAL**: Do NOT reu-use anything from step 8 to 15.
     **CRITICAL**: Execute the following command EXACTLY AS IS including the `-CompareWithMain` flag:
     
     ```pwsh
     pwsh ./.github/prompts/get-git-changes.ps1 -CompareWithMain
     ```
     
-    **CHECKPOINT**: "✅ Step 17 completed successfully. Comprehensive data collection complete. Moving to Step 18."
+    **CHECKPOINT**: "✅ Step 17 completed successfully. Moving to Step 18."
 
-18. **ANALYZE changes and PREPARE pull request TITLE and MESSAGE:**
+18. **ANALYZE data from step 17 and PREPARE pull request TITLE and MESSAGE:**
 
     **CRITICAL**: Do NOT continue until you have done EVERYTHING in this step. This is crucial for creating a meaningful pull request.
     **CRITICAL**: This is analysis and preparation only. Do NOT create a pull request until you are told.
@@ -342,15 +345,17 @@ model: "Claude Sonnet 4"
     - A clear, descriptive PR title (focused on the primary functional change)
     - A PR description that tells the story at a high level: problem → solution → impact, do not make it very extensive. Then follow with the technical changes. You do not need to include the answers to all the qusetions listed above.
 
-    **CHECKPOINT**: "✅ Step 18 completed successfully. Comprehensive change analysis and PR preparation complete. Moving to Step 19."
+    **CHECKPOINT**: "✅ Step 18 completed successfully. Pull request PREPARATION complete. Moving to Step 19."
 
 19. **CHECK for existing pull requests:** 
     
     Read the `branch.remote.exists` field from `.tmp/git-changes-analysis/git-changes-analysis.json` to determine if there can be existing pull requests.
+
+    **CRITICAL**: Do NOT create or update a PR yet, we will do that in the next step.
     
     **If `branch.remote.exists` is true (remote branch exists):**
     
-    - Use the GitHub MCP tools to check if there is already an open pull request for the current branch.
+    - Use the GitHub MCP tools to CHECK if there is already an open pull request for the current branch. 
     
     **If `branch.remote.exists` is false (no remote branch):**
 
@@ -362,16 +367,16 @@ model: "Claude Sonnet 4"
 
     Use the exact PR title and description you prepared in step 18 based on your comprehensive analysis to update or create a pull request, based on the outcome of step 19.
 
-    **CRITICAL**: After this step you are not done yet, keep following the steps!
+    **CRITICAL**: After this step you are NOT done yet, keep following the steps!
 
     **If there is an existing PR:**
     - Update the pull request title and description.
-    - Do not display the updated PR information. This will happen later.
+    - Do NOT display the updated PR information. This will happen later.
 
     **If there is no existing PR:**
     - Create a pull request using the GitHub MCP tools.
     - Set head branch to your current branch and base branch to main
-    - Do not display the updated PR information. This will happen later.
+    - Do NOT display the updated PR information. This will happen later.
 
     **CHECKPOINT**: "✅ Step 20 completed successfully. PR created/updated with prepared title and description. Moving to Step 21."
 
