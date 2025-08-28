@@ -5,7 +5,7 @@ tags: ["Announcement", "Microsoft", "Azure", "AI", "GitHub Copilot", "DevOps", "
 description: "Announcing tech.hub.ms — curated Microsoft tech news, blogs, and videos with AI-powered categorization, tagging, and summaries, plus weekly roundups."
 excerpt_separator: "<!--excerpt_end-->"
 permalink: "new-website-tech-hub-ms.html"
-image: "/assets/reinier.jpg"
+image: "/assets/techhub/ghc-news.png"
 ---
 
 Rob Bos and I launched a new website, the [Microsoft Tech Hub](https://tech.hub.ms), where we collect technical content in the Microsoft space. It’s categorized, grouped, and filterable so it’s easy to find exactly what you’re interested in.
