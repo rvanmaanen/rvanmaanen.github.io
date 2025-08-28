@@ -18,12 +18,12 @@ This blog post, and a few others coming soon, will give some context and also ex
 
 <div class="image-gallery">
   <div class="image-item">
-    <img src="{{ "/assets/techhub/homepage.png" | relative_url }}" alt="The Homepage of TechHub">
-    <div class="image-caption">The Homepage of TechHub</div>
+    <a href="https://hub.ms" target="_blank"><img src="{{ "/assets/techhub/homepage.png" | relative_url }}" alt="The Homepage of TechHub"></a>
+    <div class="image-caption">The Homepage of TechHub (click to open)</div>
   </div>
   <div class="image-item">
-    <img src="{{ "/assets/techhub/ghc-news.png" | relative_url }}" alt="The GitHub Copilot News Section">
-    <div class="image-caption">The GitHub Copilot News Section</div>
+    <a href="https://hub.ms/github-copilot/news" target="_blank"><img src="{{ "/assets/techhub/ghc-news.png" | relative_url }}" alt="The GitHub Copilot News Section"></a>
+    <div class="image-caption">The GitHub Copilot News Section (click to open)</div>
   </div>
 </div>
 
@@ -41,7 +41,7 @@ Each of these topics also has a nice shortcut (just a bit slower to resolve due 
 - [azure.hub.ms](https://azure.hub.ms) redirects to the Azure section
 - etc
 
-If you prefer shorter links, [hub.ms](https://hub.ms) also works ;)
+If you prefer shorter links, [hub.ms](https://hub.ms) also works!
 
 ## How does it work?
 
@@ -64,6 +64,7 @@ Direct content contributors so far are a few of my [Xebia](https://xebia.com) co
 - Add full NLWeb support
 - High on my list is a personalized roundup, where you can leave a prompt and you get an update tailored to exactly your needs
 - Of course podcast support for the personalized roundups
+- Update the A(i) to Z page, especially to include more on where we are regarding MCP, Agents and Multi-Agent solutions
 - Better tagging and search
 - LinkedIn support
 - Automatically add events
