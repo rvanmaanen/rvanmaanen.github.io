@@ -1,7 +1,30 @@
 ---
 layout: "post"
 title: "New website: tech.hub.ms"
-tags: ["Announcement", "Microsoft", "Azure", "AI", "GitHub Copilot", "DevOps", "Developer Tools", "Site Launch", "Roundups"]
+tags: [
+  "Announcement",
+  "Site Launch",
+  "Microsoft",
+  "Tech Hub",
+  "Microsoft Tech Hub",
+  "Content Aggregation",
+  "RSS",
+  "Weekly Roundup",
+  "AI",
+  "Machine Learning",
+  "Azure",
+  ".NET",
+  "Security",
+  "GitHub Copilot",
+  "DevOps",
+  "Community",
+  "News",
+  "Blogs",
+  "Videos",
+  "Summarization",
+  "Categorization",
+  "Tagging"
+]
 description: "Announcing tech.hub.ms — curated Microsoft tech news, blogs, and videos with AI-powered categorization, tagging, and summaries, plus weekly roundups."
 excerpt_separator: "<!--excerpt_end-->"
 permalink: "new-website-tech-hub-ms.html"
@@ -12,9 +35,9 @@ Rob Bos and I launched a new website, the [Microsoft Tech Hub](https://tech.hub.
 
 The content is mainly news, blogs, videos, and community articles. And the topics are Azure, AI, ML, GitHub Copilot, .NET, Security, and DevOps (honestly, this last one is a bit of a catch-all).
 
-Also, every week we push out a roundup of [last week’s highlights](https://hub.ms/2025-08-25-Weekly-AI-and-Tech-News-Roundup.html). My colleagues are creating high quality videos on different [GitHub Copilot Features](https://hub.ms/github-copilot/features.html) and focussed on GitHub Copilot as well, the latest [Visual Studio Code Updates](https://hub.ms/github-copilot/vscode-updates.html). And of course, there are many more planned features!<!--excerpt_end-->
+Also, every week we publish a roundup of [last week’s highlights](https://hub.ms/2025-08-25-Weekly-AI-and-Tech-News-Roundup.html). My colleagues are creating high-quality videos on [GitHub Copilot features](https://hub.ms/github-copilot/features.html) and the latest [Visual Studio Code updates](https://hub.ms/github-copilot/vscode-updates.html). And of course, there are many more planned features!<!--excerpt_end-->
 
-This blog post, and a few others coming soon, will give some context and also explain how the site works and things we ran into.
+This blog post, and a few others coming soon, will give some context and also explain how the site works and some things we ran into.
 
 <div class="image-gallery">
   <div class="image-item">
@@ -39,7 +62,7 @@ Each of these topics also has a nice shortcut (just a bit slower to resolve due 
 - [ghc.hub.ms](https://ghc.hub.ms) redirects to the GitHub Copilot section
 - [all.hub.ms](https://all.hub.ms) redirects to the Everything section
 - [azure.hub.ms](https://azure.hub.ms) redirects to the Azure section
-- etc
+- etc.
 
 If you prefer shorter links, [hub.ms](https://hub.ms) also works!
 
@@ -49,7 +72,7 @@ It is basically a very fancy RSS scraper with AI. Currently, there are about 70 
 
 ## Who maintains this?
 
-I currently build and maintain the entire website, while Rob Bos and other Xebia colleagues add a lot of the GitHub Copilot content and give me valuable feedback. I’d love it if people would make Pull Requests at [the GitHub repo](https://github.com/techhubms/techhub) to make this even better!
+I currently build and maintain the entire website, while Rob Bos and other Xebia colleagues add a lot of the GitHub Copilot content and give me valuable feedback. I’d love it if people would open Pull Requests on [the GitHub repo](https://github.com/techhubms/techhub) to make this even better!
 
 Direct content contributors so far are a few of my [Xebia](https://xebia.com) colleagues:
 
@@ -60,24 +83,24 @@ Direct content contributors so far are a few of my [Xebia](https://xebia.com) co
 
 ## Future plans
 
-- The first thing I want to do is more on the background, and it's moving away from a static website as it's too limiting
+- The first thing I want to do is less visible: Move away from a static website as it is too limiting
 - Add full NLWeb support
-- High on my list is a personalized roundup, where you can leave a prompt and you get an update tailored to exactly your needs
-- Of course podcast support for the personalized roundups
-- Update the A(i) to Z page, especially to include more on where we are regarding MCP, Agents and Multi-Agent solutions
-- Better tagging and search
+- Create personalized roundups, where you can leave a prompt and you get an update tailored to your needs
+- Of course, podcast support for these personalized roundups
+- Update the A(i) to Z page with the most recent developments
+- Better tagging and proper (semantic) searching
 - LinkedIn support
 - Automatically add events
-- Reddit support, I initially implemented this but I felt it was too hacky by using Playwright to scrape the content
+- Reddit support—I initially implemented this, but I felt it was too hacky, using Playwright to scrape the content
 
-All of them won't be for at least another month though, as I'll be enjoying a long holiday first.
+None of these will happen for at least another month, though, as I'll be enjoying a long holiday first.
 
-## Topics for the blogs posts
+## Topics for the blog posts
 
-There are a bunch of things I'd plan to blog about as well:
+There are a bunch of things I plan to blog about as well:
 
-- Creating the site with Jekyll, a dev container, GitHub Pages and a custom domain
-- My experiences on using GitHub Copilot to build the website: GPT-4.1 vs Claude, premium requests, custom prompts, terminal auto-approve, instructions, etc
+- Creating the site with Jekyll, a dev container, GitHub Pages, and a custom domain
+- My experience using GitHub Copilot to build the website: GPT-4.1 vs Claude, premium requests, custom prompts, terminal auto-approve, instructions, etc.
 - Using GitHub Models to analyze content and moving to Azure OpenAI due to rate- and token-limiting
 - Creating the weekly roundups and more (ongoing) struggles with the amount of data
 - End-to-end tests and fixing bugs with the Playwright MCP server
